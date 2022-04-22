@@ -1,0 +1,64 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userName: String
+  password: String
+  email: AWSEmail
+}
+
+type OrderItem @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ItemOptions: [ItemOptions] @hasMany(indexName: "byOrderItem", fields: ["id"])
+  MenuItem: MenuItem @hasOne
+  quantity: Int
+  orderID: ID! @index(name: "byOrder")
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  User: User @hasOne
+  time: AWSTimestamp
+}
+
+type StoreHours @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  order: Int
+  dayOfWeek: String
+  from: String
+  to: String
+}
+
+type ItemOptions @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  menuitemID: ID! @index(name: "byMenuItem")
+  untitledfield: OptionType
+  orderitemID: ID! @index(name: "byOrderItem")
+}
+
+enum MenuType {
+  BREAKFAST
+  BEVERAGE
+  SANDWICH
+  PASTRY
+  PIZZA
+  SALAD
+}
+
+enum OptionType {
+  OIL
+  VINEGAR
+  LETTUCE
+  TOMATO
+  ROASTED_PEPPERS
+}
+
+type MenuItem @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String
+  menuType: MenuType
+  description: String
+  smallPrice: String
+  price: String
+  ItemOptions: [ItemOptions] @hasMany(indexName: "byMenuItem", fields: ["id"])
+}
