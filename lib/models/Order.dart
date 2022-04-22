@@ -20,7 +20,7 @@
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
 import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
@@ -31,9 +31,8 @@ class Order extends Model {
   static const classType = const _OrderModelType();
   final String id;
   final List<OrderItem>? _OrderItems;
-  final User? _User;
-  final TemporalTimestamp? _time;
-  final String? _orderUserId;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -47,27 +46,20 @@ class Order extends Model {
     return _OrderItems;
   }
   
-  User? get User {
-    return _User;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
   }
   
-  TemporalTimestamp? get time {
-    return _time;
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
   }
   
-  String? get orderUserId {
-    return _orderUserId;
-  }
+  const Order._internal({required this.id, OrderItems, createdAt, updatedAt}): _OrderItems = OrderItems, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  const Order._internal({required this.id, OrderItems, User, time, orderUserId}): _OrderItems = OrderItems, _User = User, _time = time, _orderUserId = orderUserId;
-  
-  factory Order({String? id, List<OrderItem>? OrderItems, User? User, TemporalTimestamp? time, String? orderUserId}) {
+  factory Order({String? id, List<OrderItem>? OrderItems}) {
     return Order._internal(
       id: id == null ? UUID.getUUID() : id,
-      OrderItems: OrderItems != null ? List<OrderItem>.unmodifiable(OrderItems) : OrderItems,
-      User: User,
-      time: time,
-      orderUserId: orderUserId);
+      OrderItems: OrderItems != null ? List<OrderItem>.unmodifiable(OrderItems) : OrderItems);
   }
   
   bool equals(Object other) {
@@ -79,10 +71,7 @@ class Order extends Model {
     if (identical(other, this)) return true;
     return other is Order &&
       id == other.id &&
-      DeepCollectionEquality().equals(_OrderItems, other._OrderItems) &&
-      _User == other._User &&
-      _time == other._time &&
-      _orderUserId == other._orderUserId;
+      DeepCollectionEquality().equals(_OrderItems, other._OrderItems);
   }
   
   @override
@@ -94,20 +83,17 @@ class Order extends Model {
     
     buffer.write("Order {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("time=" + (_time != null ? _time!.toString() : "null") + ", ");
-    buffer.write("orderUserId=" + "$_orderUserId");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  Order copyWith({String? id, List<OrderItem>? OrderItems, User? User, TemporalTimestamp? time, String? orderUserId}) {
-    return Order(
+  Order copyWith({String? id, List<OrderItem>? OrderItems}) {
+    return Order._internal(
       id: id ?? this.id,
-      OrderItems: OrderItems ?? this.OrderItems,
-      User: User ?? this.User,
-      time: time ?? this.time,
-      orderUserId: orderUserId ?? this.orderUserId);
+      OrderItems: OrderItems ?? this.OrderItems);
   }
   
   Order.fromJson(Map<String, dynamic> json)  
@@ -118,25 +104,17 @@ class Order extends Model {
           .map((e) => OrderItem.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
-      _User = json['User']?['serializedData'] != null
-        ? User.fromJson(new Map<String, dynamic>.from(json['User']['serializedData']))
-        : null,
-      _time = json['time'] != null ? TemporalTimestamp.fromSeconds(json['time']) : null,
-      _orderUserId = json['orderUserId'];
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'OrderItems': _OrderItems?.map((OrderItem? e) => e?.toJson()).toList(), 'User': _User?.toJson(), 'time': _time?.toSeconds(), 'orderUserId': _orderUserId
+    'id': id, 'OrderItems': _OrderItems?.map((OrderItem? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "order.id");
   static final QueryField ORDERITEMS = QueryField(
     fieldName: "OrderItems",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (OrderItem).toString()));
-  static final QueryField USER = QueryField(
-    fieldName: "User",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (User).toString()));
-  static final QueryField TIME = QueryField(fieldName: "time");
-  static final QueryField ORDERUSERID = QueryField(fieldName: "orderUserId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Order";
     modelSchemaDefinition.pluralName = "Orders";
@@ -161,23 +139,18 @@ class Order extends Model {
       associatedKey: OrderItem.ORDERID
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-      key: Order.USER,
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
       isRequired: false,
-      ofModelName: (User).toString(),
-      associatedKey: User.ID
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Order.TIME,
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.timestamp)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Order.ORDERUSERID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }

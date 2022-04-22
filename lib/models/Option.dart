@@ -19,20 +19,20 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
-import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the ItemOptions type in your schema. */
+/** This is an auto generated class representing the Option type in your schema. */
 @immutable
-class ItemOptions extends Model {
-  static const classType = const _ItemOptionsModelType();
+class Option extends Model {
+  static const classType = const _OptionModelType();
   final String id;
   final String? _name;
   final String? _menuitemID;
-  final OptionType? _untitledfield;
   final String? _orderitemID;
+  final TemporalDateTime? _createdAt;
+  final TemporalDateTime? _updatedAt;
 
   @override
   getInstanceType() => classType;
@@ -50,40 +50,43 @@ class ItemOptions extends Model {
     try {
       return _menuitemID!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
-  }
-  
-  OptionType? get untitledfield {
-    return _untitledfield;
   }
   
   String get orderitemID {
     try {
       return _orderitemID!;
     } catch(e) {
-      throw new DataStoreException(
-          DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
+      throw new AmplifyCodeGenModelException(
+          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
           recoverySuggestion:
-            DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
+            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
           underlyingException: e.toString()
           );
     }
   }
   
-  const ItemOptions._internal({required this.id, name, required menuitemID, untitledfield, required orderitemID}): _name = name, _menuitemID = menuitemID, _untitledfield = untitledfield, _orderitemID = orderitemID;
+  TemporalDateTime? get createdAt {
+    return _createdAt;
+  }
   
-  factory ItemOptions({String? id, String? name, required String menuitemID, OptionType? untitledfield, required String orderitemID}) {
-    return ItemOptions._internal(
+  TemporalDateTime? get updatedAt {
+    return _updatedAt;
+  }
+  
+  const Option._internal({required this.id, name, required menuitemID, required orderitemID, createdAt, updatedAt}): _name = name, _menuitemID = menuitemID, _orderitemID = orderitemID, _createdAt = createdAt, _updatedAt = updatedAt;
+  
+  factory Option({String? id, String? name, required String menuitemID, required String orderitemID}) {
+    return Option._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       menuitemID: menuitemID,
-      untitledfield: untitledfield,
       orderitemID: orderitemID);
   }
   
@@ -94,11 +97,10 @@ class ItemOptions extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ItemOptions &&
+    return other is Option &&
       id == other.id &&
       _name == other._name &&
       _menuitemID == other._menuitemID &&
-      _untitledfield == other._untitledfield &&
       _orderitemID == other._orderitemID;
   }
   
@@ -109,45 +111,45 @@ class ItemOptions extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("ItemOptions {");
+    buffer.write("Option {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
     buffer.write("menuitemID=" + "$_menuitemID" + ", ");
-    buffer.write("untitledfield=" + (_untitledfield != null ? enumToString(_untitledfield)! : "null") + ", ");
-    buffer.write("orderitemID=" + "$_orderitemID");
+    buffer.write("orderitemID=" + "$_orderitemID" + ", ");
+    buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  ItemOptions copyWith({String? id, String? name, String? menuitemID, OptionType? untitledfield, String? orderitemID}) {
-    return ItemOptions(
+  Option copyWith({String? id, String? name, String? menuitemID, String? orderitemID}) {
+    return Option._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       menuitemID: menuitemID ?? this.menuitemID,
-      untitledfield: untitledfield ?? this.untitledfield,
       orderitemID: orderitemID ?? this.orderitemID);
   }
   
-  ItemOptions.fromJson(Map<String, dynamic> json)  
+  Option.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
       _menuitemID = json['menuitemID'],
-      _untitledfield = enumFromString<OptionType>(json['untitledfield'], OptionType.values),
-      _orderitemID = json['orderitemID'];
+      _orderitemID = json['orderitemID'],
+      _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'menuitemID': _menuitemID, 'untitledfield': enumToString(_untitledfield), 'orderitemID': _orderitemID
+    'id': id, 'name': _name, 'menuitemID': _menuitemID, 'orderitemID': _orderitemID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
-  static final QueryField ID = QueryField(fieldName: "itemOptions.id");
+  static final QueryField ID = QueryField(fieldName: "option.id");
   static final QueryField NAME = QueryField(fieldName: "name");
   static final QueryField MENUITEMID = QueryField(fieldName: "menuitemID");
-  static final QueryField UNTITLEDFIELD = QueryField(fieldName: "untitledfield");
   static final QueryField ORDERITEMID = QueryField(fieldName: "orderitemID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "ItemOptions";
-    modelSchemaDefinition.pluralName = "ItemOptions";
+    modelSchemaDefinition.name = "Option";
+    modelSchemaDefinition.pluralName = "Options";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -163,36 +165,44 @@ class ItemOptions extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ItemOptions.NAME,
+      key: Option.NAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ItemOptions.MENUITEMID,
+      key: Option.MENUITEMID,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ItemOptions.UNTITLEDFIELD,
+      key: Option.ORDERITEMID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'createdAt',
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: ItemOptions.ORDERITEMID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
+      fieldName: 'updatedAt',
+      isRequired: false,
+      isReadOnly: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
     ));
   });
 }
 
-class _ItemOptionsModelType extends ModelType<ItemOptions> {
-  const _ItemOptionsModelType();
+class _OptionModelType extends ModelType<Option> {
+  const _OptionModelType();
   
   @override
-  ItemOptions fromJson(Map<String, dynamic> jsonData) {
-    return ItemOptions.fromJson(jsonData);
+  Option fromJson(Map<String, dynamic> jsonData) {
+    return Option.fromJson(jsonData);
   }
 }
