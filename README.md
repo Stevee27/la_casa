@@ -1,6 +1,6 @@
 # la_casa
 
-A new Flutter project.
+A new Flutter project using Amplify
 
 ## Getting Started
 
