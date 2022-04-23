@@ -19,9 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -32,7 +30,6 @@ class OrderItem extends Model {
   final String id;
   final int? _quantity;
   final String? _orderID;
-  final List<Option>? _Options;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -61,10 +58,6 @@ class OrderItem extends Model {
     }
   }
   
-  List<Option>? get Options {
-    return _Options;
-  }
-  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -73,14 +66,13 @@ class OrderItem extends Model {
     return _updatedAt;
   }
   
-  const OrderItem._internal({required this.id, quantity, required orderID, Options, createdAt, updatedAt}): _quantity = quantity, _orderID = orderID, _Options = Options, _createdAt = createdAt, _updatedAt = updatedAt;
+  const OrderItem._internal({required this.id, quantity, required orderID, createdAt, updatedAt}): _quantity = quantity, _orderID = orderID, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory OrderItem({String? id, int? quantity, required String orderID, List<Option>? Options}) {
+  factory OrderItem({String? id, int? quantity, required String orderID}) {
     return OrderItem._internal(
       id: id == null ? UUID.getUUID() : id,
       quantity: quantity,
-      orderID: orderID,
-      Options: Options != null ? List<Option>.unmodifiable(Options) : Options);
+      orderID: orderID);
   }
   
   bool equals(Object other) {
@@ -93,8 +85,7 @@ class OrderItem extends Model {
     return other is OrderItem &&
       id == other.id &&
       _quantity == other._quantity &&
-      _orderID == other._orderID &&
-      DeepCollectionEquality().equals(_Options, other._Options);
+      _orderID == other._orderID;
   }
   
   @override
@@ -115,37 +106,27 @@ class OrderItem extends Model {
     return buffer.toString();
   }
   
-  OrderItem copyWith({String? id, int? quantity, String? orderID, List<Option>? Options}) {
+  OrderItem copyWith({String? id, int? quantity, String? orderID}) {
     return OrderItem._internal(
       id: id ?? this.id,
       quantity: quantity ?? this.quantity,
-      orderID: orderID ?? this.orderID,
-      Options: Options ?? this.Options);
+      orderID: orderID ?? this.orderID);
   }
   
   OrderItem.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _quantity = (json['quantity'] as num?)?.toInt(),
       _orderID = json['orderID'],
-      _Options = json['Options'] is List
-        ? (json['Options'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => Option.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'quantity': _quantity, 'orderID': _orderID, 'Options': _Options?.map((Option? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'quantity': _quantity, 'orderID': _orderID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "orderItem.id");
   static final QueryField QUANTITY = QueryField(fieldName: "quantity");
   static final QueryField ORDERID = QueryField(fieldName: "orderID");
-  static final QueryField OPTIONS = QueryField(
-    fieldName: "Options",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (Option).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "OrderItem";
     modelSchemaDefinition.pluralName = "OrderItems";
@@ -173,13 +154,6 @@ class OrderItem extends Model {
       key: OrderItem.ORDERID,
       isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: OrderItem.OPTIONS,
-      isRequired: false,
-      ofModelName: (Option).toString(),
-      associatedKey: Option.ORDERITEMID
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

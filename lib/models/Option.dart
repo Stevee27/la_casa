@@ -29,8 +29,6 @@ class Option extends Model {
   static const classType = const _OptionModelType();
   final String id;
   final String? _name;
-  final String? _menuitemID;
-  final String? _orderitemID;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -46,32 +44,6 @@ class Option extends Model {
     return _name;
   }
   
-  String get menuitemID {
-    try {
-      return _menuitemID!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
-  String get orderitemID {
-    try {
-      return _orderitemID!;
-    } catch(e) {
-      throw new AmplifyCodeGenModelException(
-          AmplifyExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage,
-          recoverySuggestion:
-            AmplifyExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion,
-          underlyingException: e.toString()
-          );
-    }
-  }
-  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -80,14 +52,12 @@ class Option extends Model {
     return _updatedAt;
   }
   
-  const Option._internal({required this.id, name, required menuitemID, required orderitemID, createdAt, updatedAt}): _name = name, _menuitemID = menuitemID, _orderitemID = orderitemID, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Option._internal({required this.id, name, createdAt, updatedAt}): _name = name, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Option({String? id, String? name, required String menuitemID, required String orderitemID}) {
+  factory Option({String? id, String? name}) {
     return Option._internal(
       id: id == null ? UUID.getUUID() : id,
-      name: name,
-      menuitemID: menuitemID,
-      orderitemID: orderitemID);
+      name: name);
   }
   
   bool equals(Object other) {
@@ -99,9 +69,7 @@ class Option extends Model {
     if (identical(other, this)) return true;
     return other is Option &&
       id == other.id &&
-      _name == other._name &&
-      _menuitemID == other._menuitemID &&
-      _orderitemID == other._orderitemID;
+      _name == other._name;
   }
   
   @override
@@ -114,8 +82,6 @@ class Option extends Model {
     buffer.write("Option {");
     buffer.write("id=" + "$id" + ", ");
     buffer.write("name=" + "$_name" + ", ");
-    buffer.write("menuitemID=" + "$_menuitemID" + ", ");
-    buffer.write("orderitemID=" + "$_orderitemID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -123,30 +89,24 @@ class Option extends Model {
     return buffer.toString();
   }
   
-  Option copyWith({String? id, String? name, String? menuitemID, String? orderitemID}) {
+  Option copyWith({String? id, String? name}) {
     return Option._internal(
       id: id ?? this.id,
-      name: name ?? this.name,
-      menuitemID: menuitemID ?? this.menuitemID,
-      orderitemID: orderitemID ?? this.orderitemID);
+      name: name ?? this.name);
   }
   
   Option.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
-      _menuitemID = json['menuitemID'],
-      _orderitemID = json['orderitemID'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'menuitemID': _menuitemID, 'orderitemID': _orderitemID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "option.id");
   static final QueryField NAME = QueryField(fieldName: "name");
-  static final QueryField MENUITEMID = QueryField(fieldName: "menuitemID");
-  static final QueryField ORDERITEMID = QueryField(fieldName: "orderitemID");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Option";
     modelSchemaDefinition.pluralName = "Options";
@@ -167,18 +127,6 @@ class Option extends Model {
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
       key: Option.NAME,
       isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Option.MENUITEMID,
-      isRequired: true,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Option.ORDERITEMID,
-      isRequired: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     

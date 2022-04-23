@@ -1,7 +1,13 @@
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/home/home.dart';
+import 'package:la_casa/loading_view.dart';
 
+import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
+import 'models/ModelProvider.dart';
 
 Future main() async {
   // await dotenv.load(fileName: "assets/.env");
@@ -18,13 +24,33 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool _amplifyConfigured = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _configureAmplify();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'La Casa Del Pane',
         theme: ThemeData(primarySwatch: Colors.cyan),
-        home: const Center(
-          child: Text("Hello World"),
-        ));
+        home: _amplifyConfigured ? const HomePage() : const LoadingView());
+  }
+
+  void _configureAmplify() async {
+    await Amplify.addPlugin(AmplifyDataStore(modelProvider: ModelProvider.instance));
+
+    // Once Plugins are added, configure Amplify
+    try {
+      await Amplify.configure(amplifyconfig);
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 }
