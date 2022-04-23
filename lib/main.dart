@@ -2,13 +2,16 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/app_navigator.dart';
 import 'package:la_casa/casa_error_widget.dart';
-import 'package:la_casa/home/home.dart';
+import 'package:la_casa/home/home_repository.dart';
 import 'package:la_casa/loading_view.dart';
+import 'package:la_casa/nav/nav_cubit.dart';
 
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
 import 'home/bloc/store_hours_bloc.dart';
+import 'menu/menu_repository.dart';
 import 'models/ModelProvider.dart';
 
 Future main() async {
@@ -39,10 +42,19 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'La Casa Del Pane',
         theme: ThemeData(primarySwatch: Colors.cyan),
-        home: BlocProvider(
-            create: (context) => StoreHoursCubit()..getStoreHours(),
-            // create: (context) => StoreHoursCubit()..creatStoreHours(intialStoreHoursArray),
-            child: _amplifyConfigured ? const HomePage() : const LoadingView()));
+        home: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(create: (BuildContext context) => HomeRepository()),
+            RepositoryProvider(create: (BuildContext context) => MenuRepository()),
+          ],
+          child: MultiBlocProvider(
+              providers: [
+                BlocProvider(create: (context) => NavCubit()),
+                BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
+              ],
+              // create: (context) => StoreHoursCubit()..creatStoreHours(intialStoreHoursArray),
+              child: _amplifyConfigured ? AppNavigator() : const LoadingView()),
+        ));
   }
 
   void _configureAmplify() async {
