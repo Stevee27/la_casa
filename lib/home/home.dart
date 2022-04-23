@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
         body: Center(
-      child: Text('I am home'),
+      child: Text('I am almost home'),
     ));
   }
 }
