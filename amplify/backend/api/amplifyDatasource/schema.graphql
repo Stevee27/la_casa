@@ -7,11 +7,13 @@ type OrderItem @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int
   orderID: ID! @index(name: "byOrder")
+  menuItem: MenuItem @hasOne
 }
 
 type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
   OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
+  name: String
 }
 
 type StoreHours @model @auth(rules: [{allow: public}]) {
@@ -37,5 +39,5 @@ type MenuItem @model @auth(rules: [{allow: public}]) {
   smallPrice: String
   price: String
   menuType: MenuType
-  orderitems: OrderItem @hasOne
+  description: String
 }

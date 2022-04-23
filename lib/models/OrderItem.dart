@@ -19,6 +19,7 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
+import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
 import 'package:flutter/foundation.dart';
 
@@ -30,8 +31,10 @@ class OrderItem extends Model {
   final String id;
   final int? _quantity;
   final String? _orderID;
+  final MenuItem? _menuItem;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
+  final String? _orderItemMenuItemId;
 
   @override
   getInstanceType() => classType;
@@ -58,6 +61,10 @@ class OrderItem extends Model {
     }
   }
   
+  MenuItem? get menuItem {
+    return _menuItem;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -66,13 +73,19 @@ class OrderItem extends Model {
     return _updatedAt;
   }
   
-  const OrderItem._internal({required this.id, quantity, required orderID, createdAt, updatedAt}): _quantity = quantity, _orderID = orderID, _createdAt = createdAt, _updatedAt = updatedAt;
+  String? get orderItemMenuItemId {
+    return _orderItemMenuItemId;
+  }
   
-  factory OrderItem({String? id, int? quantity, required String orderID}) {
+  const OrderItem._internal({required this.id, quantity, required orderID, menuItem, createdAt, updatedAt, orderItemMenuItemId}): _quantity = quantity, _orderID = orderID, _menuItem = menuItem, _createdAt = createdAt, _updatedAt = updatedAt, _orderItemMenuItemId = orderItemMenuItemId;
+  
+  factory OrderItem({String? id, int? quantity, required String orderID, MenuItem? menuItem, String? orderItemMenuItemId}) {
     return OrderItem._internal(
       id: id == null ? UUID.getUUID() : id,
       quantity: quantity,
-      orderID: orderID);
+      orderID: orderID,
+      menuItem: menuItem,
+      orderItemMenuItemId: orderItemMenuItemId);
   }
   
   bool equals(Object other) {
@@ -85,7 +98,9 @@ class OrderItem extends Model {
     return other is OrderItem &&
       id == other.id &&
       _quantity == other._quantity &&
-      _orderID == other._orderID;
+      _orderID == other._orderID &&
+      _menuItem == other._menuItem &&
+      _orderItemMenuItemId == other._orderItemMenuItemId;
   }
   
   @override
@@ -100,33 +115,44 @@ class OrderItem extends Model {
     buffer.write("quantity=" + (_quantity != null ? _quantity!.toString() : "null") + ", ");
     buffer.write("orderID=" + "$_orderID" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
+    buffer.write("orderItemMenuItemId=" + "$_orderItemMenuItemId");
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  OrderItem copyWith({String? id, int? quantity, String? orderID}) {
+  OrderItem copyWith({String? id, int? quantity, String? orderID, MenuItem? menuItem, String? orderItemMenuItemId}) {
     return OrderItem._internal(
       id: id ?? this.id,
       quantity: quantity ?? this.quantity,
-      orderID: orderID ?? this.orderID);
+      orderID: orderID ?? this.orderID,
+      menuItem: menuItem ?? this.menuItem,
+      orderItemMenuItemId: orderItemMenuItemId ?? this.orderItemMenuItemId);
   }
   
   OrderItem.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _quantity = (json['quantity'] as num?)?.toInt(),
       _orderID = json['orderID'],
+      _menuItem = json['menuItem']?['serializedData'] != null
+        ? MenuItem.fromJson(new Map<String, dynamic>.from(json['menuItem']['serializedData']))
+        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
+      _orderItemMenuItemId = json['orderItemMenuItemId'];
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'quantity': _quantity, 'orderID': _orderID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'quantity': _quantity, 'orderID': _orderID, 'menuItem': _menuItem?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'orderItemMenuItemId': _orderItemMenuItemId
   };
 
   static final QueryField ID = QueryField(fieldName: "orderItem.id");
   static final QueryField QUANTITY = QueryField(fieldName: "quantity");
   static final QueryField ORDERID = QueryField(fieldName: "orderID");
+  static final QueryField MENUITEM = QueryField(
+    fieldName: "menuItem",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (MenuItem).toString()));
+  static final QueryField ORDERITEMMENUITEMID = QueryField(fieldName: "orderItemMenuItemId");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "OrderItem";
     modelSchemaDefinition.pluralName = "OrderItems";
@@ -156,6 +182,13 @@ class OrderItem extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
+      key: OrderItem.MENUITEM,
+      isRequired: false,
+      ofModelName: (MenuItem).toString(),
+      associatedKey: MenuItem.ID
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
       fieldName: 'createdAt',
       isRequired: false,
@@ -168,6 +201,12 @@ class OrderItem extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: OrderItem.ORDERITEMMENUITEMID,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
   });
 }

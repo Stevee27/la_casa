@@ -20,32 +20,30 @@ class HomeLayout extends StatelessWidget {
           backgroundColor: Colors.white70,
         ),
         body: SizedBox.expand(
-            child: Container(
-                // color: Colors.red[50],
-                child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(mainAxisSize: MainAxisSize.max, children: [
-                      Image.asset('assets/images/curbview.jpg'),
-                      const Spacer(flex: 3),
-                      const Text(
-                        'Authentic Italian bakery',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                      ),
-                      const Text(
-                        '7110 Gulf Blvd, St.Pete Beach',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(flex: 2),
-                      const Text(
-                        'Stop in at for fresh bread baked daily from homemade dough, '
-                        'classic Italian style pizzas, salads, pastries, and the best coffee on St. Pete Beach.',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
-                      ),
-                      // const WeeklyHoursWidget(),
-                      const Spacer(),
-                      // HomeButtons()
-                      Text('Buttons here')
-                    ])))));
+            child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(mainAxisSize: MainAxisSize.max, children: [
+                  Image.asset('assets/images/curbview.jpg'),
+                  const Spacer(flex: 3),
+                  const Text(
+                    'Authentic Italian bakery',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                  const Text(
+                    '7110 Gulf Blvd, St.Pete Beach',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                  ),
+                  const Spacer(flex: 2),
+                  const Text(
+                    'Stop in at for fresh bread baked daily from homemade dough, '
+                    'classic Italian style pizzas, salads, pastries, and the best coffee on St. Pete Beach.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400),
+                  ),
+                  // const WeeklyHoursWidget(),
+                  const Spacer(),
+                  // HomeButtons()
+                  const Text('Buttons here')
+                ]))));
   }
 }

@@ -31,6 +31,7 @@ class Order extends Model {
   static const classType = const _OrderModelType();
   final String id;
   final List<OrderItem>? _OrderItems;
+  final String? _name;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -46,6 +47,10 @@ class Order extends Model {
     return _OrderItems;
   }
   
+  String? get name {
+    return _name;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -54,12 +59,13 @@ class Order extends Model {
     return _updatedAt;
   }
   
-  const Order._internal({required this.id, OrderItems, createdAt, updatedAt}): _OrderItems = OrderItems, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Order._internal({required this.id, OrderItems, name, createdAt, updatedAt}): _OrderItems = OrderItems, _name = name, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Order({String? id, List<OrderItem>? OrderItems}) {
+  factory Order({String? id, List<OrderItem>? OrderItems, String? name}) {
     return Order._internal(
       id: id == null ? UUID.getUUID() : id,
-      OrderItems: OrderItems != null ? List<OrderItem>.unmodifiable(OrderItems) : OrderItems);
+      OrderItems: OrderItems != null ? List<OrderItem>.unmodifiable(OrderItems) : OrderItems,
+      name: name);
   }
   
   bool equals(Object other) {
@@ -71,7 +77,8 @@ class Order extends Model {
     if (identical(other, this)) return true;
     return other is Order &&
       id == other.id &&
-      DeepCollectionEquality().equals(_OrderItems, other._OrderItems);
+      DeepCollectionEquality().equals(_OrderItems, other._OrderItems) &&
+      _name == other._name;
   }
   
   @override
@@ -83,6 +90,7 @@ class Order extends Model {
     
     buffer.write("Order {");
     buffer.write("id=" + "$id" + ", ");
+    buffer.write("name=" + "$_name" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -90,10 +98,11 @@ class Order extends Model {
     return buffer.toString();
   }
   
-  Order copyWith({String? id, List<OrderItem>? OrderItems}) {
+  Order copyWith({String? id, List<OrderItem>? OrderItems, String? name}) {
     return Order._internal(
       id: id ?? this.id,
-      OrderItems: OrderItems ?? this.OrderItems);
+      OrderItems: OrderItems ?? this.OrderItems,
+      name: name ?? this.name);
   }
   
   Order.fromJson(Map<String, dynamic> json)  
@@ -104,17 +113,19 @@ class Order extends Model {
           .map((e) => OrderItem.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
           .toList()
         : null,
+      _name = json['name'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'OrderItems': _OrderItems?.map((OrderItem? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'OrderItems': _OrderItems?.map((OrderItem? e) => e?.toJson()).toList(), 'name': _name, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "order.id");
   static final QueryField ORDERITEMS = QueryField(
     fieldName: "OrderItems",
     fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (OrderItem).toString()));
+  static final QueryField NAME = QueryField(fieldName: "name");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Order";
     modelSchemaDefinition.pluralName = "Orders";
@@ -137,6 +148,12 @@ class Order extends Model {
       isRequired: false,
       ofModelName: (OrderItem).toString(),
       associatedKey: OrderItem.ORDERID
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: Order.NAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

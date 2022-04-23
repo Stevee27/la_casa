@@ -33,10 +33,9 @@ class MenuItem extends Model {
   final String? _smallPrice;
   final String? _price;
   final MenuType? _menuType;
-  final OrderItem? _orderitems;
+  final String? _description;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
-  final String? _menuItemOrderitemsId;
 
   @override
   getInstanceType() => classType;
@@ -62,8 +61,8 @@ class MenuItem extends Model {
     return _menuType;
   }
   
-  OrderItem? get orderitems {
-    return _orderitems;
+  String? get description {
+    return _description;
   }
   
   TemporalDateTime? get createdAt {
@@ -74,21 +73,16 @@ class MenuItem extends Model {
     return _updatedAt;
   }
   
-  String? get menuItemOrderitemsId {
-    return _menuItemOrderitemsId;
-  }
+  const MenuItem._internal({required this.id, name, smallPrice, price, menuType, description, createdAt, updatedAt}): _name = name, _smallPrice = smallPrice, _price = price, _menuType = menuType, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  const MenuItem._internal({required this.id, name, smallPrice, price, menuType, orderitems, createdAt, updatedAt, menuItemOrderitemsId}): _name = name, _smallPrice = smallPrice, _price = price, _menuType = menuType, _orderitems = orderitems, _createdAt = createdAt, _updatedAt = updatedAt, _menuItemOrderitemsId = menuItemOrderitemsId;
-  
-  factory MenuItem({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, OrderItem? orderitems, String? menuItemOrderitemsId}) {
+  factory MenuItem({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description}) {
     return MenuItem._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       smallPrice: smallPrice,
       price: price,
       menuType: menuType,
-      orderitems: orderitems,
-      menuItemOrderitemsId: menuItemOrderitemsId);
+      description: description);
   }
   
   bool equals(Object other) {
@@ -104,8 +98,7 @@ class MenuItem extends Model {
       _smallPrice == other._smallPrice &&
       _price == other._price &&
       _menuType == other._menuType &&
-      _orderitems == other._orderitems &&
-      _menuItemOrderitemsId == other._menuItemOrderitemsId;
+      _description == other._description;
   }
   
   @override
@@ -121,23 +114,22 @@ class MenuItem extends Model {
     buffer.write("smallPrice=" + "$_smallPrice" + ", ");
     buffer.write("price=" + "$_price" + ", ");
     buffer.write("menuType=" + (_menuType != null ? enumToString(_menuType)! : "null") + ", ");
+    buffer.write("description=" + "$_description" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
-    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null") + ", ");
-    buffer.write("menuItemOrderitemsId=" + "$_menuItemOrderitemsId");
+    buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
     
     return buffer.toString();
   }
   
-  MenuItem copyWith({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, OrderItem? orderitems, String? menuItemOrderitemsId}) {
+  MenuItem copyWith({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description}) {
     return MenuItem._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       smallPrice: smallPrice ?? this.smallPrice,
       price: price ?? this.price,
       menuType: menuType ?? this.menuType,
-      orderitems: orderitems ?? this.orderitems,
-      menuItemOrderitemsId: menuItemOrderitemsId ?? this.menuItemOrderitemsId);
+      description: description ?? this.description);
   }
   
   MenuItem.fromJson(Map<String, dynamic> json)  
@@ -146,15 +138,12 @@ class MenuItem extends Model {
       _smallPrice = json['smallPrice'],
       _price = json['price'],
       _menuType = enumFromString<MenuType>(json['menuType'], MenuType.values),
-      _orderitems = json['orderitems']?['serializedData'] != null
-        ? OrderItem.fromJson(new Map<String, dynamic>.from(json['orderitems']['serializedData']))
-        : null,
+      _description = json['description'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
-      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null,
-      _menuItemOrderitemsId = json['menuItemOrderitemsId'];
+      _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'smallPrice': _smallPrice, 'price': _price, 'menuType': enumToString(_menuType), 'orderitems': _orderitems?.toJson(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format(), 'menuItemOrderitemsId': _menuItemOrderitemsId
+    'id': id, 'name': _name, 'smallPrice': _smallPrice, 'price': _price, 'menuType': enumToString(_menuType), 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "menuItem.id");
@@ -162,10 +151,7 @@ class MenuItem extends Model {
   static final QueryField SMALLPRICE = QueryField(fieldName: "smallPrice");
   static final QueryField PRICE = QueryField(fieldName: "price");
   static final QueryField MENUTYPE = QueryField(fieldName: "menuType");
-  static final QueryField ORDERITEMS = QueryField(
-    fieldName: "orderitems",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (OrderItem).toString()));
-  static final QueryField MENUITEMORDERITEMSID = QueryField(fieldName: "menuItemOrderitemsId");
+  static final QueryField DESCRIPTION = QueryField(fieldName: "description");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "MenuItem";
     modelSchemaDefinition.pluralName = "MenuItems";
@@ -207,11 +193,10 @@ class MenuItem extends Model {
       ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
     ));
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasOne(
-      key: MenuItem.ORDERITEMS,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: MenuItem.DESCRIPTION,
       isRequired: false,
-      ofModelName: (OrderItem).toString(),
-      associatedKey: OrderItem.ID
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -226,12 +211,6 @@ class MenuItem extends Model {
       isRequired: false,
       isReadOnly: true,
       ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
-    ));
-    
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: MenuItem.MENUITEMORDERITEMSID,
-      isRequired: false,
-      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
   });
 }

@@ -35,7 +35,7 @@ export 'StoreHours.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "44af1c178de9984aeb0c1965f6fbf095";
+  String version = "8f3516cfb2707ed52dea379de607bf5f";
   @override
   List<ModelSchema> modelSchemas = [MenuItem.schema, Option.schema, Order.schema, OrderItem.schema, StoreHours.schema];
   static final ModelProvider _instance = ModelProvider();
