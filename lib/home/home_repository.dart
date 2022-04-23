@@ -58,14 +58,14 @@ class HomeRepository {
   }
 
   Future<void> creatStoreHours(List<StoreHours> storeHours) async {
-    // try {
-    //   for (StoreHours hours in storeHours) {
-    //     await Amplify.DataStore.save(hours);
-    //   }
-    // } catch (e) {
-    //   rethrow;
-    // }
-    await Future.delayed(const Duration(milliseconds: 100));
+    try {
+      for (StoreHours hours in storeHours) {
+        await Amplify.DataStore.save(hours);
+      }
+    } catch (e) {
+      rethrow;
+    }
+    // await Future.delayed(const Duration(milliseconds: 100));
   }
 
   Future<void> updateStoreHoursComplete(StoreHours storeHours) async {
