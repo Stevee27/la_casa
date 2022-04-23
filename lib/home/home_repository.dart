@@ -65,7 +65,7 @@ class HomeRepository {
     // } catch (e) {
     //   rethrow;
     // }
-    return;
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 
   Future<void> updateStoreHoursComplete(StoreHours storeHours) async {

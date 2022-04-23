@@ -11,13 +11,12 @@ class HomeLayout extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          // flexibleSpace: Container(
-          //     decoration: const BoxDecoration(
-          //         image: DecorationImage(
-          //             alignment: Alignment.bottomCenter,
-          //             image: AssetImage('images/name.jpg'),
-          //             fit: BoxFit.fitWidth)
-          //             )),
+          flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      alignment: Alignment.bottomCenter,
+                      image: AssetImage('assets/images/name.jpg'),
+                      fit: BoxFit.fitWidth))),
           backgroundColor: Colors.white70,
         ),
         body: SizedBox.expand(
@@ -26,6 +25,8 @@ class HomeLayout extends StatelessWidget {
                 child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(mainAxisSize: MainAxisSize.max, children: [
+                      Image.asset('assets/images/curbview.jpg'),
+                      const Spacer(flex: 3),
                       const Text(
                         'Authentic Italian bakery',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),

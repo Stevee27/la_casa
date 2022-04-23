@@ -8,7 +8,6 @@ import 'package:la_casa/loading_view.dart';
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
 import 'home/bloc/store_hours_bloc.dart';
-import 'home/home_repository.dart';
 import 'models/ModelProvider.dart';
 
 Future main() async {

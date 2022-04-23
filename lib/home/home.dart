@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/casa_error_widget.dart';
 import 'package:la_casa/home/bloc/store_hours_bloc.dart';
 import 'package:la_casa/home/home_layout.dart';
 import 'package:la_casa/home/home_repository.dart';
@@ -21,16 +22,10 @@ class HomePage extends StatelessWidget {
           return HomeLayout(storeHours: state.storeHours);
         }
       } else if (state is StoreHoursFailure) {
-        return _exceptionView(state.exception);
+        return CasaErrorWidget(exception: state.exception);
       } else {
-        return LoadingView();
+        return const LoadingView();
       }
     });
-  }
-
-  Widget _exceptionView(Exception e) {
-    return Center(
-      child: Text(e.toString()),
-    );
   }
 }

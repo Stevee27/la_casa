@@ -34,7 +34,6 @@ class StoreHoursCubit extends Cubit<StoreHoursState> {
   }
 
   void creatStoreHours(List<StoreHours> storeHours) async {
-    print("hello");
     await _homeRepository.creatStoreHours(storeHours);
   }
 
