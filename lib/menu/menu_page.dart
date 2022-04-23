@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:la_casa/menu/menu_layout.dart';
 
 class MenuPage extends StatelessWidget {
   static const valueKey = ValueKey<String>("MenuPage");
@@ -6,8 +7,6 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('MenuPage'),
-    );
+    return MenuLayout();
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../home/home_page.dart';
 import '../menu/menu_item_page.dart';
 import '../menu/menu_page.dart';
+import '../models/MenuItem.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
@@ -21,14 +22,14 @@ class NavCubit extends Cubit<NavState> {
   }
 
   showMenu() {
-    destPages.remove(MenuItemPage.valueKey);
+    destPages.remove(MenuPage.valueKey);
     destPages.add(MenuPage.valueKey);
     // emit(const NavState(MenuPage.valueKey));
-    emit(state.copyWith(dest: MenuItemPage.valueKey));
+    emit(state.copyWith(dest: MenuPage.valueKey));
   }
 
-  // showItem(List<MenuItemModel> menuItems, int itemID) {
-  //   destPages.add(ItemPage.valueKey);
-  //   emit(state.copyWith(dest: ItemPage.valueKey, menuItems: menuItems, itemID: itemID));
-  // }
+  showItem(List<MenuItem> menuItems, int itemID) {
+    destPages.add(MenuItemPage.valueKey);
+    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems));
+  }
 }
