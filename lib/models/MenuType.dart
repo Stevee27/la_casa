@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 /*
 * Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
@@ -19,11 +21,4 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
-enum MenuType {
-  BREAKFAST,
-  BEVERAGE,
-  SANDWICH,
-  PASTRY,
-  PIZZA,
-  SALAD
-}
+enum MenuType { BREAKFAST, BEVERAGE, SANDWICH, PASTRY, PIZZA, SALAD }

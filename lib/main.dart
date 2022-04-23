@@ -2,6 +2,7 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/casa_error_widget.dart';
 import 'package:la_casa/home/home.dart';
 import 'package:la_casa/loading_view.dart';
 
@@ -54,7 +55,9 @@ class _MyAppState extends State<MyApp> {
         _amplifyConfigured = true;
       });
     } catch (e) {
-      print(e);
+      CasaErrorWidget(
+        exception: e as Exception,
+      );
     }
   }
 }

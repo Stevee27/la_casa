@@ -13,6 +13,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(const AssetImage("assets/images/curbview.jpg"), context);
+    precacheImage(const AssetImage("assets/images/name.jpg"), context);
     return BlocBuilder<StoreHoursCubit, StoreHoursState>(builder: (context, state) {
       if (state is StoreHoursSuccess) {
         if (state.storeHours.isEmpty) {
