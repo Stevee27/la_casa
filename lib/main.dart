@@ -7,6 +7,8 @@ import 'package:la_casa/loading_view.dart';
 
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
+import 'home/bloc/store_hours_bloc.dart';
+import 'home/home_repository.dart';
 import 'models/ModelProvider.dart';
 
 Future main() async {
@@ -37,7 +39,10 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         title: 'La Casa Del Pane',
         theme: ThemeData(primarySwatch: Colors.cyan),
-        home: _amplifyConfigured ? const HomePage() : const LoadingView());
+        home: BlocProvider(
+            create: (context) => StoreHoursCubit()..getStoreHours(),
+            // create: (context) => StoreHoursCubit()..creatStoreHours(intialStoreHoursArray),
+            child: _amplifyConfigured ? const HomePage() : const LoadingView()));
   }
 
   void _configureAmplify() async {
