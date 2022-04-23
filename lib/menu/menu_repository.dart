@@ -22,7 +22,7 @@ class MenuRepository {
     }
   }
 
-  Future<void> updateMenuItems(MenuItem menuItem) async {
+  Future<void> updateMenuItem(MenuItem menuItem) async {
     try {
       await Amplify.DataStore.save(menuItem);
     } catch (e) {

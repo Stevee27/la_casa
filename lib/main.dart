@@ -11,6 +11,7 @@ import 'package:la_casa/nav/nav_cubit.dart';
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
 import 'home/bloc/store_hours_bloc.dart';
+import 'menu/bloc/menu_bloc.dart';
 import 'menu/menu_repository.dart';
 import 'models/ModelProvider.dart';
 
@@ -51,6 +52,7 @@ class _MyAppState extends State<MyApp> {
               providers: [
                 BlocProvider(create: (context) => NavCubit()),
                 BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
+                BlocProvider(create: (context) => MenuCubit()..getMenu()),
               ],
               // create: (context) => StoreHoursCubit()..creatStoreHours(intialStoreHoursArray),
               child: _amplifyConfigured ? AppNavigator() : const LoadingView()),

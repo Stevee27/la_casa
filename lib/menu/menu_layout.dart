@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:la_casa/models/MenuItem.dart';
 
 class MenuLayout extends StatelessWidget {
-  const MenuLayout({Key? key}) : super(key: key);
+  final List<MenuItem> menuItems;
+  const MenuLayout({Key? key, required this.menuItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

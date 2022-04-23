@@ -58,7 +58,7 @@ class HomeLayout extends StatelessWidget {
                   onPressed: () async {
                     BlocProvider.of<NavCubit>(context).showMenu();
                   },
-                  child: Text('Menu'),
+                  child: const Text('Menu'),
                 )
               ]),
             ));

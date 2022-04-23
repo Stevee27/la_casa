@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:la_casa/models/StoreHours.dart';
 
 class StoreHoursWidget extends StatelessWidget {
-  StoreHoursWidget({Key? key, required this.storeHours}) : super(key: key);
+  const StoreHoursWidget({Key? key, required this.storeHours}) : super(key: key);
 
   final List<StoreHours> storeHours;
 
