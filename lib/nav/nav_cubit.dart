@@ -28,7 +28,7 @@ class NavCubit extends Cubit<NavState> {
     emit(state.copyWith(dest: MenuPage.valueKey));
   }
 
-  showItem(List<MenuItem> menuItems, int itemID) {
+  showItem(List<MenuItem> menuItems, String itemID) {
     destPages.add(MenuItemPage.valueKey);
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems));
   }
