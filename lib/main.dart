@@ -68,6 +68,7 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _amplifyConfigured = true;
       });
+      // Amplify.DataStore.clear();
     } catch (e) {
       CasaErrorWidget(
         exception: e as Exception,
