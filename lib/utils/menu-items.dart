@@ -56,7 +56,7 @@ List<MenuItemModel> initialMenuModelArray = [
       35, 'La Originale', MenuType.PIZZA, 'Tomato Sauce, Mozzarella Cheese', '13.99', '16.99'),
   const MenuItemModel(
       36, 'Caprese', MenuType.PIZZA, 'Fresh Tomato, Mozzarella, Basil', '15.99', '19.99'),
-  const MenuItemModel(37, "L'Insalata di PIZZA", MenuType.PIZZA,
+  const MenuItemModel(37, "L'Insalata di Pizza", MenuType.PIZZA,
       'Mixed Lettuce, Artichoke, Tomato, Tuna', '15.99', '21.99'),
   const MenuItemModel(38, 'La Diavola', MenuType.PIZZA,
       'Tomato Sauce, Mozzarella Cheese, Pepperoni', '16.99', '22.99'),
@@ -67,7 +67,7 @@ List<MenuItemModel> initialMenuModelArray = [
   const MenuItemModel(
       41, 'Anna Special', MenuType.PIZZA, 'Mozzarella, Tomato, Ham', '16.99', '22.99'),
   const MenuItemModel(
-      42, 'PIZZA Alla Nutella', MenuType.PIZZA, 'Nutella topped with Powdered Sugar', '15.99', ''),
+      42, 'Pizza Alla Nutella', MenuType.PIZZA, 'Nutella topped with Powdered Sugar', '15.99', ''),
   const MenuItemModel(
       43,
       'Altamura',
@@ -77,7 +77,7 @@ List<MenuItemModel> initialMenuModelArray = [
       '23.99'),
   const MenuItemModel(
       44,
-      'Antipasto SALAD',
+      'Antipasto Salad',
       MenuType.SALAD,
       'Mixed Lettuce with Grilled Eggplant, Zucchini, Artichoke, Roasted Peppers, Sun Dried Tomatoes'
           ' and Mozzarella topped with Olive Oil and Balsamic Glaze',
@@ -93,14 +93,14 @@ List<MenuItemModel> initialMenuModelArray = [
       '15.99'),
   const MenuItemModel(
       46,
-      'Caprese SALAD',
+      'Caprese Salad',
       MenuType.SALAD,
       'Fresh Tomato and Mozzarella topped with Fresh Basil, Olive Oil, and Balsamic Glaze',
       '9.99',
       '13.99'),
   const MenuItemModel(
       47,
-      'Bresalo (Cured Beef) SALAD',
+      'Bresalo (Cured Beef) Salad',
       MenuType.SALAD,
       'Bresalo over Arugula topped with Shaved Parmigiano Cheese, Lemon, black Pepper and Olive Oil',
       '',

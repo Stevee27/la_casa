@@ -7,9 +7,9 @@ import '../nav/nav_cubit.dart';
 class CardMenu extends StatelessWidget {
   final String subtitle;
   final List<MenuItem> menuItems;
-  final bool noName;
+  final bool hasName;
 
-  const CardMenu({Key? key, required this.subtitle, required this.menuItems, this.noName = false})
+  const CardMenu({Key? key, required this.subtitle, required this.menuItems, this.hasName = true})
       : super(key: key);
 
   @override
@@ -41,7 +41,7 @@ class CardMenu extends StatelessWidget {
                                                 style:
                                                     const TextStyle(fontWeight: FontWeight.w700)),
                                           Text(menuItems[index].description!,
-                                              style: noName
+                                              style: !hasName
                                                   ? const TextStyle(fontWeight: FontWeight.w500)
                                                   : null)
                                         ])),
@@ -71,11 +71,8 @@ class CardMenu extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
             color: Colors.pink,
             child: Row(children: [
-              Text(
-                subtitle,
-                textAlign: TextAlign.left,
-                // style: const TextStyle(backgroundColor: Colors.red)
-              ),
+              Text(subtitle,
+                  textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.w500)),
               const Spacer(),
               const Text('Small  Large'),
             ])));

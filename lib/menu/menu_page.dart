@@ -15,9 +15,11 @@ class MenuPage extends StatelessWidget {
     return BlocBuilder<MenuCubit, MenuState>(builder: (context, state) {
       if (state is MenuSuccess) {
         if (state.menuItems.isEmpty) {
-          return Container();
+          return const LoadingView();
         } else {
-          return MenuLayout(menuItems: state.menuItems);
+          return MenuLayout(
+            menuItems: state.menuItems,
+          );
         }
       } else if (state is MenuFailure) {
         return CasaErrorWidget(exception: state.exception);

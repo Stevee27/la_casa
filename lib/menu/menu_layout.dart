@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/menu/bloc/menu_select_bloc.dart';
 import 'package:la_casa/menu/card_menu.dart';
+import 'package:la_casa/menu/menu_toggles.dart';
 import 'package:la_casa/models/MenuItem.dart';
 
 import '../models/MenuType.dart';
@@ -8,42 +10,14 @@ import '../nav/nav_cubit.dart';
 
 class MenuLayout extends StatelessWidget {
   final List<MenuItem> menuItems;
-  final MenuType typeSelected;
 
-  const MenuLayout({Key? key, required this.menuItems, this.typeSelected = MenuType.PIZZA})
-      : super(key: key);
+  const MenuLayout({Key? key, required this.menuItems}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    List<MenuItem> selectedMenuItems = menuItems.where((i) => i.menuType == typeSelected).toList();
-
-    bool noName;
-    switch (typeSelected) {
-      case MenuType.SANDWICH:
-      case MenuType.PASTRY:
-      case MenuType.BEVERAGE:
-        noName = true;
-        break;
-      default:
-        noName = false;
-    }
-
-    String subtitle = 'BREAKFAST';
-    if (typeSelected == MenuType.PASTRY) {
-      subtitle = 'PASTRIES';
-    } else if (typeSelected == MenuType.BEVERAGE) {
-      subtitle = 'BEVERAGES';
-    } else if (typeSelected == MenuType.SANDWICH) {
-      subtitle = 'SANDWICHES';
-    } else if (typeSelected == MenuType.PIZZA) {
-      subtitle = 'PIZZA';
-    } else if (typeSelected == MenuType.SALAD) {
-      subtitle = 'SALAD';
-    }
-
+  Widget build(context) {
     return Scaffold(
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
+          automaticallyImplyLeading: false,
           centerTitle: true,
           flexibleSpace: Container(
               decoration: const BoxDecoration(
@@ -53,26 +27,62 @@ class MenuLayout extends StatelessWidget {
                       fit: BoxFit.fitWidth))),
           backgroundColor: Colors.white70,
         ),
-        body: SizedBox.expand(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                CardMenu(
-                  subtitle: subtitle,
-                  menuItems: selectedMenuItems,
-                  noName: noName,
-                ),
-                TextButton(
-                  onPressed: () async {
-                    BlocProvider.of<NavCubit>(context).showHome();
-                  },
-                  child: const Text('Home'),
-                )
-              ],
-            ),
-          ),
+        body: BlocProvider(
+          create: (BuildContext context) => MenuSelectCubit(),
+          child: BlocBuilder<MenuSelectCubit, MenuSelectState>(builder: ((context, state) {
+            if (state is MenuSelectSuccess) {
+              List<MenuItem> selectedMenuItems =
+                  menuItems.where((i) => i.menuType == state.selected).toList();
+              return SizedBox.expand(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      child: Column(children: [
+                        const MenuToggles(),
+                        CardMenu(
+                          subtitle: _getSubtitle(state.selected),
+                          menuItems: selectedMenuItems,
+                          hasName: _hasName(state.selected),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            BlocProvider.of<NavCubit>(context).showHome();
+                          },
+                          child: const Text('Home'),
+                        )
+                      ])));
+            } else {
+              return Container();
+            }
+          })),
         ));
+  }
+
+  _getSubtitle(MenuType selected) {
+    switch (selected) {
+      case MenuType.BREAKFAST:
+        return 'BREAKFAST';
+      case MenuType.PASTRY:
+        return 'PASTRIES';
+      case MenuType.BEVERAGE:
+        return 'BEVERAGES';
+      case MenuType.SANDWICH:
+        return 'SANDWICH';
+      case MenuType.PIZZA:
+        return 'PIZZA';
+      case MenuType.SALAD:
+        return 'SALAD';
+    }
+  }
+
+  _hasName(MenuType selected) {
+    switch (selected) {
+      case MenuType.SANDWICH:
+      case MenuType.PASTRY:
+      case MenuType.BEVERAGE:
+        return false;
+      default:
+        return true;
+    }
   }
 
   Widget _menuFilter() {
