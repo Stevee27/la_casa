@@ -6,9 +6,11 @@ import 'package:la_casa/home/home_layout.dart';
 import 'package:la_casa/home/home_repository.dart';
 import 'package:la_casa/loading_view.dart';
 import 'package:la_casa/menu/menu_repository.dart';
+import 'package:la_casa/utils/initial_options.dart';
 import 'package:la_casa/utils/menu-items.dart';
 
 import '../models/MenuItem.dart';
+import '../models/Option.dart';
 import '../utils/menu-item-model.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,6 +29,7 @@ class HomePage extends StatelessWidget {
           return Container();
         } else {
           _createInitialMenuItemsFromOldModels(initialMenuModelArray);
+          _createInitialOptions();
           return HomeLayout(storeHours: state.storeHours);
         }
       } else if (state is StoreHoursFailure) {
@@ -50,6 +53,7 @@ class HomePage extends StatelessWidget {
     return menuitems;
   }
 
+  // ignore: unused_element
   _createInitialMenuItemsFromOldModels(List<MenuItemModel> list) async {
     final MenuRepository repo = MenuRepository();
     try {
@@ -58,6 +62,21 @@ class HomePage extends StatelessWidget {
         List<MenuItem> menuItems = _convertMenuItems(list);
         for (MenuItem menuItem in menuItems) {
           repo.createMenuItem(menuItem);
+        }
+      }
+    } catch (e) {
+      // ignore: use_rethrow_when_possible
+      throw e;
+    }
+  }
+
+  _createInitialOptions() async {
+    final MenuRepository repo = MenuRepository();
+    try {
+      List<Option> checkList = await repo.getOptions();
+      if (checkList.isEmpty) {
+        for (Option option in initialOptionsList) {
+          repo.createOption(option);
         }
       }
     } catch (e) {

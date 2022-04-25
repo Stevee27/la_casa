@@ -21,12 +21,14 @@
 
 import 'package:amplify_core/amplify_core.dart';
 import 'MenuItem.dart';
+import 'MenuItemOption.dart';
 import 'Option.dart';
 import 'Order.dart';
 import 'OrderItem.dart';
 import 'StoreHours.dart';
 
 export 'MenuItem.dart';
+export 'MenuItemOption.dart';
 export 'MenuType.dart';
 export 'Option.dart';
 export 'Order.dart';
@@ -35,9 +37,9 @@ export 'StoreHours.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "8f3516cfb2707ed52dea379de607bf5f";
+  String version = "76f02cf9c906451190abbe309e674e1c";
   @override
-  List<ModelSchema> modelSchemas = [MenuItem.schema, Option.schema, Order.schema, OrderItem.schema, StoreHours.schema];
+  List<ModelSchema> modelSchemas = [MenuItem.schema, MenuItemOption.schema, Option.schema, Order.schema, OrderItem.schema, StoreHours.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -48,6 +50,8 @@ class ModelProvider implements ModelProviderInterface {
     switch(modelName) {
       case "MenuItem":
         return MenuItem.classType;
+      case "MenuItemOption":
+        return MenuItemOption.classType;
       case "Option":
         return Option.classType;
       case "Order":

@@ -48,14 +48,11 @@ class _MyAppState extends State<MyApp> {
             RepositoryProvider(create: (BuildContext context) => HomeRepository()),
             RepositoryProvider(create: (BuildContext context) => MenuRepository()),
           ],
-          child: MultiBlocProvider(
-              providers: [
-                BlocProvider(create: (context) => NavCubit()),
-                BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
-                BlocProvider(create: (context) => MenuCubit()..getMenu()),
-              ],
-              // create: (context) => StoreHoursCubit()..creatStoreHours(intialStoreHoursArray),
-              child: _amplifyConfigured ? AppNavigator() : const LoadingView()),
+          child: MultiBlocProvider(providers: [
+            BlocProvider(create: (context) => NavCubit()),
+            BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
+            BlocProvider(create: (context) => MenuCubit()..getMenu()),
+          ], child: _amplifyConfigured ? AppNavigator() : const LoadingView()),
         ));
   }
 

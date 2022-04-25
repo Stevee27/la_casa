@@ -21,6 +21,7 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -34,6 +35,7 @@ class MenuItem extends Model {
   final String? _price;
   final MenuType? _menuType;
   final String? _description;
+  final List<MenuItemOption>? _Options;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -65,6 +67,10 @@ class MenuItem extends Model {
     return _description;
   }
   
+  List<MenuItemOption>? get Options {
+    return _Options;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -73,16 +79,17 @@ class MenuItem extends Model {
     return _updatedAt;
   }
   
-  const MenuItem._internal({required this.id, name, smallPrice, price, menuType, description, createdAt, updatedAt}): _name = name, _smallPrice = smallPrice, _price = price, _menuType = menuType, _description = description, _createdAt = createdAt, _updatedAt = updatedAt;
+  const MenuItem._internal({required this.id, name, smallPrice, price, menuType, description, Options, createdAt, updatedAt}): _name = name, _smallPrice = smallPrice, _price = price, _menuType = menuType, _description = description, _Options = Options, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory MenuItem({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description}) {
+  factory MenuItem({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description, List<MenuItemOption>? Options}) {
     return MenuItem._internal(
       id: id == null ? UUID.getUUID() : id,
       name: name,
       smallPrice: smallPrice,
       price: price,
       menuType: menuType,
-      description: description);
+      description: description,
+      Options: Options != null ? List<MenuItemOption>.unmodifiable(Options) : Options);
   }
   
   bool equals(Object other) {
@@ -98,7 +105,8 @@ class MenuItem extends Model {
       _smallPrice == other._smallPrice &&
       _price == other._price &&
       _menuType == other._menuType &&
-      _description == other._description;
+      _description == other._description &&
+      DeepCollectionEquality().equals(_Options, other._Options);
   }
   
   @override
@@ -122,14 +130,15 @@ class MenuItem extends Model {
     return buffer.toString();
   }
   
-  MenuItem copyWith({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description}) {
+  MenuItem copyWith({String? id, String? name, String? smallPrice, String? price, MenuType? menuType, String? description, List<MenuItemOption>? Options}) {
     return MenuItem._internal(
       id: id ?? this.id,
       name: name ?? this.name,
       smallPrice: smallPrice ?? this.smallPrice,
       price: price ?? this.price,
       menuType: menuType ?? this.menuType,
-      description: description ?? this.description);
+      description: description ?? this.description,
+      Options: Options ?? this.Options);
   }
   
   MenuItem.fromJson(Map<String, dynamic> json)  
@@ -139,11 +148,17 @@ class MenuItem extends Model {
       _price = json['price'],
       _menuType = enumFromString<MenuType>(json['menuType'], MenuType.values),
       _description = json['description'],
+      _Options = json['Options'] is List
+        ? (json['Options'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => MenuItemOption.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'smallPrice': _smallPrice, 'price': _price, 'menuType': enumToString(_menuType), 'description': _description, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'smallPrice': _smallPrice, 'price': _price, 'menuType': enumToString(_menuType), 'description': _description, 'Options': _Options?.map((MenuItemOption? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "menuItem.id");
@@ -152,6 +167,9 @@ class MenuItem extends Model {
   static final QueryField PRICE = QueryField(fieldName: "price");
   static final QueryField MENUTYPE = QueryField(fieldName: "menuType");
   static final QueryField DESCRIPTION = QueryField(fieldName: "description");
+  static final QueryField OPTIONS = QueryField(
+    fieldName: "Options",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (MenuItemOption).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "MenuItem";
     modelSchemaDefinition.pluralName = "MenuItems";
@@ -197,6 +215,13 @@ class MenuItem extends Model {
       key: MenuItem.DESCRIPTION,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+      key: MenuItem.OPTIONS,
+      isRequired: false,
+      ofModelName: (MenuItemOption).toString(),
+      associatedKey: MenuItemOption.MENUITEM
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

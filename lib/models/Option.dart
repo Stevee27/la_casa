@@ -19,7 +19,9 @@
 
 // ignore_for_file: public_member_api_docs, file_names, unnecessary_new, prefer_if_null_operators, prefer_const_constructors, slash_for_doc_comments, annotate_overrides, non_constant_identifier_names, unnecessary_string_interpolations, prefer_adjacent_string_concatenation, unnecessary_const, dead_code
 
+import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
@@ -29,6 +31,7 @@ class Option extends Model {
   static const classType = const _OptionModelType();
   final String id;
   final String? _name;
+  final List<MenuItemOption>? _menuitems;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -44,6 +47,10 @@ class Option extends Model {
     return _name;
   }
   
+  List<MenuItemOption>? get menuitems {
+    return _menuitems;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -52,12 +59,13 @@ class Option extends Model {
     return _updatedAt;
   }
   
-  const Option._internal({required this.id, name, createdAt, updatedAt}): _name = name, _createdAt = createdAt, _updatedAt = updatedAt;
+  const Option._internal({required this.id, name, menuitems, createdAt, updatedAt}): _name = name, _menuitems = menuitems, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Option({String? id, String? name}) {
+  factory Option({String? id, String? name, List<MenuItemOption>? menuitems}) {
     return Option._internal(
       id: id == null ? UUID.getUUID() : id,
-      name: name);
+      name: name,
+      menuitems: menuitems != null ? List<MenuItemOption>.unmodifiable(menuitems) : menuitems);
   }
   
   bool equals(Object other) {
@@ -69,7 +77,8 @@ class Option extends Model {
     if (identical(other, this)) return true;
     return other is Option &&
       id == other.id &&
-      _name == other._name;
+      _name == other._name &&
+      DeepCollectionEquality().equals(_menuitems, other._menuitems);
   }
   
   @override
@@ -89,24 +98,34 @@ class Option extends Model {
     return buffer.toString();
   }
   
-  Option copyWith({String? id, String? name}) {
+  Option copyWith({String? id, String? name, List<MenuItemOption>? menuitems}) {
     return Option._internal(
       id: id ?? this.id,
-      name: name ?? this.name);
+      name: name ?? this.name,
+      menuitems: menuitems ?? this.menuitems);
   }
   
   Option.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
       _name = json['name'],
+      _menuitems = json['menuitems'] is List
+        ? (json['menuitems'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => MenuItemOption.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'name': _name, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'name': _name, 'menuitems': _menuitems?.map((MenuItemOption? e) => e?.toJson()).toList(), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "option.id");
   static final QueryField NAME = QueryField(fieldName: "name");
+  static final QueryField MENUITEMS = QueryField(
+    fieldName: "menuitems",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (MenuItemOption).toString()));
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Option";
     modelSchemaDefinition.pluralName = "Options";
@@ -128,6 +147,13 @@ class Option extends Model {
       key: Option.NAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
+      key: Option.MENUITEMS,
+      isRequired: false,
+      ofModelName: (MenuItemOption).toString(),
+      associatedKey: MenuItemOption.OPTION
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
