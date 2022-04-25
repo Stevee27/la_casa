@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
       if (checkList.isEmpty) {
         List<MenuItem> menuItems = _convertMenuItems(list);
         for (MenuItem menuItem in menuItems) {
-          repo.createMenuItem(menuItem);
+          await repo.createMenuItem(menuItem);
         }
       }
     } catch (e) {
