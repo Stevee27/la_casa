@@ -22,14 +22,14 @@ class NavCubit extends Cubit<NavState> {
   }
 
   showMenu() {
-    destPages.remove(MenuPage.valueKey);
+    destPages.remove(MenuItemPage.valueKey);
     destPages.add(MenuPage.valueKey);
     // emit(const NavState(MenuPage.valueKey));
     emit(state.copyWith(dest: MenuPage.valueKey));
   }
 
-  showItem(List<MenuItem> menuItems, String itemID) {
+  showMenuItem(List<MenuItem> menuItems, String itemID) {
     destPages.add(MenuItemPage.valueKey);
-    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems));
+    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
   }
 }

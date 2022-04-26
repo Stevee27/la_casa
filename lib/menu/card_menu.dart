@@ -25,7 +25,7 @@ class CardMenu extends StatelessWidget {
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                       onTap: () => BlocProvider.of<NavCubit>(context)
-                          .showItem(menuItems, menuItems[index].id),
+                          .showMenuItem(menuItems, menuItems[index].id),
                       child: Card(
                           elevation: 4,
                           child: Padding(

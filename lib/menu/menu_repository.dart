@@ -1,6 +1,5 @@
 // ignore_for_file: use_rethrow_when_possible
 
-import 'package:amplify_datastore/types/observe_query_executor.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:la_casa/models/ModelProvider.dart';
 
@@ -8,7 +7,7 @@ class MenuRepository {
   Future<List<MenuItem>> getMenuItems() async {
     try {
       final menuItems = await Amplify.DataStore.query(MenuItem.classType);
-      // var res = await getOptionsForMenuItem(menuItems[1]);
+      var res = await getOptionsForMenuItem(menuItems[1]);
       return menuItems;
     } catch (e) {
       throw e;

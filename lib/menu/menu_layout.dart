@@ -84,8 +84,4 @@ class MenuLayout extends StatelessWidget {
         return true;
     }
   }
-
-  Widget _menuFilter() {
-    return const Text('Filter widget');
-  }
 }

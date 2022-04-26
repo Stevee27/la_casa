@@ -5,7 +5,6 @@ import 'menu-item-model.dart';
 
 List<MenuItemModel> initialMenuModelArray = [
   const MenuItemModel(1, '', MenuType.SANDWICH, 'Prosciutto, Fresh Mozzarella', '10.99', '11.99'),
-  const MenuItemModel(2, '', MenuType.SANDWICH, 'Ham, Salami, Provolone', '9.99', '10.99'),
   const MenuItemModel(3, '', MenuType.SANDWICH, 'Ham, Salami, Provolone', '9.99', '10.99'),
   const MenuItemModel(4, '', MenuType.SANDWICH, 'Mortadella, Salami, Provolone', '9.99', '10.99'),
   const MenuItemModel(5, '', MenuType.SANDWICH, 'Turkey, Provolone', '9.99', '10.99'),

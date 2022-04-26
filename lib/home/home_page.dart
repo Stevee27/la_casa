@@ -7,7 +7,6 @@ import 'package:la_casa/home/home_repository.dart';
 import 'package:la_casa/loading_view.dart';
 import 'package:la_casa/menu/menu_repository.dart';
 import 'package:la_casa/utils/initial_options.dart';
-import 'package:la_casa/utils/menu-items.dart';
 
 import '../models/MenuItem.dart';
 import '../models/Option.dart';
