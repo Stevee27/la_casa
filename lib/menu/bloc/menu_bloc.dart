@@ -12,6 +12,10 @@ class MenuSuccess extends MenuState {
   MenuSuccess(this.menuItems);
 }
 
+// class MenuItemSuccess extends MenuState {
+//   final
+// }
+
 class MenuFailure extends MenuState {
   final Exception exception;
 
