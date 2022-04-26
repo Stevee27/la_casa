@@ -13,7 +13,7 @@ class MenuToggles extends StatelessWidget {
     final List<bool> toggleSelection = [];
     for (var value in MenuType.values) {
       toggleNames.add(Padding(
-        padding: const EdgeInsets.only(right: 6),
+        padding: const EdgeInsets.only(right: 2),
         child:
             Text(value.name, style: const TextStyle(fontSize: 12.5, fontWeight: FontWeight.w500)),
       ));

@@ -7,7 +7,7 @@ class MenuRepository {
   Future<List<MenuItem>> getMenuItems() async {
     try {
       final menuItems = await Amplify.DataStore.query(MenuItem.classType);
-      var res = await getOptionsForMenuItem(menuItems[1]);
+      // var res = await getOptionsForMenuItem(menuItems[1]);
       return menuItems;
     } catch (e) {
       throw e;

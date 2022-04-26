@@ -6,25 +6,30 @@ import '../models/Option.dart';
 class MenuOptions extends StatelessWidget {
   final MenuItem menuItem;
   final List<Option> options;
+  bool val = false;
 
-  const MenuOptions({Key? key, required this.menuItem, required this.options}) : super(key: key);
+  MenuOptions({Key? key, required this.menuItem, required this.options}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // MenuRepository repo = MenuRepository();
-    // var options = repo.getOptionsForMenuItem(menuItem);
     if (options.isNotEmpty) {
-      List<Widget> optionNames = options.map((o) => Text(o.name!)).toList();
-      var isSelected = <bool>[];
-      for (int i = 0; i < optionNames.length; i++) {
-        isSelected.add(false);
-      }
-      return GridView.builder(
+      List<Widget> optionNames = options
+          .map(
+            (o) => CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 14)),
+                value: val,
+                onChanged: (value) => value = !val),
+          )
+          .toList();
+      // .map((o) => Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 1))
+      return ListView.builder(
+        padding: EdgeInsets.zero,
         itemCount: options.length,
         itemBuilder: (context, index) {
-          return optionNames[index];
+          return SizedBox(height: 25, child: optionNames[index]);
         },
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
       );
       // return Wrap(children: [...optionNames]);
     }

@@ -111,12 +111,14 @@ class MenuItemPage extends StatelessWidget {
                                         ),
                                       ])),
                                 ),
-                                const Spacer(),
                                 SizedBox(
                                   height: 200,
-                                  child: MenuOptions(
-                                    menuItem: menuItem,
-                                    options: state.options,
+                                  child: Card(
+                                    elevation: 4,
+                                    child: MenuOptions(
+                                      menuItem: menuItem,
+                                      options: state.options,
+                                    ),
                                   ),
                                 ),
                                 const Spacer(),
