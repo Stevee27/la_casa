@@ -29,7 +29,7 @@ class OptionsFailure extends OptionsState {
 }
 
 class OptionsCubit extends Cubit<OptionsState> {
-  OptionsCubit(OptionsLoading loadingState) : super(loadingState);
+  OptionsCubit() : super(OptionsLoading());
 
   final _optionsRepository = OptionsRepository();
 
