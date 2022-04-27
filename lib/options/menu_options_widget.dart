@@ -16,12 +16,26 @@ class MenuOptions extends StatelessWidget {
     if (options.isNotEmpty) {
       List<Widget> optionNames = options
           .map(
-            (o) => CheckboxListTile(
-                contentPadding: EdgeInsets.zero,
-                controlAffinity: ListTileControlAffinity.leading,
-                title: Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
-                value: BlocProvider.of<OptionsCubit>(context).getValue(o.id),
-                onChanged: (newValue) => BlocProvider.of<OptionsCubit>(context).selectOption(o.id)),
+            (o) => Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: CheckboxListTile(
+                      contentPadding: EdgeInsets.zero,
+                      controlAffinity: ListTileControlAffinity.leading,
+                      title:
+                          Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
+                      value: BlocProvider.of<OptionsCubit>(context).getValue(o.id),
+                      onChanged: (newValue) =>
+                          BlocProvider.of<OptionsCubit>(context).selectOption(o.id, o.price)),
+                ),
+                Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: Text(o.price != null ? '\$${o.price!}' : '',
+                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500))))
+              ],
+            ),
           )
           .toList();
       // .map((o) => Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 1))

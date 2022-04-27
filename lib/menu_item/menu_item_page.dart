@@ -6,6 +6,7 @@ import '../models/MenuItem.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import '../options/menu_options_widget.dart';
+import 'bloc/menu_options_bloc.dart';
 
 class MenuItemPage extends StatelessWidget {
   static const valueKey = ValueKey<String>("MenuItemPage");
@@ -31,8 +32,11 @@ class MenuItemPage extends StatelessWidget {
       }
     }
 
-    return BlocProvider(
-        create: ((context) => OptionsCubit()),
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => OptionsCubit()),
+          BlocProvider(create: (context) => MenuItemCubit()),
+        ],
         child: Scaffold(
             appBar: AppBar(
               centerTitle: true,
@@ -129,6 +133,9 @@ class MenuItemPage extends StatelessWidget {
                               ]));
                         }
                         if (state.status == OptionStatus.selected) {
+                          if (state.optionPrice != null) {
+                            // Send price increase
+                          }
                           BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
                           return Container();
                         } else {

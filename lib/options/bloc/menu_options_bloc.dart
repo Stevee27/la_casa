@@ -20,15 +20,20 @@ class OptionsState extends Equatable {
   final OptionStatus? status;
   final List<Option>? options;
   Set<String>? selectedOptions;
+  String? optionPrice;
 
-  OptionsState({this.status, this.options, this.selectedOptions});
+  OptionsState({this.status, this.options, this.selectedOptions, this.optionPrice});
 
   OptionsState copyWith(
-      {OptionStatus? status, List<Option>? options, Set<String>? selectedOptions}) {
+      {OptionStatus? status,
+      List<Option>? options,
+      Set<String>? selectedOptions,
+      String? optionPrice}) {
     return OptionsState(
         status: status ?? this.status,
         options: options ?? this.options,
-        selectedOptions: selectedOptions ?? this.selectedOptions);
+        selectedOptions: selectedOptions ?? this.selectedOptions,
+        optionPrice: optionPrice ?? this.optionPrice);
   }
 
   @override
@@ -54,13 +59,16 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  void selectOption(String selectedID) async {
+  void selectOption(String selectedID, String? optionPrice) async {
     if (state.status == OptionStatus.success) {
       try {
         state.selectedOptions!.contains(selectedID)
             ? state.selectedOptions!.remove(selectedID)
             : state.selectedOptions!.add(selectedID);
-        emit(state.copyWith(status: OptionStatus.selected, selectedOptions: state.selectedOptions));
+        emit(state.copyWith(
+            status: OptionStatus.selected,
+            selectedOptions: state.selectedOptions,
+            optionPrice: optionPrice));
       } catch (e) {
         rethrow;
       }
