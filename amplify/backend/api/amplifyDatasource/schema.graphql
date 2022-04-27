@@ -2,6 +2,9 @@ type Option @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
   menuitems: [MenuItem] @manyToMany(relationName: "MenuItemOption")
+  price: String
+  menuType: MenuType
+  sortOrder: Int
 }
 
 type OrderItem @model @auth(rules: [{allow: public}]) {
