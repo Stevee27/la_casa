@@ -67,9 +67,9 @@ class MenuRepository {
     }
   }
 
-  Future<void> addAllOptionsToMenuItem(List<Option> options, MenuItem menuItem) async {
+  Future<void> addOptionsToMenuItem(List<Option> options, MenuItem menuItem) async {
     try {
-      for (Option option in options) {
+      for (Option option in options.where((element) => element.menuType == menuItem.menuType)) {
         final itemOption = MenuItemOption(option: option, menuItem: menuItem);
         await Amplify.DataStore.save(itemOption);
       }

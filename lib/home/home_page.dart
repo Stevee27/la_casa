@@ -28,9 +28,9 @@ class HomePage extends StatelessWidget {
           BlocProvider.of<StoreHoursCubit>(context).creatStoreHours(intialStoreHoursArray);
           return Container();
         } else {
-          _createInitialMenuItemsFromOldModels(initialMenuModelArray);
-          _createInitialOptions();
-          _addAllOptionsToAllMenuItems();
+          // _createInitialMenuItemsFromOldModels(initialMenuModelArray);
+          // _createInitialOptions();
+          // _addOptionsToAllMenuItems();
           return HomeLayout(storeHours: state.storeHours);
         }
       } else if (state is StoreHoursFailure) {
@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
     }
   }
 
-  _addAllOptionsToAllMenuItems() async {
+  _addOptionsToAllMenuItems() async {
     final MenuRepository repo = MenuRepository();
     final checkList = await repo.getItemOptions();
     if (checkList.isEmpty) {
@@ -94,7 +94,7 @@ class HomePage extends StatelessWidget {
         List<Option> options = await repo.getOptions();
         List<MenuItem> menuItems = await repo.getMenuItems();
         for (MenuItem item in menuItems) {
-          await repo.addAllOptionsToMenuItem(options, item);
+          await repo.addOptionsToMenuItem(options, item);
         }
       } catch (e) {
         throw e as Exception;
