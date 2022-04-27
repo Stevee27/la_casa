@@ -29,7 +29,7 @@ class MenuOptions extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         itemCount: options.length,
         itemBuilder: (context, index) {
-          return SizedBox(height: 50, child: optionNames[index]);
+          return SizedBox(height: 35, child: optionNames[index]);
         },
       );
     }

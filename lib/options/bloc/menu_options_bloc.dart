@@ -15,28 +15,24 @@ extension OptionStatusX on OptionStatus {
   bool get isSelected => this == OptionStatus.selected;
 }
 
+// ignore: must_be_immutable
 class OptionsState extends Equatable {
   final OptionStatus? status;
   final List<Option>? options;
-  final String? selectedID;
-  Map<String, bool> selectMap = {};
+  Set<String>? selectedOptions;
 
-  OptionsState({this.status, this.options, this.selectedID});
+  OptionsState({this.status, this.options, this.selectedOptions});
 
   OptionsState copyWith(
-      {OptionStatus? status,
-      List<Option>? options,
-      String? selectedID,
-      Map<String, bool>? selectMap}) {
+      {OptionStatus? status, List<Option>? options, Set<String>? selectedOptions}) {
     return OptionsState(
-      status: status ?? this.status,
-      options: options ?? this.options,
-      selectedID: selectedID ?? this.selectedID,
-    )..selectMap = this.selectMap;
+        status: status ?? this.status,
+        options: options ?? this.options,
+        selectedOptions: selectedOptions ?? this.selectedOptions);
   }
 
   @override
-  List<Object?> get props => [status, options, selectedID, selectMap];
+  List<Object?> get props => [status, options, selectedOptions];
 }
 
 class OptionsCubit extends Cubit<OptionsState> {
@@ -46,12 +42,12 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   void getOptionsForMenuItem(MenuItem menuItem) async {
     try {
+      if (state.status == OptionStatus.initial) {
+        state.selectedOptions = <String>{};
+      }
       emit(state.copyWith(status: OptionStatus.loading));
       final options = await _optionsRepository.getOptionsForMenuItem(menuItem);
 
-      for (var o in options) {
-        state.selectMap[o.id] = false;
-      }
       emit(state.copyWith(status: OptionStatus.success, options: options));
     } catch (e) {
       emit(state.copyWith(status: OptionStatus.error));
@@ -61,8 +57,10 @@ class OptionsCubit extends Cubit<OptionsState> {
   void selectOption(String selectedID) async {
     if (state.status == OptionStatus.success) {
       try {
-        state.selectMap[selectedID] = true;
-        emit(state.copyWith(selectedID: "selectedIxxxD"));
+        state.selectedOptions!.contains(selectedID)
+            ? state.selectedOptions!.remove(selectedID)
+            : state.selectedOptions!.add(selectedID);
+        emit(state.copyWith(status: OptionStatus.selected, selectedOptions: state.selectedOptions));
       } catch (e) {
         rethrow;
       }
@@ -70,9 +68,6 @@ class OptionsCubit extends Cubit<OptionsState> {
   }
 
   bool getValue(String selectedID) {
-    if (state.selectMap.containsKey(selectedID)) {
-      return state.selectMap[selectedID]!;
-    }
-    return false;
+    return state.selectedOptions == null ? false : state.selectedOptions!.contains(selectedID);
   }
 }
