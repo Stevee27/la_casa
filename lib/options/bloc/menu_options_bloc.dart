@@ -1,45 +1,65 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../menu/menu_repository.dart';
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 import '../options_repository.dart';
 
-abstract class OptionsState {}
+enum OptionStatus { initial, success, error, loading, selected }
 
-class OptionsSuccess extends OptionsState {
-  final List<Option> options;
-
-  OptionsSuccess(this.options);
+extension OptionStatusX on OptionStatus {
+  bool get isInitial => this == OptionStatus.initial;
+  bool get isSuccess => this == OptionStatus.success;
+  bool get isError => this == OptionStatus.error;
+  bool get isLoading => this == OptionStatus.loading;
+  bool get isSelected => this == OptionStatus.selected;
 }
 
-class OptionsSelect extends OptionsState {
-  final List<Option> options;
-  final Option selected;
+class OptionsState extends Equatable {
+  final OptionStatus? status;
+  final List<Option>? options;
+  final String? selectedID;
 
-  OptionsSelect(this.options, this.selected);
-}
+  const OptionsState({this.status, this.options, this.selectedID});
 
-class OptionsLoading extends OptionsState {}
+  OptionsState copyWith({
+    OptionStatus? status,
+    List<Option>? options,
+    String? selectedID,
+  }) {
+    return OptionsState(
+        status: status ?? this.status,
+        options: options ?? this.options,
+        selectedID: selectedID ?? this.selectedID);
+  }
 
-class OptionsFailure extends OptionsState {
-  final Exception exception;
-
-  OptionsFailure(this.exception);
+  @override
+  List<Object?> get props => [status, options, selectedID];
 }
 
 class OptionsCubit extends Cubit<OptionsState> {
-  OptionsCubit() : super(OptionsLoading());
+  OptionsCubit() : super(const OptionsState(status: OptionStatus.initial));
 
   final _optionsRepository = OptionsRepository();
 
   void getOptionsForMenuItem(MenuItem menuItem) async {
-    if (state is OptionsSuccess == false) emit(OptionsLoading());
     try {
+      emit(state.copyWith(status: OptionStatus.loading));
       final options = await _optionsRepository.getOptionsForMenuItem(menuItem);
-      emit(OptionsSuccess(options));
+
+      emit(state.copyWith(status: OptionStatus.success, options: options));
     } catch (e) {
-      emit(OptionsFailure(e as Exception));
+      emit(state.copyWith(status: OptionStatus.error));
+    }
+  }
+
+  void selectOption(Option selectedOption) async {
+    if (state.status == OptionStatus.success) {
+      try {
+        emit(state.copyWith(status: OptionStatus.selected, selectedID: selectedOption.id));
+      } catch (e) {
+        rethrow;
+      }
     }
   }
 }

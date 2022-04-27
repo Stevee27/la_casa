@@ -51,12 +51,12 @@ class MenuItemPage extends StatelessWidget {
                       menuItems = state.menuItems;
                       currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
                       if (currentItemIndex < 0) {
-                        print("error");
+                        throw Exception("Menu index error");
                       }
                       MenuItem menuItem = menuItems[currentItemIndex];
                       BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
                       return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
-                        if (state is OptionsSuccess) {
+                        if (state.status == OptionStatus.success) {
                           return GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onHorizontalDragEnd: (details) {
@@ -112,12 +112,15 @@ class MenuItemPage extends StatelessWidget {
                                       ])),
                                 ),
                                 SizedBox(
-                                  height: 200,
+                                  height: 300,
                                   child: Card(
                                     elevation: 4,
-                                    child: MenuOptions(
-                                      menuItem: menuItem,
-                                      options: state.options,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                      child: MenuOptions(
+                                        menuItem: menuItem,
+                                        options: state.options!,
+                                      ),
                                     ),
                                   ),
                                 ),

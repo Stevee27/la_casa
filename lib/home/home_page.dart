@@ -28,8 +28,8 @@ class HomePage extends StatelessWidget {
           BlocProvider.of<StoreHoursCubit>(context).creatStoreHours(intialStoreHoursArray);
           return Container();
         } else {
-          // _createInitialMenuItemsFromOldModels(initialMenuModelArray);
-          // _createInitialOptions();
+          _createInitialMenuItemsFromOldModels(initialMenuModelArray);
+          _createInitialOptions();
           _addAllOptionsToAllMenuItems();
           return HomeLayout(storeHours: state.storeHours);
         }

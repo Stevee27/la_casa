@@ -6,9 +6,8 @@ import '../models/Option.dart';
 class MenuOptions extends StatelessWidget {
   final MenuItem menuItem;
   final List<Option> options;
-  bool val = false;
 
-  MenuOptions({Key? key, required this.menuItem, required this.options}) : super(key: key);
+  const MenuOptions({Key? key, required this.menuItem, required this.options}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +17,19 @@ class MenuOptions extends StatelessWidget {
             (o) => CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
-                title: Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 14)),
-                value: val,
-                onChanged: (value) => value = !val),
+                title: Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
+                value: true,
+                onChanged: (newValue) => newValue = false),
           )
           .toList();
       // .map((o) => Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 1))
       return ListView.builder(
-        padding: EdgeInsets.zero,
+        padding: const EdgeInsets.all(10),
         itemCount: options.length,
         itemBuilder: (context, index) {
-          return SizedBox(height: 25, child: optionNames[index]);
+          return SizedBox(height: 30, child: optionNames[index]);
         },
       );
-      // return Wrap(children: [...optionNames]);
     }
     return Container();
   }
