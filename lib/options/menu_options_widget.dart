@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/MenuItem.dart';
 import '../models/Option.dart';
+import 'bloc/menu_options_bloc.dart';
 
 class MenuOptions extends StatelessWidget {
   final MenuItem menuItem;
@@ -18,8 +20,8 @@ class MenuOptions extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 controlAffinity: ListTileControlAffinity.leading,
                 title: Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
-                value: true,
-                onChanged: (newValue) => newValue = false),
+                value: BlocProvider.of<OptionsCubit>(context).getValue(o.id),
+                onChanged: (newValue) => BlocProvider.of<OptionsCubit>(context).selectOption(o.id)),
           )
           .toList();
       // .map((o) => Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 1))
@@ -27,7 +29,7 @@ class MenuOptions extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         itemCount: options.length,
         itemBuilder: (context, index) {
-          return SizedBox(height: 30, child: optionNames[index]);
+          return SizedBox(height: 50, child: optionNames[index]);
         },
       );
     }

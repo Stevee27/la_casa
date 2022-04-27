@@ -127,6 +127,10 @@ class MenuItemPage extends StatelessWidget {
                                 const Spacer(),
                                 const Text('Buttons')
                               ]));
+                        }
+                        if (state.status == OptionStatus.selected) {
+                          BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                          return Container();
                         } else {
                           return const CircularProgressIndicator();
                         }
