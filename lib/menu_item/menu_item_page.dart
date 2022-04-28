@@ -6,7 +6,7 @@ import '../models/MenuItem.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import '../options/menu_options_widget.dart';
-import 'bloc/menu_options_bloc.dart';
+import 'bloc/menu_item_bloc.dart';
 
 class MenuItemPage extends StatelessWidget {
   static const valueKey = ValueKey<String>("MenuItemPage");
@@ -92,20 +92,22 @@ class MenuItemPage extends StatelessWidget {
                                                 const Spacer(),
                                                 if (menuItem.smallPrice!.isEmpty &&
                                                     menuItem.price!.isNotEmpty)
-                                                  Text('Price: \$${menuItem.price}',
+                                                  Text(
+                                                      'Price: \$${_calculateTotalPrice(context, menuItem.price)}',
                                                       style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500)),
                                                 if (menuItem.price!.isEmpty &&
                                                     menuItem.smallPrice!.isNotEmpty)
-                                                  Text('Price: \$${menuItem.smallPrice}',
+                                                  Text(
+                                                      'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
                                                       style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500)),
                                                 if (menuItem.smallPrice!.isNotEmpty &&
                                                     menuItem.price!.isNotEmpty)
                                                   Text(
-                                                      'Small: \$${menuItem.smallPrice}  Large: \$${menuItem.price}',
+                                                      'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)}  Large: \$${_calculateTotalPrice(context, menuItem.price)}',
                                                       style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500)),
@@ -133,9 +135,6 @@ class MenuItemPage extends StatelessWidget {
                               ]));
                         }
                         if (state.status == OptionStatus.selected) {
-                          if (state.optionPrice != null) {
-                            // Send price increase
-                          }
                           BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
                           return Container();
                         } else {
@@ -143,5 +142,10 @@ class MenuItemPage extends StatelessWidget {
                         }
                       }));
                     }))))));
+  }
+
+  String? _calculateTotalPrice(context, String? basePrice) {
+    var aaa = BlocProvider.of<OptionsCubit>(context).getOptionsPrice();
+    return basePrice;
   }
 }

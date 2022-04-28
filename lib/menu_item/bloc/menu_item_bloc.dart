@@ -21,6 +21,7 @@ class MenuItemState extends Equatable {
   final List<Option>? options;
   Set<String>? selectedOptions;
   String? optionPrice;
+  Map<String, double> optionPriceMap = {};
 
   MenuItemState({this.status, this.options, this.selectedOptions, this.optionPrice});
 
@@ -38,6 +39,6 @@ class MenuItemCubit extends Cubit<MenuItemState> {
 
   final _itemsRepository = MenuItemRepository();
 
-  void priceUpdate(String optionPrice) {}
+  void optionPriceAdded(Option option) {}
   void selectOption(String selectedID, String? optionPrice) async {}
 }
