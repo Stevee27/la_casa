@@ -11,6 +11,7 @@ import 'package:la_casa/utils/initial_options.dart';
 import '../models/MenuItem.dart';
 import '../models/Option.dart';
 import '../utils/menu-item-model.dart';
+import '../utils/menu-items.dart';
 
 class HomePage extends StatelessWidget {
   static const valueKey = ValueKey<String>("HomePage");

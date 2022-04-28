@@ -32,7 +32,7 @@ class HomeLayout extends StatelessWidget {
               child: Column(mainAxisSize: MainAxisSize.max, children: [
                 // Image.asset('assets/images/name.jpg'),
                 Image.asset('assets/images/curbview.jpg'),
-                const Spacer(flex: 3),
+                const Spacer(flex: 1),
                 const Text(
                   'Authentic Italian bakery',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
@@ -41,7 +41,7 @@ class HomeLayout extends StatelessWidget {
                   '7110 Gulf Blvd, St.Pete Beach',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                 ),
-                const Spacer(flex: 2),
+                const Spacer(flex: 1),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
@@ -51,6 +51,7 @@ class HomeLayout extends StatelessWidget {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                   ),
                 ),
+                const Spacer(flex: 1),
                 StoreHoursWidget(storeHours: storeHours),
                 const Spacer(),
                 // HomeButtons()

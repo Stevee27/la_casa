@@ -118,7 +118,7 @@ class MenuItemPage extends StatelessWidget {
                                       ])),
                                 ),
                                 SizedBox(
-                                  height: 300,
+                                  height: 400,
                                   child: Card(
                                     elevation: 4,
                                     child: Padding(
