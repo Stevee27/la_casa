@@ -78,7 +78,15 @@ class OptionsCubit extends Cubit<OptionsState> {
     return state.selectedOptions == null ? false : state.selectedOptions!.contains(selectedID);
   }
 
-  String getOptionsPrice() {
-    return 'xxx';
+  double getOptionsPrice() {
+    var arr = state.options!
+        .where((o) => state.selectedOptions!.contains(o.id))
+        .map((e) => e.price == null ? 0 : double.parse(e.price!));
+    // .toList();
+    double sum = 0;
+    for (var p in arr) {
+      sum += p;
+    }
+    return sum;
   }
 }

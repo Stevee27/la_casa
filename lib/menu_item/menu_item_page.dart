@@ -107,7 +107,7 @@ class MenuItemPage extends StatelessWidget {
                                                 if (menuItem.smallPrice!.isNotEmpty &&
                                                     menuItem.price!.isNotEmpty)
                                                   Text(
-                                                      'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)}  Large: \$${_calculateTotalPrice(context, menuItem.price)}',
+                                                      'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)} Large: \$${_calculateTotalPrice(context, menuItem.price)}',
                                                       style: const TextStyle(
                                                           fontSize: 16,
                                                           fontWeight: FontWeight.w500)),
@@ -145,7 +145,10 @@ class MenuItemPage extends StatelessWidget {
   }
 
   String? _calculateTotalPrice(context, String? basePrice) {
-    var aaa = BlocProvider.of<OptionsCubit>(context).getOptionsPrice();
-    return basePrice;
+    if (basePrice != null) {
+      double optionsPrice = BlocProvider.of<OptionsCubit>(context).getOptionsPrice();
+      return (double.parse(basePrice) + optionsPrice).toStringAsFixed(2);
+    }
+    return '';
   }
 }
