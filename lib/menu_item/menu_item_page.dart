@@ -132,29 +132,34 @@ class MenuItemPage extends StatelessWidget {
                                   width: double.infinity,
                                   child: Card(
                                       elevation: 4,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Spacer(),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              primary: Colors.pink,
-                                              textStyle: const TextStyle(fontSize: 14),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Spacer(),
+                                            OutlinedButton(
+                                              style: TextButton.styleFrom(
+                                                primary: Colors.white,
+                                                backgroundColor: Colors.grey,
+                                                textStyle: const TextStyle(fontSize: 14),
+                                              ),
+                                              onPressed: () {},
+                                              child: const Text('Show Photo'),
                                             ),
-                                            onPressed: () {},
-                                            child: const Text('Show Photo'),
-                                          ),
-                                          const Spacer(flex: 10),
-                                          TextButton(
-                                            style: TextButton.styleFrom(
-                                              primary: Colors.pink,
-                                              textStyle: const TextStyle(fontSize: 14),
+                                            const Spacer(flex: 10),
+                                            ElevatedButton(
+                                              style: TextButton.styleFrom(
+                                                primary: Colors.white,
+                                                backgroundColor: Colors.grey,
+                                                textStyle: const TextStyle(fontSize: 14),
+                                              ),
+                                              onPressed: () {},
+                                              child: const Text('Place Order'),
                                             ),
-                                            onPressed: () {},
-                                            child: const Text('Place Order'),
-                                          ),
-                                          const Spacer()
-                                        ],
+                                            const Spacer()
+                                          ],
+                                        ),
                                       ))),
                             ),
                             const Spacer(),
