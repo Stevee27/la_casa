@@ -48,100 +48,127 @@ class MenuItemPage extends StatelessWidget {
                           fit: BoxFit.fitWidth))),
               backgroundColor: Colors.white70,
             ),
-            body: SizedBox.expand(
-                child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: BlocBuilder<NavCubit, NavState>(builder: ((context, state) {
-                      menuItems = state.menuItems;
-                      currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
-                      if (currentItemIndex < 0) {
-                        throw Exception("Menu index error");
-                      }
-                      MenuItem menuItem = menuItems[currentItemIndex];
-                      BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                      return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
-                        if (state.status == OptionStatus.success) {
-                          return GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onHorizontalDragEnd: (details) {
-                                if (details.primaryVelocity! > 0) {
-                                  onSwipeLeft(context);
-                                } else if (details.primaryVelocity! < 0) {
-                                  onSwipeRight(context);
-                                }
-                              },
-                              child: Column(children: [
-                                Card(
-                                  elevation: 4,
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(8),
-                                      child: Column(children: [
-                                        if (menuItem.name!.isNotEmpty)
-                                          Text(menuItem.name!,
-                                              style: const TextStyle(
-                                                  fontSize: 20, fontWeight: FontWeight.w700)),
-                                        if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
-                                        Text(menuItem.description!,
-                                            style: const TextStyle(
-                                                fontSize: 18, fontWeight: FontWeight.w500)),
-                                        const SizedBox(height: 20),
-                                        Builder(
-                                          builder: (BuildContext context) {
-                                            return Row(
-                                              children: [
-                                                const Spacer(),
-                                                if (menuItem.smallPrice!.isEmpty &&
-                                                    menuItem.price!.isNotEmpty)
-                                                  Text(
-                                                      'Price: \$${_calculateTotalPrice(context, menuItem.price)}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w500)),
-                                                if (menuItem.price!.isEmpty &&
-                                                    menuItem.smallPrice!.isNotEmpty)
-                                                  Text(
-                                                      'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w500)),
-                                                if (menuItem.smallPrice!.isNotEmpty &&
-                                                    menuItem.price!.isNotEmpty)
-                                                  Text(
-                                                      'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)} Large: \$${_calculateTotalPrice(context, menuItem.price)}',
-                                                      style: const TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight: FontWeight.w500)),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ])),
-                                ),
-                                SizedBox(
-                                  height: 400,
-                                  child: Card(
-                                    elevation: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                      child: MenuOptions(
-                                        menuItem: menuItem,
-                                        options: state.options!,
-                                      ),
+            body: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: BlocBuilder<NavCubit, NavState>(builder: ((context, state) {
+                  menuItems = state.menuItems;
+                  currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
+                  if (currentItemIndex < 0) {
+                    throw Exception("Menu index error");
+                  }
+                  MenuItem menuItem = menuItems[currentItemIndex];
+                  BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                  return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
+                    if (state.status == OptionStatus.success) {
+                      return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onHorizontalDragEnd: (details) {
+                            if (details.primaryVelocity! > 0) {
+                              onSwipeLeft(context);
+                            } else if (details.primaryVelocity! < 0) {
+                              onSwipeRight(context);
+                            }
+                          },
+                          child: Column(children: [
+                            Card(
+                              elevation: 4,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(children: [
+                                    if (menuItem.name!.isNotEmpty)
+                                      Text(menuItem.name!,
+                                          style: const TextStyle(
+                                              fontSize: 20, fontWeight: FontWeight.w700)),
+                                    if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
+                                    Text(menuItem.description!,
+                                        style: const TextStyle(
+                                            fontSize: 18, fontWeight: FontWeight.w500)),
+                                    const SizedBox(height: 20),
+                                    Builder(
+                                      builder: (BuildContext context) {
+                                        return Row(
+                                          children: [
+                                            const Spacer(),
+                                            if (menuItem.smallPrice!.isEmpty &&
+                                                menuItem.price!.isNotEmpty)
+                                              Text(
+                                                  'Price: \$${_calculateTotalPrice(context, menuItem.price)}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16, fontWeight: FontWeight.w500)),
+                                            if (menuItem.price!.isEmpty &&
+                                                menuItem.smallPrice!.isNotEmpty)
+                                              Text(
+                                                  'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16, fontWeight: FontWeight.w500)),
+                                            if (menuItem.smallPrice!.isNotEmpty &&
+                                                menuItem.price!.isNotEmpty)
+                                              Text(
+                                                  'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)} Large: \$${_calculateTotalPrice(context, menuItem.price)}',
+                                                  style: const TextStyle(
+                                                      fontSize: 16, fontWeight: FontWeight.w500)),
+                                          ],
+                                        );
+                                      },
                                     ),
+                                  ])),
+                            ),
+                            Expanded(
+                              flex: 30,
+                              child: Card(
+                                elevation: 4,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                  child: MenuOptions(
+                                    menuItem: menuItem,
+                                    options: state.options!,
                                   ),
                                 ),
-                                const Spacer(),
-                                const Text('Buttons')
-                              ]));
-                        }
-                        if (state.status == OptionStatus.selected) {
-                          BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                          return Container();
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      }));
-                    }))))));
+                              ),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: SizedBox(
+                                  width: double.infinity,
+                                  child: Card(
+                                      elevation: 4,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const Spacer(),
+                                          TextButton(
+                                            style: TextButton.styleFrom(
+                                              primary: Colors.pink,
+                                              textStyle: const TextStyle(fontSize: 14),
+                                            ),
+                                            onPressed: () {},
+                                            child: const Text('Show Photo'),
+                                          ),
+                                          const Spacer(flex: 10),
+                                          TextButton(
+                                            style: TextButton.styleFrom(
+                                              primary: Colors.pink,
+                                              textStyle: const TextStyle(fontSize: 14),
+                                            ),
+                                            onPressed: () {},
+                                            child: const Text('Place Order'),
+                                          ),
+                                          const Spacer()
+                                        ],
+                                      ))),
+                            ),
+                            const Spacer(),
+                            const Text('Buttons')
+                          ]));
+                    }
+                    if (state.status == OptionStatus.selected) {
+                      BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                      return Container();
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  }));
+                })))));
   }
 
   String? _calculateTotalPrice(context, String? basePrice) {

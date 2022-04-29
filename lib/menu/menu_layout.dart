@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_casa/menu/bloc/menu_select_bloc.dart';
-import 'package:la_casa/menu/card_menu.dart';
-import 'package:la_casa/menu_item/menu_toggles.dart';
-import 'package:la_casa/models/MenuItem.dart';
 
+import '../models/MenuItem.dart';
 import '../models/MenuType.dart';
 import '../nav/nav_cubit.dart';
+import 'bloc/menu_select_bloc.dart';
+import 'card_menu.dart';
+import 'menu_toggles.dart';
 
 class MenuLayout extends StatelessWidget {
   final List<MenuItem> menuItems;

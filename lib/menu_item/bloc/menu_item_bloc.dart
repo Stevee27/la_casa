@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 import '../menu_item_repository.dart';
 
