@@ -67,7 +67,7 @@ class MenuLayout extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'My Orders',
+            label: 'Show Cart',
           ),
         ],
         currentIndex: 1,
@@ -79,6 +79,9 @@ class MenuLayout extends StatelessWidget {
               break;
             case 1:
               BlocProvider.of<NavCubit>(context).showMenu();
+              break;
+            case 2:
+              BlocProvider.of<NavCubit>(context).showCart();
               break;
           }
         },

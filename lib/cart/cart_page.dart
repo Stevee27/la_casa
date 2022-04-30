@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/order_bloc.dart';
+import 'bloc/cart_bloc.dart';
 
-class OrderPage extends StatelessWidget {
-  static const valueKey = ValueKey<String>("OrderPage");
-  const OrderPage({Key? key}) : super(key: key);
+class CartPage extends StatelessWidget {
+  static const valueKey = ValueKey<String>("CartPage");
+
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +23,9 @@ class OrderPage extends StatelessWidget {
           backgroundColor: Colors.white70,
         ),
         body: BlocProvider(
-            create: (BuildContext context) => OrderCubit(),
-            child: BlocBuilder<OrderCubit, OrderState>(builder: ((context, state) {
-              if (state.status == OrderStatus.success) {
+            create: (BuildContext context) => CartCubit(),
+            child: BlocBuilder<CartCubit, CartState>(builder: ((context, state) {
+              if (state.status == CartStatus.success) {
                 return Container();
               } else {
                 return const Center(child: Text('You have no orders in cart.'));

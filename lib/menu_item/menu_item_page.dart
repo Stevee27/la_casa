@@ -147,7 +147,7 @@ class MenuItemPage extends StatelessWidget {
                                           OutlinedButton(
                                             style: TextButton.styleFrom(
                                               primary: Colors.white,
-                                              backgroundColor: Colors.grey,
+                                              backgroundColor: Colors.pink,
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {},
@@ -157,14 +157,14 @@ class MenuItemPage extends StatelessWidget {
                                           ElevatedButton(
                                             style: TextButton.styleFrom(
                                               primary: Colors.white,
-                                              backgroundColor: Colors.grey,
+                                              backgroundColor: Colors.pink,
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {
-                                              BlocProvider.of<NavCubit>(context)
-                                                  .showOrder(menuItems, menuItem.id);
+                                              // BlocProvider.of<NavCubit>(context)
+                                              //     .showOrder(menuItems, menuItem.id);
                                             },
-                                            child: const Text('Order'),
+                                            child: const Text('Add to Cart'),
                                           ),
                                           const Spacer()
                                         ],
@@ -192,17 +192,14 @@ class MenuItemPage extends StatelessWidget {
                 label: 'Menu',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.add_shopping_cart),
-                label: 'Add Order',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_cart),
-                label: 'My Order',
+                label: 'Show Cart',
               ),
             ],
             currentIndex: 1,
             unselectedItemColor: Colors.grey,
             selectedItemColor: Colors.amber[800],
+            showUnselectedLabels: true,
             onTap: (i) async {
               switch (i) {
                 case 0:
@@ -212,7 +209,7 @@ class MenuItemPage extends StatelessWidget {
                   BlocProvider.of<NavCubit>(context).showMenu();
                   break;
                 case 2:
-                  BlocProvider.of<NavCubit>(context).showOrder(menuItems, currentSelectedID);
+                  BlocProvider.of<NavCubit>(context).showCart();
                   break;
               }
             },

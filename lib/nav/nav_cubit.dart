@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../menu_item/menu_item_page.dart';
 import '../menu/menu_page.dart';
@@ -32,6 +33,13 @@ class NavCubit extends Cubit<NavState> {
   showMenuItem(List<MenuItem> menuItems, String itemID) {
     destPages.add(MenuItemPage.valueKey);
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
+  }
+
+  showCart() {
+    destPages.add(CartPage.valueKey);
+    emit(state.copyWith(
+      dest: CartPage.valueKey,
+    ));
   }
 
   showOrder(menuItems, String itemID) {

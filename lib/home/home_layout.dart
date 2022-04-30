@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/models/StoreHours.dart';
 
+import '../models/MenuItem.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import 'store_hours_widget.dart';
@@ -77,7 +78,7 @@ class HomeLayout extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'My Orders',
+            label: 'SHow Cart',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -96,10 +97,7 @@ class HomeLayout extends StatelessWidget {
               BlocProvider.of<NavCubit>(context).showMenu();
               break;
             case 2:
-              BlocProvider.of<NavCubit>(context).showMenu();
-              break;
-            case 3:
-              BlocProvider.of<NavCubit>(context).showMenu();
+              BlocProvider.of<NavCubit>(context).showCart();
               break;
           }
         },
