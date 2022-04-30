@@ -58,6 +58,18 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
+  void clearOptionsForMenuItem(String selectedID) async {
+    if (state.status == OptionStatus.success) {
+      try {
+        emit(state.copyWith(
+          selectedOptions: <String>{},
+        ));
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
   void selectOption(String selectedID) async {
     if (state.status == OptionStatus.success) {
       try {
