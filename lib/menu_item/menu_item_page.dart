@@ -16,6 +16,7 @@ class MenuItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int currentItemIndex = 0;
+    String currentSelectedID = '';
     List<MenuItem> menuItems = [];
 
     onSwipeRight(BuildContext context) {
@@ -61,6 +62,7 @@ class MenuItemPage extends StatelessWidget {
                   throw Exception("Menu index error");
                 }
                 MenuItem menuItem = menuItems[currentItemIndex];
+                currentSelectedID = menuItem.id;
                 BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
                 return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
                   if (state.status == OptionStatus.success) {
@@ -190,11 +192,16 @@ class MenuItemPage extends StatelessWidget {
                 label: 'Menu',
               ),
               BottomNavigationBarItem(
+                icon: Icon(Icons.add_shopping_cart),
+                label: 'Add Order',
+              ),
+              BottomNavigationBarItem(
                 icon: Icon(Icons.shopping_cart),
-                label: 'My Orders',
+                label: 'My Order',
               ),
             ],
             currentIndex: 1,
+            unselectedItemColor: Colors.grey,
             selectedItemColor: Colors.amber[800],
             onTap: (i) async {
               switch (i) {
@@ -203,6 +210,9 @@ class MenuItemPage extends StatelessWidget {
                   break;
                 case 1:
                   BlocProvider.of<NavCubit>(context).showMenu();
+                  break;
+                case 2:
+                  BlocProvider.of<NavCubit>(context).showOrder(menuItems, currentSelectedID);
                   break;
               }
             },

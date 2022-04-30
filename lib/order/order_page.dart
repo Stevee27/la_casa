@@ -27,7 +27,7 @@ class OrderPage extends StatelessWidget {
               if (state.status == OrderStatus.success) {
                 return Container();
               } else {
-                return const Center(child: Text('You cannot order yet'));
+                return const Center(child: Text('You cannot order yet.'));
               }
             }))));
   }

@@ -79,8 +79,13 @@ class HomeLayout extends StatelessWidget {
             icon: Icon(Icons.shopping_cart),
             label: 'My Orders',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
         currentIndex: 0,
+        unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.amber[800],
         onTap: (i) async {
           switch (i) {
@@ -88,6 +93,12 @@ class HomeLayout extends StatelessWidget {
               BlocProvider.of<NavCubit>(context).showHome();
               break;
             case 1:
+              BlocProvider.of<NavCubit>(context).showMenu();
+              break;
+            case 2:
+              BlocProvider.of<NavCubit>(context).showMenu();
+              break;
+            case 3:
               BlocProvider.of<NavCubit>(context).showMenu();
               break;
           }
