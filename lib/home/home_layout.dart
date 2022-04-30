@@ -14,56 +14,85 @@ class HomeLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      alignment: Alignment.bottomCenter,
-                      image: AssetImage('assets/images/name.jpg'),
-                      fit: BoxFit.fitWidth))),
-          backgroundColor: Colors.white70,
-        ),
-        body: BlocBuilder<NavCubit, NavState>(
-          builder: (BuildContext context, state) {
-            return SizedBox.expand(
-                child: SafeArea(
-              child: Column(mainAxisSize: MainAxisSize.max, children: [
-                // Image.asset('assets/images/name.jpg'),
-                Image.asset('assets/images/curbview.jpg'),
-                const Spacer(flex: 1),
-                const Text(
-                  'Authentic Italian bakery',
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        flexibleSpace: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    alignment: Alignment.bottomCenter,
+                    image: AssetImage('assets/images/name.jpg'),
+                    fit: BoxFit.fitWidth))),
+        backgroundColor: Colors.white70,
+      ),
+      body: BlocBuilder<NavCubit, NavState>(
+        builder: (BuildContext context, state) {
+          return SizedBox.expand(
+              child: SafeArea(
+            child: Column(mainAxisSize: MainAxisSize.max, children: [
+              // Image.asset('assets/images/name.jpg'),
+              Image.asset('assets/images/curbview.jpg'),
+              const Spacer(flex: 1),
+              const Text(
+                'Authentic Italian bakery',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+              ),
+              const Text(
+                '7110 Gulf Blvd, St.Pete Beach',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+              ),
+              const Spacer(flex: 1),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: Text(
+                  'Stop in at for fresh bread baked daily from homemade dough, '
+                  'classic Italian style pizzas, salads, pastries, and the best coffee on St. Pete Beach.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                 ),
-                const Text(
-                  '7110 Gulf Blvd, St.Pete Beach',
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
-                ),
-                const Spacer(flex: 1),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Text(
-                    'Stop in at for fresh bread baked daily from homemade dough, '
-                    'classic Italian style pizzas, salads, pastries, and the best coffee on St. Pete Beach.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-                  ),
-                ),
-                const Spacer(flex: 1),
-                StoreHoursWidget(storeHours: storeHours),
-                const Spacer(),
-                // HomeButtons()
-                TextButton(
-                  onPressed: () async {
-                    BlocProvider.of<NavCubit>(context).showMenu();
-                  },
-                  child: const Text('Menu'),
-                )
-              ]),
-            ));
-          },
-        ));
+              ),
+              const Spacer(flex: 1),
+              StoreHoursWidget(storeHours: storeHours),
+              const Spacer(),
+              // HomeButtons()
+              // TextButton(
+              //   onPressed: () async {
+              //     BlocProvider.of<NavCubit>(context).showMenu();
+              //   },
+              //   child: const Text('Menu'),
+              // )
+            ]),
+          ));
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_restaurant),
+            label: 'Menu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: 'My Orders',
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.amber[800],
+        onTap: (i) async {
+          switch (i) {
+            case 0:
+              BlocProvider.of<NavCubit>(context).showHome();
+              break;
+            case 1:
+              BlocProvider.of<NavCubit>(context).showMenu();
+              break;
+          }
+        },
+      ),
+    );
   }
 }

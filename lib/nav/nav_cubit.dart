@@ -5,6 +5,7 @@ import '../home/home_page.dart';
 import '../menu_item/menu_item_page.dart';
 import '../menu/menu_page.dart';
 import '../models/MenuItem.dart';
+import '../order/order_page.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
@@ -31,5 +32,10 @@ class NavCubit extends Cubit<NavState> {
   showMenuItem(List<MenuItem> menuItems, String itemID) {
     destPages.add(MenuItemPage.valueKey);
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
+  }
+
+  showOrder(menuItems, String itemID) {
+    destPages.add(OrderPage.valueKey);
+    emit(state.copyWith(dest: OrderPage.valueKey, menuItems: menuItems, itemID: itemID));
   }
 }

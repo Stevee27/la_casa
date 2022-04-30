@@ -6,6 +6,7 @@ import 'menu_item/menu_item_page.dart';
 import 'menu/menu_page.dart';
 import 'nav/nav_cubit.dart';
 import 'nav/nav_state.dart';
+import 'order/order_page.dart';
 
 class AppNavigator extends StatelessWidget {
   AppNavigator({Key? key}) : super(key: key);
@@ -23,10 +24,14 @@ class AppNavigator extends StatelessWidget {
               const MaterialPage(child: MenuPage(), key: MenuPage.valueKey),
             if (destPages.contains(MenuItemPage.valueKey))
               const MaterialPage(child: MenuItemPage(), key: MenuItemPage.valueKey),
+            if (destPages.contains(OrderPage.valueKey))
+              const MaterialPage(child: OrderPage(), key: OrderPage.valueKey),
           ],
           onPopPage: (route, result) {
             final page = route.settings as MaterialPage;
-            if (page.key == MenuItemPage.valueKey) {
+            if (page.key == OrderPage.valueKey) {
+              BlocProvider.of<NavCubit>(context).showMenu();
+            } else if (page.key == MenuPage.valueKey) {
               BlocProvider.of<NavCubit>(context).showMenu();
             } else if (page.key == MenuPage.valueKey) {
               BlocProvider.of<NavCubit>(context).showHome();
