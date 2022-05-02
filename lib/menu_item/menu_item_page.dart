@@ -1,3 +1,5 @@
+// ignore_for_file: empty_catches
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/options/bloc/menu_options_bloc.dart';
@@ -22,8 +24,7 @@ class MenuItemPage extends StatelessWidget {
     onSwipeRight(BuildContext context) {
       if (currentItemIndex < menuItems.length - 1) {
         currentItemIndex++;
-        BlocProvider.of<OptionsCubit>(context)
-            .clearOptionsForMenuItem(menuItems[currentItemIndex].id);
+        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem(menuItems[currentItemIndex].id);
         BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
       }
     }
@@ -31,8 +32,7 @@ class MenuItemPage extends StatelessWidget {
     onSwipeLeft(BuildContext context) {
       if (currentItemIndex > 0) {
         currentItemIndex--;
-        BlocProvider.of<OptionsCubit>(context)
-            .clearOptionsForMenuItem(menuItems[currentItemIndex].id);
+        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem(menuItems[currentItemIndex].id);
         BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
       }
     }
@@ -83,36 +83,27 @@ class MenuItemPage extends StatelessWidget {
                                 child: Column(children: [
                                   if (menuItem.name!.isNotEmpty)
                                     Text(menuItem.name!,
-                                        style: const TextStyle(
-                                            fontSize: 20, fontWeight: FontWeight.w700)),
+                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
                                   if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
                                   Text(menuItem.description!,
-                                      style: const TextStyle(
-                                          fontSize: 18, fontWeight: FontWeight.w500)),
+                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
                                   const SizedBox(height: 20),
                                   Builder(
                                     builder: (BuildContext context) {
                                       return Row(
                                         children: [
                                           const Spacer(),
-                                          if (menuItem.smallPrice!.isEmpty &&
-                                              menuItem.price!.isNotEmpty)
-                                            Text(
-                                                'Price: \$${_calculateTotalPrice(context, menuItem.price)}',
+                                          if (menuItem.smallPrice!.isEmpty && menuItem.price!.isNotEmpty)
+                                            Text('Price: \$${_calculateTotalPrice(context, menuItem.price)}',
                                                 style: const TextStyle(
                                                     fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.price!.isEmpty &&
-                                              menuItem.smallPrice!.isNotEmpty)
+                                          if (menuItem.price!.isEmpty && menuItem.smallPrice!.isNotEmpty)
                                             Text(
                                                 'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
                                                 style: const TextStyle(
                                                     fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.smallPrice!.isNotEmpty &&
-                                              menuItem.price!.isNotEmpty)
-                                            Text(
-                                                'Small: \$${_calculateTotalPrice(context, menuItem.smallPrice)} Large: \$${_calculateTotalPrice(context, menuItem.price)}',
-                                                style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500)),
+                                          if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty)
+                                            _renderMultiPriceLine(context, menuItem),
                                         ],
                                       );
                                     },
@@ -217,11 +208,26 @@ class MenuItemPage extends StatelessWidget {
         ));
   }
 
-  String? _calculateTotalPrice(context, String? basePrice) {
+  String _calculateTotalPrice(context, String? basePrice) {
     if (basePrice != null) {
       double optionsPrice = BlocProvider.of<OptionsCubit>(context).getOptionsPrice();
-      return (double.parse(basePrice) + optionsPrice).toStringAsFixed(2);
+      double price = 0.0;
+      try {
+        price = double.parse(basePrice);
+      } catch (e) {
+        return ("");
+      }
+      return (price + optionsPrice).toStringAsFixed(2);
     }
     return '';
+  }
+
+  Widget _renderMultiPriceLine(context, MenuItem menuItem) {
+    String smallPrice = _calculateTotalPrice(context, menuItem.smallPrice);
+    String smallPriceString = smallPrice.isNotEmpty ? 'Small: \$$smallPrice' : '';
+    String largePrice = _calculateTotalPrice(context, menuItem.price);
+    String largePriceString = largePrice.isNotEmpty ? 'Large: \$$largePrice' : '';
+    return Text(smallPriceString + largePriceString,
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500));
   }
 }

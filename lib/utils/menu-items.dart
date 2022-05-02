@@ -15,7 +15,7 @@ List<MenuItemModel> initialMenuModelArray = [
   const MenuItemModel(
       9, '', MenuType.SANDWICH, 'Turkey, Arugula, Artichoke, Avocado', '10.99', '11.99'),
   const MenuItemModel(
-      10, '', MenuType.SANDWICH, 'Pork, Turkey, Mayo, Mustard, Swiss, Pickle', 'N/A', '11.99'),
+      10, '', MenuType.SANDWICH, 'Pork, Turkey, Mayo, Mustard, Swiss, Pickle', '', '11.99'),
   const MenuItemModel(
       11,
       '',
