@@ -21,17 +21,18 @@
 
 import 'ModelProvider.dart';
 import 'package:amplify_core/amplify_core.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 
-/** This is an auto generated class representing the Order type in your schema. */
+/** This is an auto generated class representing the User type in your schema. */
 @immutable
-class Order extends Model {
-  static const classType = const _OrderModelType();
+class User extends Model {
+  static const classType = const _UserModelType();
   final String id;
-  final List<OrderItem>? _OrderItems;
-  final String? _userID;
+  final String? _userName;
+  final String? _firstName;
+  final String? _lastName;
+  final Roles? _role;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -43,12 +44,20 @@ class Order extends Model {
     return id;
   }
   
-  List<OrderItem>? get OrderItems {
-    return _OrderItems;
+  String? get userName {
+    return _userName;
   }
   
-  String? get userID {
-    return _userID;
+  String? get firstName {
+    return _firstName;
+  }
+  
+  String? get lastName {
+    return _lastName;
+  }
+  
+  Roles? get role {
+    return _role;
   }
   
   TemporalDateTime? get createdAt {
@@ -59,13 +68,15 @@ class Order extends Model {
     return _updatedAt;
   }
   
-  const Order._internal({required this.id, OrderItems, userID, createdAt, updatedAt}): _OrderItems = OrderItems, _userID = userID, _createdAt = createdAt, _updatedAt = updatedAt;
+  const User._internal({required this.id, userName, firstName, lastName, role, createdAt, updatedAt}): _userName = userName, _firstName = firstName, _lastName = lastName, _role = role, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory Order({String? id, List<OrderItem>? OrderItems, String? userID}) {
-    return Order._internal(
+  factory User({String? id, String? userName, String? firstName, String? lastName, Roles? role}) {
+    return User._internal(
       id: id == null ? UUID.getUUID() : id,
-      OrderItems: OrderItems != null ? List<OrderItem>.unmodifiable(OrderItems) : OrderItems,
-      userID: userID);
+      userName: userName,
+      firstName: firstName,
+      lastName: lastName,
+      role: role);
   }
   
   bool equals(Object other) {
@@ -75,10 +86,12 @@ class Order extends Model {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Order &&
+    return other is User &&
       id == other.id &&
-      DeepCollectionEquality().equals(_OrderItems, other._OrderItems) &&
-      _userID == other._userID;
+      _userName == other._userName &&
+      _firstName == other._firstName &&
+      _lastName == other._lastName &&
+      _role == other._role;
   }
   
   @override
@@ -88,9 +101,12 @@ class Order extends Model {
   String toString() {
     var buffer = new StringBuffer();
     
-    buffer.write("Order {");
+    buffer.write("User {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("userID=" + "$_userID" + ", ");
+    buffer.write("userName=" + "$_userName" + ", ");
+    buffer.write("firstName=" + "$_firstName" + ", ");
+    buffer.write("lastName=" + "$_lastName" + ", ");
+    buffer.write("role=" + (_role != null ? enumToString(_role)! : "null") + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -98,37 +114,36 @@ class Order extends Model {
     return buffer.toString();
   }
   
-  Order copyWith({String? id, List<OrderItem>? OrderItems, String? userID}) {
-    return Order._internal(
+  User copyWith({String? id, String? userName, String? firstName, String? lastName, Roles? role}) {
+    return User._internal(
       id: id ?? this.id,
-      OrderItems: OrderItems ?? this.OrderItems,
-      userID: userID ?? this.userID);
+      userName: userName ?? this.userName,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      role: role ?? this.role);
   }
   
-  Order.fromJson(Map<String, dynamic> json)  
+  User.fromJson(Map<String, dynamic> json)  
     : id = json['id'],
-      _OrderItems = json['OrderItems'] is List
-        ? (json['OrderItems'] as List)
-          .where((e) => e?['serializedData'] != null)
-          .map((e) => OrderItem.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
-          .toList()
-        : null,
-      _userID = json['userID'],
+      _userName = json['userName'],
+      _firstName = json['firstName'],
+      _lastName = json['lastName'],
+      _role = enumFromString<Roles>(json['role'], Roles.values),
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'OrderItems': _OrderItems?.map((OrderItem? e) => e?.toJson()).toList(), 'userID': _userID, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'userName': _userName, 'firstName': _firstName, 'lastName': _lastName, 'role': enumToString(_role), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
-  static final QueryField ID = QueryField(fieldName: "order.id");
-  static final QueryField ORDERITEMS = QueryField(
-    fieldName: "OrderItems",
-    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (OrderItem).toString()));
-  static final QueryField USERID = QueryField(fieldName: "userID");
+  static final QueryField ID = QueryField(fieldName: "user.id");
+  static final QueryField USERNAME = QueryField(fieldName: "userName");
+  static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
+  static final QueryField LASTNAME = QueryField(fieldName: "lastName");
+  static final QueryField ROLE = QueryField(fieldName: "role");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
-    modelSchemaDefinition.name = "Order";
-    modelSchemaDefinition.pluralName = "Orders";
+    modelSchemaDefinition.name = "User";
+    modelSchemaDefinition.pluralName = "Users";
     
     modelSchemaDefinition.authRules = [
       AuthRule(
@@ -143,17 +158,28 @@ class Order extends Model {
     
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
     
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-      key: Order.ORDERITEMS,
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: User.USERNAME,
       isRequired: false,
-      ofModelName: (OrderItem).toString(),
-      associatedKey: OrderItem.ORDERID
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-      key: Order.USERID,
+      key: User.FIRSTNAME,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: User.LASTNAME,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: User.ROLE,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(
@@ -172,11 +198,11 @@ class Order extends Model {
   });
 }
 
-class _OrderModelType extends ModelType<Order> {
-  const _OrderModelType();
+class _UserModelType extends ModelType<User> {
+  const _UserModelType();
   
   @override
-  Order fromJson(Map<String, dynamic> jsonData) {
-    return Order.fromJson(jsonData);
+  User fromJson(Map<String, dynamic> jsonData) {
+    return User.fromJson(jsonData);
   }
 }

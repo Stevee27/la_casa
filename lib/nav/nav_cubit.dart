@@ -7,13 +7,14 @@ import '../menu_item/menu_item_page.dart';
 import '../menu/menu_page.dart';
 import '../models/MenuItem.dart';
 import '../order/order_page.dart';
+import '../user/auth_view.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
   final Set<ValueKey> destPages = <ValueKey>{};
 
   NavCubit() : super(const NavState(HomePage.valueKey)) {
-    destPages.add(HomePage.valueKey);
+    destPages.add(AuthView.valueKey);
   }
 
   showHome() {

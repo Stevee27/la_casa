@@ -26,6 +26,7 @@ import 'Option.dart';
 import 'Order.dart';
 import 'OrderItem.dart';
 import 'StoreHours.dart';
+import 'User.dart';
 
 export 'MenuItem.dart';
 export 'MenuItemOption.dart';
@@ -33,13 +34,15 @@ export 'MenuType.dart';
 export 'Option.dart';
 export 'Order.dart';
 export 'OrderItem.dart';
+export 'Roles.dart';
 export 'StoreHours.dart';
+export 'User.dart';
 
 class ModelProvider implements ModelProviderInterface {
   @override
-  String version = "a574d534a261229400d6cd0bdb4a7d70";
+  String version = "14429c1d56725628d5e6b6e769926197";
   @override
-  List<ModelSchema> modelSchemas = [MenuItem.schema, MenuItemOption.schema, Option.schema, Order.schema, OrderItem.schema, StoreHours.schema];
+  List<ModelSchema> modelSchemas = [MenuItem.schema, MenuItemOption.schema, Option.schema, Order.schema, OrderItem.schema, StoreHours.schema, User.schema];
   static final ModelProvider _instance = ModelProvider();
   @override
   List<ModelSchema> customTypeSchemas = [];
@@ -60,6 +63,8 @@ class ModelProvider implements ModelProviderInterface {
         return OrderItem.classType;
       case "StoreHours":
         return StoreHours.classType;
+      case "User":
+        return User.classType;
       default:
         throw Exception("Failed to find model in model provider for model name: " + modelName);
     }

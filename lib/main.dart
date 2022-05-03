@@ -7,6 +7,7 @@ import 'package:la_casa/casa_error_widget.dart';
 import 'package:la_casa/home/home_repository.dart';
 import 'package:la_casa/loading_view.dart';
 import 'package:la_casa/nav/nav_cubit.dart';
+import 'package:la_casa/user/bloc/user_bloc.dart';
 
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
             RepositoryProvider(create: (BuildContext context) => MenuRepository()),
           ],
           child: MultiBlocProvider(providers: [
+            BlocProvider(create: (context) => UserCubit()),
             BlocProvider(create: (context) => NavCubit()),
             BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
             BlocProvider(create: (context) => MenuCubit()..getMenu()),
@@ -65,6 +67,8 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _amplifyConfigured = true;
       });
+      // BlocProvider.of<UserCubit>(context).getUser('steve');
+      // print('steve');
       // Amplify.DataStore.clear();
     } catch (e) {
       CasaErrorWidget(

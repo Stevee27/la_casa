@@ -1,3 +1,4 @@
 {
-    "dart.lineLength": 110
+    "dart.lineLength": 110,
+    "editor.fontSize": 12
 }

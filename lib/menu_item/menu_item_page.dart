@@ -152,8 +152,10 @@ class MenuItemPage extends StatelessWidget {
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {
-                                              Scaffold.of(context).showSnackBar(
-                                                  const SnackBar(content: Text('Item placed on cart')));
+                                              Scaffold.of(context).showSnackBar(const SnackBar(
+                                                  // margin: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0),
+                                                  backgroundColor: Colors.pink,
+                                                  content: Text('Item placed on cart')));
                                               Future.delayed(const Duration(milliseconds: 1500)).then(
                                                 (value) => BlocProvider.of<NavCubit>(context).showMenu(),
                                               );

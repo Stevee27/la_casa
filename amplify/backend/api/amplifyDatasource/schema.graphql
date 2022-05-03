@@ -1,3 +1,16 @@
+enum Roles {
+  USER
+  ADMIN
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userName: ID
+  firstName: String
+  lastName: String
+  role: Roles
+}
+
 type Option @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
@@ -17,7 +30,7 @@ type OrderItem @model @auth(rules: [{allow: public}]) {
 type Order @model @auth(rules: [{allow: public}]) {
   id: ID!
   OrderItems: [OrderItem] @hasMany(indexName: "byOrder", fields: ["id"])
-  name: String
+  userID: String
 }
 
 type StoreHours @model @auth(rules: [{allow: public}]) {
