@@ -22,7 +22,7 @@ class AuthState extends Equatable {
 }
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthState(status: AuthStatus.initial));
+  AuthCubit() : super(const AuthState(status: AuthStatus.unauthenticted));
 
   final _authRepository = AuthRepository();
 

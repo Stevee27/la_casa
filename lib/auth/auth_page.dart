@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/auth/auth_layout.dart';
 
 import '../nav/nav_cubit.dart';
 import 'bloc/auth_bloc.dart';
@@ -27,6 +28,8 @@ class AuthPage extends StatelessWidget {
             print('authenticated');
             BlocProvider.of<NavCubit>(context).showHome();
             return Container();
+          } else if (state.status == AuthStatus.unauthenticted) {
+            return AuthLayout();
           } else if (state.status == AuthStatus.authenticating) {
             return Center(child: CircularProgressIndicator());
           } else if (state.status == AuthStatus.initial) {
