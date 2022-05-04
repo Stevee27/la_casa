@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/user/auth_view.dart';
 
+import 'auth/auth_page.dart';
 import 'cart/cart_page.dart';
 import 'home/home_page.dart';
 import 'menu_item/menu_item_page.dart';
@@ -22,7 +23,7 @@ class AppNavigator extends StatelessWidget {
     return BlocBuilder<NavCubit, NavState>(builder: ((context, state) {
       return Navigator(
           pages: [
-            const MaterialPage(child: AuthView(), key: AuthView.valueKey),
+            const MaterialPage(child: AuthPage(), key: AuthPage.valueKey),
             if (destPages.contains(HomePage.valueKey))
               const MaterialPage(child: HomePage(), key: HomePage.valueKey),
             if (destPages.contains(MenuPage.valueKey))
