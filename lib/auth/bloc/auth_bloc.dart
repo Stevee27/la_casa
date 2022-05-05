@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/User.dart';
 import '../auth_repository.dart';
 
-enum AuthStatus { initial, authenticating, unauthenticted, authenticated, error }
+enum AuthStatus { initial, authenticating, unauthenticated, authenticationFail, authenticated, error }
 
 class AuthState extends Equatable {
   final AuthStatus? status;
@@ -22,17 +22,29 @@ class AuthState extends Equatable {
 }
 
 class AuthCubit extends Cubit<AuthState> {
-  AuthCubit() : super(const AuthState(status: AuthStatus.unauthenticted));
+  AuthCubit() : super(const AuthState(status: AuthStatus.unauthenticated));
 
   final _authRepository = AuthRepository();
 
   void authenticate(username) async {
-    await Future.delayed(const Duration(milliseconds: 1000))
-        .then((value) => emit(state.copyWith(status: AuthStatus.authenticating)));
-    print('authenticating');
-    Future.delayed(const Duration(milliseconds: 2000))
-        .then((value) => emit(state.copyWith(status: AuthStatus.authenticated)));
+    try {
+      emit(state.copyWith(status: AuthStatus.authenticating));
+      final user = await _authRepository.authenticate(username);
+      if (user != null) {
+        emit(state.copyWith(status: AuthStatus.authenticated, user: user));
+      } else {
+        emit(state.copyWith(status: AuthStatus.authenticationFail, user: user));
+      }
+    } catch (e) {
+      emit(state.copyWith(status: AuthStatus.error));
+    }
   }
+  // await Future.delayed(const Duration(milliseconds: 1000))
+  //     .then((value) => emit(state.copyWith(status: AuthStatus.authenticating)));
+  // print('authenticating');
+  // Future.delayed(const Duration(milliseconds: 2000))
+  //     .then((value) => emit(state.copyWith(status: AuthStatus.authenticated)));
+  // }
 
   void createUser(User user) async {
     // await _userRepository.createUser(user);

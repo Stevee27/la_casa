@@ -25,11 +25,12 @@ class AuthPage extends StatelessWidget {
         ),
         body: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
           if (state.status == AuthStatus.authenticated) {
-            print('authenticated');
             BlocProvider.of<NavCubit>(context).showHome();
             return Container();
-          } else if (state.status == AuthStatus.unauthenticted) {
+          } else if (state.status == AuthStatus.unauthenticated) {
             return AuthLayout();
+          } else if (state.status == AuthStatus.authenticationFail) {
+            return AuthLayout(failure: true);
           } else if (state.status == AuthStatus.authenticating) {
             return Center(child: CircularProgressIndicator());
           } else if (state.status == AuthStatus.initial) {
