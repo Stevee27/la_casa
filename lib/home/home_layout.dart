@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/models/StoreHours.dart';
 
-import '../models/MenuItem.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import 'store_hours_widget.dart';
@@ -55,13 +54,6 @@ class HomeLayout extends StatelessWidget {
               const Spacer(flex: 1),
               StoreHoursWidget(storeHours: storeHours),
               const Spacer(),
-              // HomeButtons()
-              // TextButton(
-              //   onPressed: () async {
-              //     BlocProvider.of<NavCubit>(context).showMenu();
-              //   },
-              //   child: const Text('Menu'),
-              // )
             ]),
           ));
         },
