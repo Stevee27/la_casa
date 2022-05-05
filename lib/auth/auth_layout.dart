@@ -19,14 +19,15 @@ class AuthLayout extends StatelessWidget {
           const Text('Login Page', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           TextField(
             controller: myController,
-            decoration: InputDecoration(border: UnderlineInputBorder(), hintText: "Enter your username"),
+            decoration:
+                const InputDecoration(border: UnderlineInputBorder(), hintText: "Enter your username"),
           ),
           const TextField(
             obscureText: true,
             decoration: InputDecoration(border: UnderlineInputBorder(), hintText: "Password"),
           ),
           if (failure)
-            Text(
+            const Text(
               'login failed',
               style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500, fontStyle: FontStyle.italic),
             ),
@@ -35,18 +36,14 @@ class AuthLayout extends StatelessWidget {
               var username = myController.text;
               BlocProvider.of<AuthCubit>(context).authenticate(username);
             },
-            child: Text('Login'),
+            child: const Text('Login'),
           ),
           TextButton(
             onPressed: () {},
-            child: Text('Not registered? Register here'),
+            child: const Text('Not registered? Register here'),
           ),
         ]),
       ),
     );
-  }
-
-  void _user() {
-    print(myController.text);
   }
 }
