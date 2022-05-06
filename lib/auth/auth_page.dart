@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/auth/auth_layout.dart';
 
+import '../models/User.dart';
 import '../nav/nav_cubit.dart';
+import '../user/bloc/user_bloc.dart';
+import '../utils/some_users.dart';
 import 'bloc/auth_bloc.dart';
 
 class AuthPage extends StatelessWidget {
@@ -28,17 +31,25 @@ class AuthPage extends StatelessWidget {
             BlocProvider.of<NavCubit>(context).showHome();
             return Container();
           } else if (state.status == AuthStatus.unauthenticated) {
+            // _createSomeUsers(context);
             return AuthLayout();
           } else if (state.status == AuthStatus.authenticationFail) {
             return AuthLayout(failure: true);
           } else if (state.status == AuthStatus.authenticating) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state.status == AuthStatus.initial) {
             BlocProvider.of<AuthCubit>(context).authenticate('steve');
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
             return Container();
           }
         }));
   }
+
+  // _createSomeUsers(context) async {
+  //   for (User user in someUsers) {
+  //     print(user);
+  //     BlocProvider.of<UserCubit>(context).createUser(user);
+  //   }
+  // }
 }

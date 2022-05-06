@@ -39,6 +39,18 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(status: AuthStatus.error));
     }
   }
+
+  User getAuthenticatedUser() {
+    if (state.status == AuthStatus.authenticated) {
+      return state.user!;
+    } else {
+      throw Exception('Bad User Authentication');
+    }
+  }
+
+  // Future<void> removeUser() {
+
+  // }
   // await Future.delayed(const Duration(milliseconds: 1000))
   //     .then((value) => emit(state.copyWith(status: AuthStatus.authenticating)));
   // print('authenticating');

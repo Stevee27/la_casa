@@ -26,15 +26,15 @@ class AuthView extends StatelessWidget {
           if (state.status == UserStatus.success) {
             return Center(child: Text('Hello ${state.user!.firstName}'));
           } else if (state.status == UserStatus.loading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (state.status == UserStatus.initial) {
-            Future.delayed(Duration(milliseconds: 1000))
+            Future.delayed(const Duration(milliseconds: 1000))
                 .then((value) => BlocProvider.of<UserCubit>(context).getUser('steve'));
-            Future.delayed(Duration(milliseconds: 2000))
+            Future.delayed(const Duration(milliseconds: 2000))
                 .then((value) => BlocProvider.of<NavCubit>(context).showHome());
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         })));
   }

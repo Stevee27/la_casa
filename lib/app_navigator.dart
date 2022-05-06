@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_casa/user/auth_view.dart';
 
 import 'auth/auth_page.dart';
 import 'cart/cart_page.dart';
@@ -9,8 +8,6 @@ import 'menu_item/menu_item_page.dart';
 import 'menu/menu_page.dart';
 import 'nav/nav_cubit.dart';
 import 'nav/nav_state.dart';
-import 'order/order_page.dart';
-import 'user/auth_view.dart';
 
 class AppNavigator extends StatelessWidget {
   AppNavigator({Key? key}) : super(key: key);
