@@ -16,7 +16,9 @@ class AuthLayout extends StatelessWidget {
         width: 200,
         child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           Image.asset('assets/images/curbview.jpg'),
+          const Spacer(flex: 2),
           const Text('Login Page', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Spacer(flex: 2),
           TextField(
             controller: myController,
             decoration:
@@ -38,6 +40,7 @@ class AuthLayout extends StatelessWidget {
             },
             child: const Text('Login'),
           ),
+          const Spacer(flex: 10),
           TextButton(
             onPressed: () {},
             child: const Text('Not registered? Register here'),
