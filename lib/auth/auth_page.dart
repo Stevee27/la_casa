@@ -46,10 +46,10 @@ class AuthPage extends StatelessWidget {
         }));
   }
 
-  // _createSomeUsers(context) async {
-  //   for (User user in someUsers) {
-  //     print(user);
-  //     BlocProvider.of<UserCubit>(context).createUser(user);
-  //   }
-  // }
+  _createSomeUsers(context) async {
+    for (User user in someUsers) {
+      print(user);
+      BlocProvider.of<UserCubit>(context).createUser(user);
+    }
+  }
 }

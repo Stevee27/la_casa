@@ -15,10 +15,11 @@ class AuthLayout extends StatelessWidget {
       child: SizedBox(
         width: 200,
         child: Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          const Spacer(flex: 1),
           Image.asset('assets/images/curbview.jpg'),
-          const Spacer(flex: 2),
-          const Text('Login Page', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          const Spacer(flex: 2),
+          // const Spacer(flex: 2),
+          // const Text('Login Page', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          const Spacer(flex: 4),
           TextField(
             controller: myController,
             decoration:

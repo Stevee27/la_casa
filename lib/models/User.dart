@@ -33,6 +33,7 @@ class User extends Model {
   final String? _firstName;
   final String? _lastName;
   final Roles? _role;
+  final String? _email;
   final TemporalDateTime? _createdAt;
   final TemporalDateTime? _updatedAt;
 
@@ -60,6 +61,10 @@ class User extends Model {
     return _role;
   }
   
+  String? get email {
+    return _email;
+  }
+  
   TemporalDateTime? get createdAt {
     return _createdAt;
   }
@@ -68,15 +73,16 @@ class User extends Model {
     return _updatedAt;
   }
   
-  const User._internal({required this.id, userName, firstName, lastName, role, createdAt, updatedAt}): _userName = userName, _firstName = firstName, _lastName = lastName, _role = role, _createdAt = createdAt, _updatedAt = updatedAt;
+  const User._internal({required this.id, userName, firstName, lastName, role, email, createdAt, updatedAt}): _userName = userName, _firstName = firstName, _lastName = lastName, _role = role, _email = email, _createdAt = createdAt, _updatedAt = updatedAt;
   
-  factory User({String? id, String? userName, String? firstName, String? lastName, Roles? role}) {
+  factory User({String? id, String? userName, String? firstName, String? lastName, Roles? role, String? email}) {
     return User._internal(
       id: id == null ? UUID.getUUID() : id,
       userName: userName,
       firstName: firstName,
       lastName: lastName,
-      role: role);
+      role: role,
+      email: email);
   }
   
   bool equals(Object other) {
@@ -91,7 +97,8 @@ class User extends Model {
       _userName == other._userName &&
       _firstName == other._firstName &&
       _lastName == other._lastName &&
-      _role == other._role;
+      _role == other._role &&
+      _email == other._email;
   }
   
   @override
@@ -107,6 +114,7 @@ class User extends Model {
     buffer.write("firstName=" + "$_firstName" + ", ");
     buffer.write("lastName=" + "$_lastName" + ", ");
     buffer.write("role=" + (_role != null ? enumToString(_role)! : "null") + ", ");
+    buffer.write("email=" + "$_email" + ", ");
     buffer.write("createdAt=" + (_createdAt != null ? _createdAt!.format() : "null") + ", ");
     buffer.write("updatedAt=" + (_updatedAt != null ? _updatedAt!.format() : "null"));
     buffer.write("}");
@@ -114,13 +122,14 @@ class User extends Model {
     return buffer.toString();
   }
   
-  User copyWith({String? id, String? userName, String? firstName, String? lastName, Roles? role}) {
+  User copyWith({String? id, String? userName, String? firstName, String? lastName, Roles? role, String? email}) {
     return User._internal(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
-      role: role ?? this.role);
+      role: role ?? this.role,
+      email: email ?? this.email);
   }
   
   User.fromJson(Map<String, dynamic> json)  
@@ -129,11 +138,12 @@ class User extends Model {
       _firstName = json['firstName'],
       _lastName = json['lastName'],
       _role = enumFromString<Roles>(json['role'], Roles.values),
+      _email = json['email'],
       _createdAt = json['createdAt'] != null ? TemporalDateTime.fromString(json['createdAt']) : null,
       _updatedAt = json['updatedAt'] != null ? TemporalDateTime.fromString(json['updatedAt']) : null;
   
   Map<String, dynamic> toJson() => {
-    'id': id, 'userName': _userName, 'firstName': _firstName, 'lastName': _lastName, 'role': enumToString(_role), 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
+    'id': id, 'userName': _userName, 'firstName': _firstName, 'lastName': _lastName, 'role': enumToString(_role), 'email': _email, 'createdAt': _createdAt?.format(), 'updatedAt': _updatedAt?.format()
   };
 
   static final QueryField ID = QueryField(fieldName: "user.id");
@@ -141,6 +151,7 @@ class User extends Model {
   static final QueryField FIRSTNAME = QueryField(fieldName: "firstName");
   static final QueryField LASTNAME = QueryField(fieldName: "lastName");
   static final QueryField ROLE = QueryField(fieldName: "role");
+  static final QueryField EMAIL = QueryField(fieldName: "email");
   static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
     modelSchemaDefinition.pluralName = "Users";
@@ -180,6 +191,12 @@ class User extends Model {
       key: User.ROLE,
       isRequired: false,
       ofType: ModelFieldType(ModelFieldTypeEnum.enumeration)
+    ));
+    
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+      key: User.EMAIL,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
     ));
     
     modelSchemaDefinition.addField(ModelFieldDefinition.nonQueryField(

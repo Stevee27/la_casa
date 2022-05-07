@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/user/user_page.dart';
 
 import '../cart/cart_page.dart';
 import '../home/home_page.dart';
@@ -7,14 +8,13 @@ import '../menu_item/menu_item_page.dart';
 import '../menu/menu_page.dart';
 import '../models/MenuItem.dart';
 import '../order/order_page.dart';
-import '../user/auth_view.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
   final Set<ValueKey> destPages = <ValueKey>{};
 
   NavCubit() : super(const NavState(HomePage.valueKey)) {
-    destPages.add(AuthView.valueKey);
+    // destPages.add(AuthView.valueKey);
   }
 
   showHome() {
@@ -46,5 +46,10 @@ class NavCubit extends Cubit<NavState> {
   showOrder(menuItems, String itemID) {
     destPages.add(OrderPage.valueKey);
     emit(state.copyWith(dest: OrderPage.valueKey, menuItems: menuItems, itemID: itemID));
+  }
+
+  showUser() {
+    destPages.add(UserPage.valueKey);
+    emit(state.copyWith(dest: UserPage.valueKey));
   }
 }

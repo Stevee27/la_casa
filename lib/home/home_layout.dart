@@ -91,6 +91,9 @@ class HomeLayout extends StatelessWidget {
             case 2:
               BlocProvider.of<NavCubit>(context).showCart();
               break;
+            case 3:
+              BlocProvider.of<NavCubit>(context).showUser();
+              break;
           }
         },
       ),

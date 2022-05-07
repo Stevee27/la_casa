@@ -9,6 +9,7 @@ type User @model @auth(rules: [{allow: public}]) {
   firstName: String
   lastName: String
   role: Roles
+  email: AWSEmail
 }
 
 type Option @model @auth(rules: [{allow: public}]) {
