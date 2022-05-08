@@ -25,7 +25,7 @@ class NavCubit extends Cubit<NavState> {
   }
 
   showMenu() {
-    destPages.remove(MenuItemPage.valueKey);
+    destPages.clear();
     destPages.add(MenuPage.valueKey);
     // emit(const NavState(MenuPage.valueKey));
     emit(state.copyWith(dest: MenuPage.valueKey));
@@ -37,6 +37,7 @@ class NavCubit extends Cubit<NavState> {
   }
 
   showCart() {
+    destPages.clear();
     destPages.add(CartPage.valueKey);
     emit(state.copyWith(
       dest: CartPage.valueKey,

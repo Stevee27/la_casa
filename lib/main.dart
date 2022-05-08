@@ -2,6 +2,8 @@ import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:la_casa/app_navigator.dart';
 import 'package:la_casa/casa_error_widget.dart';
 import 'package:la_casa/home/home_repository.dart';
@@ -43,6 +45,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        supportedLocales: const [
+          Locale('en'),
+          Locale('it'),
+          Locale('es'),
+        ],
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          FormBuilderLocalizations.delegate,
+        ],
         title: 'La Casa Del Pane',
         theme: ThemeData(primarySwatch: Colors.cyan),
         home: MultiRepositoryProvider(
