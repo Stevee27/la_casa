@@ -34,14 +34,16 @@ class UserCubit extends Cubit<UserState> {
     await _userRepository.updateUser(user);
   }
 
-  void getUser(String userName) async {
-    try {
-      emit(state.copyWith(status: UserStatus.loading));
-      final user = await _userRepository.getUser(userName);
+  void getUser(String? userName) async {
+    if (userName != null) {
+      try {
+        emit(state.copyWith(status: UserStatus.loading));
+        final user = await _userRepository.getUser(userName);
 
-      emit(state.copyWith(status: UserStatus.success, user: user));
-    } catch (e) {
-      emit(state.copyWith(status: UserStatus.error));
+        emit(state.copyWith(status: UserStatus.success, user: user));
+      } catch (e) {
+        emit(state.copyWith(status: UserStatus.error));
+      }
     }
   }
 }

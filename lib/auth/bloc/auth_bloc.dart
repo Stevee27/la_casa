@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/User.dart';
+import '../../nav/nav_cubit.dart';
 import '../auth_repository.dart';
 
 enum AuthStatus { initial, authenticating, unauthenticated, authenticationFail, authenticated, error }
@@ -46,6 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
     } else {
       throw Exception('Bad User Authentication');
     }
+  }
+
+  Future<void> logout(context) async {
+    emit(state.copyWith(status: AuthStatus.unauthenticated));
   }
 
   // Future<void> removeUser() {

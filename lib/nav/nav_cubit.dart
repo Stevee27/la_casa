@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/user/user_page.dart';
 
+import '../auth/auth_page.dart';
+import '../auth/bloc/auth_bloc.dart';
 import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../menu_item/menu_item_page.dart';
@@ -52,5 +54,10 @@ class NavCubit extends Cubit<NavState> {
   showUser() {
     destPages.add(UserPage.valueKey);
     emit(state.copyWith(dest: UserPage.valueKey));
+  }
+
+  showAuth() {
+    destPages.clear();
+    emit(state.copyWith(dest: AuthPage.valueKey));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/models/StoreHours.dart';
+import 'package:la_casa/user/bloc/user_bloc.dart';
 
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';

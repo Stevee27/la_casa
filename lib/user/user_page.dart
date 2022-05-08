@@ -27,8 +27,17 @@ class UserPage extends StatelessWidget {
       body: BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
         if (state.status == AuthStatus.authenticated) {
           return Column(
-            children: const [
+            children: [
               Spacer(),
+              Row(
+                children: [
+                  const Spacer(),
+                  TextButton(
+                    child: const Text('logout', style: TextStyle(fontStyle: FontStyle.italic)),
+                    onPressed: () => _logout(context),
+                  )
+                ],
+              ),
               Text('User Profile', style: TextStyle(fontWeight: FontWeight.bold)),
               Spacer(),
               UserForm(),
@@ -36,8 +45,9 @@ class UserPage extends StatelessWidget {
             ],
           );
           // return Center(child: Text('Hello ${state.user!.firstName}'));
+        } else {
+          return Container();
         }
-        throw Exception('No Authenticated User');
       })),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -79,5 +89,10 @@ class UserPage extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _logout(context) {
+    BlocProvider.of<NavCubit>(context).showAuth();
+    BlocProvider.of<AuthCubit>(context).logout(context);
   }
 }

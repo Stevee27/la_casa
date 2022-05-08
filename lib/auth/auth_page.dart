@@ -28,6 +28,7 @@ class AuthPage extends StatelessWidget {
         ),
         body: BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
           if (state.status == AuthStatus.authenticated) {
+            if (state.user != null) BlocProvider.of<UserCubit>(context).getUser(state.user!.userName);
             BlocProvider.of<NavCubit>(context).showHome();
             return Container();
           } else if (state.status == AuthStatus.unauthenticated) {
