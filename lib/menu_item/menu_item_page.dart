@@ -135,10 +135,10 @@ class MenuItemPage extends StatelessWidget {
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
                                           const Spacer(),
-                                          OutlinedButton(
+                                          ElevatedButton(
                                             style: TextButton.styleFrom(
-                                              primary: Colors.white,
-                                              backgroundColor: Colors.pink,
+                                              primary: ColorScheme.fromSwatch().primary,
+                                              backgroundColor: Colors.white,
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {},
@@ -147,8 +147,8 @@ class MenuItemPage extends StatelessWidget {
                                           const Spacer(flex: 10),
                                           ElevatedButton(
                                             style: TextButton.styleFrom(
-                                              primary: Colors.white,
-                                              backgroundColor: Colors.pink,
+                                              primary: ColorScheme.fromSwatch().primary,
+                                              backgroundColor: Colors.white,
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {

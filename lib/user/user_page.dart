@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../auth/bloc/auth_bloc.dart';
 import '../nav/nav_cubit.dart';
+import 'bloc/user_bloc.dart';
 import 'user_form.dart';
 
 class UserPage extends StatelessWidget {
@@ -24,8 +25,8 @@ class UserPage extends StatelessWidget {
                     fit: BoxFit.fitWidth))),
         backgroundColor: Colors.white70,
       ),
-      body: BlocBuilder<AuthCubit, AuthState>(builder: ((context, state) {
-        if (state.status == AuthStatus.authenticated) {
+      body: BlocBuilder<UserCubit, UserState>(builder: ((context, state) {
+        if (state.status == UserStatus.success) {
           return Column(
             children: [
               Spacer(),

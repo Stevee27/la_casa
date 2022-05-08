@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/auth/bloc/auth_bloc.dart';
 import 'package:la_casa/user/user_repository.dart';
 
 import '../../models/User.dart';
@@ -26,15 +27,15 @@ class UserCubit extends Cubit<UserState> {
 
   final _userRepository = UserRepository();
 
-  void createUser(User user) async {
+  Future<void> createUser(User user) async {
     await _userRepository.createUser(user);
   }
 
-  void updateUser(User user) async {
+  Future<void> updateUser(User user) async {
     await _userRepository.updateUser(user);
   }
 
-  void getUser(String? userName) async {
+  Future<void> getUser(String? userName) async {
     if (userName != null) {
       try {
         emit(state.copyWith(status: UserStatus.loading));
@@ -45,5 +46,9 @@ class UserCubit extends Cubit<UserState> {
         emit(state.copyWith(status: UserStatus.error));
       }
     }
+  }
+
+  void clearUser() {
+    emit(const UserState(status: UserStatus.initial));
   }
 }
