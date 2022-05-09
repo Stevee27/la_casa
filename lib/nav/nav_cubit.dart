@@ -3,13 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/user/user_page.dart';
 
 import '../auth/auth_page.dart';
-import '../auth/bloc/auth_bloc.dart';
 import '../cart/cart_page.dart';
 import '../home/home_page.dart';
 import '../menu_item/menu_item_page.dart';
 import '../menu/menu_page.dart';
 import '../models/MenuItem.dart';
-import '../order/order_page.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {
@@ -44,11 +42,6 @@ class NavCubit extends Cubit<NavState> {
     emit(state.copyWith(
       dest: CartPage.valueKey,
     ));
-  }
-
-  showOrder(menuItems, String itemID) {
-    destPages.add(OrderPage.valueKey);
-    emit(state.copyWith(dest: OrderPage.valueKey, menuItems: menuItems, itemID: itemID));
   }
 
   showUser() {

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum CartStatus { initial, success, error, loading, selected }
+enum CartStatus { initial, success, error, loading, selected, adding }
 
 extension CartStatusX on CartStatus {
   bool get isInitial => this == CartStatus.initial;
@@ -27,6 +27,8 @@ class CartState {
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartState(status: CartStatus.initial));
+
+  void addItem(String userID, menuItem, selectedOptionIDs) {}
 
   void showCart() {}
 }

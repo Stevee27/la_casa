@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../models/MenuItem.dart';
 import '../../models/Order.dart';
 import '../order_repository.dart';
 
@@ -17,25 +18,24 @@ extension OrderStatusX on OrderStatus {
 // ignore: must_be_immutable
 class OrderState extends Equatable {
   final OrderStatus? status;
-  final List<Order>? options;
+  final Order? currentOrder;
 
-  OrderState({this.status, this.options});
+  OrderState({this.status, this.currentOrder});
 
   OrderState copyWith({
     OrderStatus? status,
-    List<Order>? options,
-    Set<String>? selectedOrders,
+    Order? currentOrder,
   }) {
     return OrderState(
       status: status ?? this.status,
-      options: options ?? this.options,
+      currentOrder: currentOrder ?? this.currentOrder,
     );
   }
 
   @override
   List<Object?> get props => [
         status,
-        options,
+        currentOrder,
       ];
 }
 
@@ -46,6 +46,14 @@ class OrderCubit extends Cubit<OrderState> {
 
   Order getCurrentOrder() {
     return null as Order;
+  }
+
+  Future<void> addItem(String userID, MenuItem menuItem, List<String> selectedOptionIDs) async {
+    if (state.status == OrderStatus.initial) {
+      var order = Order(userID: userID);
+      emit(state.copyWith(status: OrderStatus.loading, currentOrder: order));
+    }
+    emit(state.copyWith(status: OrderStatus.success));
   }
 
   void createOrder() {}

@@ -3,11 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/options/bloc/menu_options_bloc.dart';
+import 'package:la_casa/user/bloc/user_bloc.dart';
 
 import '../models/MenuItem.dart';
+import '../models/User.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import '../options/menu_options_widget.dart';
+import '../order/bloc/order_bloc.dart';
 import 'bloc/menu_item_bloc.dart';
 
 class MenuItemPage extends StatelessWidget {
@@ -152,6 +155,12 @@ class MenuItemPage extends StatelessWidget {
                                               textStyle: const TextStyle(fontSize: 14),
                                             ),
                                             onPressed: () {
+                                              User user =
+                                                  BlocProvider.of<UserCubit>(context).getCurrentUser();
+                                              List<String> selectedOptionIDs =
+                                                  BlocProvider.of<OptionsCubit>(context).getSelectedOptions();
+                                              BlocProvider.of<CartCubit>(context)
+                                                  .addItem(user.id, menuItem, selectedOptionIDs);
                                               Scaffold.of(context).showSnackBar(const SnackBar(
                                                   // margin: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0),
                                                   backgroundColor: Colors.pink,

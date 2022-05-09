@@ -48,6 +48,14 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  User getCurrentUser() {
+    if (state.user != null) {
+      return state.user!;
+    } else {
+      throw Exception('No current user');
+    }
+  }
+
   void clearUser() {
     emit(const UserState(status: UserStatus.initial));
   }

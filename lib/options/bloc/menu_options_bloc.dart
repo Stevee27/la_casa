@@ -101,4 +101,8 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
     return sum;
   }
+
+  List<String> getSelectedOptions() {
+    return state.selectedOptions!.toList();
+  }
 }
