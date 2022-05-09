@@ -19,14 +19,14 @@ extension OptionStatusX on OptionStatus {
 class OptionsState extends Equatable {
   final OptionStatus? status;
   final List<Option>? options;
-  Set<String>? selectedOptions;
+  Set<Option>? selectedOptions;
 
   OptionsState({this.status, this.options, this.selectedOptions});
 
   OptionsState copyWith({
     OptionStatus? status,
     List<Option>? options,
-    Set<String>? selectedOptions,
+    Set<Option>? selectedOptions,
   }) {
     return OptionsState(
       status: status ?? this.status,
@@ -47,7 +47,7 @@ class OptionsCubit extends Cubit<OptionsState> {
   void getOptionsForMenuItem(MenuItem menuItem) async {
     try {
       if (state.status == OptionStatus.initial) {
-        state.selectedOptions = <String>{};
+        state.selectedOptions = <Option>{};
       }
       emit(state.copyWith(status: OptionStatus.loading));
       final options = await _optionsRepository.getOptionsForMenuItem(menuItem);
@@ -62,7 +62,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     if (state.status == OptionStatus.success) {
       try {
         emit(state.copyWith(
-          selectedOptions: <String>{},
+          selectedOptions: <Option>{},
         ));
       } catch (e) {
         rethrow;
@@ -70,12 +70,12 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  void selectOption(String selectedID) async {
+  void selectOption(Option selectedOption) async {
     if (state.status == OptionStatus.success) {
       try {
-        state.selectedOptions!.contains(selectedID)
-            ? state.selectedOptions!.remove(selectedID)
-            : state.selectedOptions!.add(selectedID);
+        state.selectedOptions!.contains(selectedOption)
+            ? state.selectedOptions!.remove(selectedOption)
+            : state.selectedOptions!.add(selectedOption);
         emit(state.copyWith(
           status: OptionStatus.selected,
           selectedOptions: state.selectedOptions,
@@ -92,7 +92,7 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   double getOptionsPrice() {
     var arr = state.options!
-        .where((o) => state.selectedOptions!.contains(o.id))
+        .where((o) => state.selectedOptions!.contains(o))
         .map((e) => e.price == null ? 0 : double.parse(e.price!));
     // .toList();
     double sum = 0;
@@ -102,7 +102,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     return sum;
   }
 
-  List<String> getSelectedOptions() {
+  List<Option> getSelectedOptions() {
     return state.selectedOptions!.toList();
   }
 }

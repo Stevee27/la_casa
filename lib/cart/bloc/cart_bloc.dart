@@ -1,4 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../models/MenuItem.dart';
+import '../../models/Option.dart';
 
 enum CartStatus { initial, success, error, loading, selected, adding }
 
@@ -11,24 +15,43 @@ extension CartStatusX on CartStatus {
 }
 
 // ignore: must_be_immutable
-class CartState {
+class CartState extends Equatable {
   final CartStatus? status;
+  List<CartItem> items;
 
-  CartState({this.status});
+  CartState({this.status, this.items = const []});
 
-  CartState copyWith({
-    CartStatus? status,
-  }) {
+  CartState copyWith({CartStatus? status, List<CartItem>? items}) {
     return CartState(
       status: status ?? this.status,
+      items: items ?? this.items,
     );
   }
+
+  @override
+  List<Object?> get props => [status, items];
+}
+
+class CartItem {
+  final MenuItem menuItem;
+  final List<Option> options;
+  final int quantity;
+
+  CartItem({required this.menuItem, this.options = const [], this.quantity = 1});
 }
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartState(status: CartStatus.initial));
 
-  void addItem(String userID, menuItem, selectedOptionIDs) {}
+  void addItem(menuItem, selectedOptions) {
+    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions);
+    List<CartItem> changedItems = List.from(state.items);
+    changedItems.add(item);
+    emit(state.copyWith(
+      status: CartStatus.adding,
+      items: changedItems,
+    ));
+  }
 
   void showCart() {}
 }

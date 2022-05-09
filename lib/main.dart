@@ -14,6 +14,7 @@ import 'package:la_casa/user/bloc/user_bloc.dart';
 import 'amplifyconfiguration.dart';
 import 'app_bloc_observer.dart';
 import 'auth/bloc/auth_bloc.dart';
+import 'cart/bloc/cart_bloc.dart';
 import 'home/bloc/store_hours_bloc.dart';
 import 'menu/bloc/menu_bloc.dart';
 import 'menu/menu_repository.dart';
@@ -68,6 +69,7 @@ class _MyAppState extends State<MyApp> {
             BlocProvider(create: (context) => NavCubit()),
             BlocProvider(create: (context) => StoreHoursCubit()..getStoreHours()),
             BlocProvider(create: (context) => MenuCubit()..getMenu()),
+            BlocProvider(create: (context) => CartCubit()),
           ], child: _amplifyConfigured ? AppNavigator() : const LoadingView()),
         ));
   }

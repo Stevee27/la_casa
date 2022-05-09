@@ -3,14 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/options/bloc/menu_options_bloc.dart';
-import 'package:la_casa/user/bloc/user_bloc.dart';
 
+import '../cart/bloc/cart_bloc.dart';
 import '../models/MenuItem.dart';
-import '../models/User.dart';
+import '../models/Option.dart';
 import '../nav/nav_cubit.dart';
 import '../nav/nav_state.dart';
 import '../options/menu_options_widget.dart';
-import '../order/bloc/order_bloc.dart';
 import 'bloc/menu_item_bloc.dart';
 
 class MenuItemPage extends StatelessWidget {
@@ -21,7 +20,6 @@ class MenuItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int currentItemIndex = 0;
-    String currentSelectedID = '';
     List<MenuItem> menuItems = [];
 
     onSwipeRight(BuildContext context) {
@@ -56,170 +54,178 @@ class MenuItemPage extends StatelessWidget {
                         fit: BoxFit.fitWidth))),
             backgroundColor: Colors.white70,
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: BlocBuilder<NavCubit, NavState>(builder: ((context, state) {
-                menuItems = state.menuItems;
-                currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
-                if (currentItemIndex < 0) {
-                  throw Exception("Menu index error");
-                }
-                MenuItem menuItem = menuItems[currentItemIndex];
-                currentSelectedID = menuItem.id;
-                BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
-                  if (state.status == OptionStatus.success) {
-                    return GestureDetector(
-                        behavior: HitTestBehavior.opaque,
-                        onHorizontalDragEnd: (details) {
-                          if (details.primaryVelocity! > 0) {
-                            onSwipeLeft(context);
-                          } else if (details.primaryVelocity! < 0) {
-                            onSwipeRight(context);
-                          }
-                        },
-                        child: Column(children: [
-                          Card(
-                            elevation: 4,
-                            child: Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Column(children: [
-                                  if (menuItem.name!.isNotEmpty)
-                                    Text(menuItem.name!,
-                                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                                  if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
-                                  Text(menuItem.description!,
-                                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                                  const SizedBox(height: 20),
-                                  Builder(
-                                    builder: (BuildContext context) {
-                                      return Row(
-                                        children: [
-                                          const Spacer(),
-                                          if (menuItem.smallPrice!.isEmpty && menuItem.price!.isNotEmpty)
-                                            Text('Price: \$${_calculateTotalPrice(context, menuItem.price)}',
-                                                style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.price!.isEmpty && menuItem.smallPrice!.isNotEmpty)
-                                            Text(
-                                                'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
-                                                style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty)
-                                            _renderMultiPriceLine(context, menuItem),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ])),
-                          ),
-                          Expanded(
-                            flex: 30,
-                            child: Card(
+          body: BlocListener<CartCubit, CartState>(
+            listener: (context, state) {
+              print("State Changed");
+              Scaffold.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.pink,
+                content: Text('Item placed on cart'),
+              ));
+              Future.delayed(const Duration(milliseconds: 1500)).then(
+                (value) => BlocProvider.of<NavCubit>(context).showMenu(),
+              );
+            },
+            child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: BlocBuilder<NavCubit, NavState>(builder: (context, state) {
+                  menuItems = state.menuItems;
+                  currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
+                  if (currentItemIndex < 0) {
+                    throw Exception("Menu index error");
+                  }
+                  MenuItem menuItem = menuItems[currentItemIndex];
+                  BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                  return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
+                    if (state.status == OptionStatus.success) {
+                      return GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onHorizontalDragEnd: (details) {
+                            if (details.primaryVelocity! > 0) {
+                              onSwipeLeft(context);
+                            } else if (details.primaryVelocity! < 0) {
+                              onSwipeRight(context);
+                            }
+                          },
+                          child: Column(children: [
+                            Card(
                               elevation: 4,
                               child: Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                child: MenuOptions(
-                                  menuItem: menuItem,
-                                  options: state.options!,
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(children: [
+                                    if (menuItem.name!.isNotEmpty)
+                                      Text(menuItem.name!,
+                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                    if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
+                                    Text(menuItem.description!,
+                                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                                    const SizedBox(height: 20),
+                                    // Builder(
+                                    // builder: (BuildContext context) {
+                                    Row(
+                                      children: [
+                                        const Spacer(),
+                                        if (menuItem.smallPrice!.isEmpty && menuItem.price!.isNotEmpty)
+                                          Text('Price: \$${_calculateTotalPrice(context, menuItem.price)}',
+                                              style:
+                                                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                        if (menuItem.price!.isEmpty && menuItem.smallPrice!.isNotEmpty)
+                                          Text(
+                                              'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
+                                              style:
+                                                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                                        if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty)
+                                          _renderMultiPriceLine(context, menuItem),
+                                      ],
+                                    )
+                                    // },
+                                    // ),
+                                  ])),
+                            ),
+                            Expanded(
+                              flex: 30,
+                              child: Card(
+                                elevation: 4,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                  child: MenuOptions(
+                                    menuItem: menuItem,
+                                    options: state.options!,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: SizedBox(
-                                width: double.infinity,
-                                child: Card(
-                                    elevation: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 8),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Spacer(),
-                                          ElevatedButton(
-                                            style: TextButton.styleFrom(
-                                              primary: ColorScheme.fromSwatch().primary,
-                                              backgroundColor: Colors.white,
-                                              textStyle: const TextStyle(fontSize: 14),
+                            Expanded(
+                              flex: 4,
+                              child: SizedBox(
+                                  width: double.infinity,
+                                  child: Card(
+                                      elevation: 4,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 8),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Spacer(),
+                                            ElevatedButton(
+                                              style: TextButton.styleFrom(
+                                                primary: ColorScheme.fromSwatch().primary,
+                                                backgroundColor: Colors.white,
+                                                textStyle: const TextStyle(fontSize: 14),
+                                              ),
+                                              onPressed: () {},
+                                              child: const Text('Show Photo'),
                                             ),
-                                            onPressed: () {},
-                                            child: const Text('Show Photo'),
-                                          ),
-                                          const Spacer(flex: 10),
-                                          ElevatedButton(
-                                            style: TextButton.styleFrom(
-                                              primary: ColorScheme.fromSwatch().primary,
-                                              backgroundColor: Colors.white,
-                                              textStyle: const TextStyle(fontSize: 14),
+                                            const Spacer(flex: 10),
+                                            ElevatedButton(
+                                              style: TextButton.styleFrom(
+                                                primary: ColorScheme.fromSwatch().primary,
+                                                backgroundColor: Colors.white,
+                                                textStyle: const TextStyle(fontSize: 14),
+                                              ),
+                                              onPressed: () {
+                                                List<Option> selectedOptions =
+                                                    BlocProvider.of<OptionsCubit>(context)
+                                                        .getSelectedOptions();
+                                                BlocProvider.of<CartCubit>(context)
+                                                    .addItem(menuItem, selectedOptions);
+                                              },
+                                              child: const Text('Add to Cart'),
                                             ),
-                                            onPressed: () {
-                                              User user =
-                                                  BlocProvider.of<UserCubit>(context).getCurrentUser();
-                                              List<String> selectedOptionIDs =
-                                                  BlocProvider.of<OptionsCubit>(context).getSelectedOptions();
-                                              BlocProvider.of<CartCubit>(context)
-                                                  .addItem(user.id, menuItem, selectedOptionIDs);
-                                              Scaffold.of(context).showSnackBar(const SnackBar(
-                                                  // margin: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 10.0),
-                                                  backgroundColor: Colors.pink,
-                                                  content: Text('Item placed on cart')));
-                                              Future.delayed(const Duration(milliseconds: 1500)).then(
-                                                (value) => BlocProvider.of<NavCubit>(context).showMenu(),
-                                              );
-                                            },
-                                            child: const Text('Add to Cart'),
-                                          ),
-                                          const Spacer()
-                                        ],
-                                      ),
-                                    ))),
-                          ),
-                        ]));
-                  }
-                  if (state.status == OptionStatus.selected) {
-                    BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                    return Container();
-                  } else {
-                    return const CircularProgressIndicator();
-                  }
-                }));
-              }))),
-          bottomNavigationBar: BottomNavigationBar(
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.local_restaurant),
-                label: 'Menu',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Show Cart',
-              ),
-            ],
-            currentIndex: 1,
-            unselectedItemColor: Colors.grey,
-            selectedItemColor: Colors.amber[800],
-            showUnselectedLabels: true,
-            onTap: (i) async {
-              switch (i) {
-                case 0:
-                  BlocProvider.of<NavCubit>(context).showHome();
-                  break;
-                case 1:
-                  BlocProvider.of<NavCubit>(context).showMenu();
-                  break;
-                case 2:
-                  BlocProvider.of<NavCubit>(context).showCart();
-                  break;
-              }
-            },
+                                            const Spacer()
+                                          ],
+                                        ),
+                                      ))),
+                            ),
+                          ]));
+                    }
+                    if (state.status == OptionStatus.selected) {
+                      BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                      return Container();
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  }));
+                })),
+            // bottomNavigationBar:
           ),
+          bottomNavigationBar: _navBar(context),
         ));
+  }
+
+  Widget _navBar(context) {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.local_restaurant),
+          label: 'Menu',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart),
+          label: 'Show Cart',
+        ),
+      ],
+      currentIndex: 1,
+      unselectedItemColor: Colors.grey,
+      selectedItemColor: Colors.amber[800],
+      showUnselectedLabels: true,
+      onTap: (i) async {
+        switch (i) {
+          case 0:
+            BlocProvider.of<NavCubit>(context).showHome();
+            break;
+          case 1:
+            BlocProvider.of<NavCubit>(context).showMenu();
+            break;
+          case 2:
+            BlocProvider.of<NavCubit>(context).showCart();
+            break;
+        }
+      },
+    );
   }
 
   String _calculateTotalPrice(context, String? basePrice) {

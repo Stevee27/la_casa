@@ -27,7 +27,7 @@ class MenuOptions extends StatelessWidget {
                           //Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
                           Text(o.name!, style: const TextStyle(fontSize: 16)),
                       value: BlocProvider.of<OptionsCubit>(context).getValue(o.id),
-                      onChanged: (newValue) => BlocProvider.of<OptionsCubit>(context).selectOption(o.id)),
+                      onChanged: (newValue) => BlocProvider.of<OptionsCubit>(context).selectOption(o)),
                 ),
                 Expanded(
                     child: Padding(
