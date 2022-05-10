@@ -62,9 +62,11 @@ class MenuItemPage extends StatelessWidget {
                     backgroundColor: Colors.pink,
                     content: Text('Item placed on cart'),
                   ));
-                  Future.delayed(const Duration(milliseconds: 1500)).then(
-                    (value) => BlocProvider.of<NavCubit>(context).showMenu(),
-                  );
+                  Future.delayed(const Duration(milliseconds: 1000))
+                      .then((value) => BlocProvider.of<CartCubit>(context).itemAdded());
+                  // .then((value) => BlocProvider.of<NavCubit>(context).showMenu());
+                } else if (state.status == CartStatus.success) {
+                  BlocProvider.of<NavCubit>(context).showMenu();
                 }
               },
               child: Padding(

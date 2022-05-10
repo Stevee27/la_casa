@@ -53,5 +53,13 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
-  void showCart() {}
+  void itemAdded() {
+    emit(state.copyWith(status: CartStatus.success));
+  }
+
+  void showCart() {
+    if (state.status != CartStatus.success) {
+      print("here");
+    }
+  }
 }

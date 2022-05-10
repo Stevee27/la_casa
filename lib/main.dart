@@ -12,7 +12,7 @@ import 'package:la_casa/nav/bloc/nav_cubit.dart';
 import 'package:la_casa/user/bloc/user_bloc.dart';
 
 import 'amplifyconfiguration.dart';
-import 'app_bloc_observer.dart';
+import 'utils/app_bloc_observer.dart';
 import 'auth/bloc/auth_bloc.dart';
 import 'cart/bloc/cart_bloc.dart';
 import 'home/bloc/store_hours_bloc.dart';
