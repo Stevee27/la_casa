@@ -1,5 +1,5 @@
-import '../models/Roles.dart';
-import '../models/User.dart';
+import '../../models/Roles.dart';
+import '../../models/User.dart';
 
 List<User> someUsers = [
   User(

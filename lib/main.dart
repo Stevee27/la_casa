@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
-import 'package:la_casa/app_navigator.dart';
-import 'package:la_casa/casa_error_widget.dart';
+import 'package:la_casa/nav/app_navigator.dart';
+import 'package:la_casa/utils/widgets/casa_error_widget.dart';
 import 'package:la_casa/home/home_repository.dart';
-import 'package:la_casa/loading_view.dart';
+import 'package:la_casa/utils/widgets/loading_view.dart';
 import 'package:la_casa/nav/bloc/nav_cubit.dart';
 import 'package:la_casa/user/bloc/user_bloc.dart';
 

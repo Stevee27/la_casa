@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'auth/auth_page.dart';
-import 'cart/cart_page.dart';
-import 'home/home_page.dart';
-import 'menu_item/menu_item_page.dart';
-import 'menu/menu_page.dart';
-import 'nav/bloc/nav_cubit.dart';
-import 'nav/bloc/nav_state.dart';
-import 'user/user_page.dart';
+import '../auth/auth_page.dart';
+import '../cart/cart_page.dart';
+import '../home/home_page.dart';
+import '../menu_item/menu_item_page.dart';
+import '../menu/menu_page.dart';
+import 'bloc/nav_cubit.dart';
+import 'bloc/nav_state.dart';
+import '../user/user_page.dart';
 
 class AppNavigator extends StatelessWidget {
   AppNavigator({Key? key}) : super(key: key);

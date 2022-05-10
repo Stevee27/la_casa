@@ -5,7 +5,7 @@ import 'package:la_casa/auth/auth_layout.dart';
 import '../models/User.dart';
 import '../nav/bloc/nav_cubit.dart';
 import '../user/bloc/user_bloc.dart';
-import '../utils/some_users.dart';
+import '../utils/initial_data/some_users.dart';
 import 'bloc/auth_bloc.dart';
 
 class AuthPage extends StatelessWidget {

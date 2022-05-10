@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:la_casa/casa_error_widget.dart';
+import 'package:la_casa/utils/widgets/casa_error_widget.dart';
 import 'package:la_casa/home/bloc/store_hours_bloc.dart';
 import 'package:la_casa/home/home_layout.dart';
 import 'package:la_casa/home/home_repository.dart';
-import 'package:la_casa/loading_view.dart';
+import 'package:la_casa/utils/widgets/loading_view.dart';
 import 'package:la_casa/menu/menu_repository.dart';
-import 'package:la_casa/utils/initial_options.dart';
+import 'package:la_casa/utils/initial_data/initial_options.dart';
 
 import '../models/MenuItem.dart';
 import '../models/Option.dart';
-import '../utils/menu-item-model.dart';
-import '../utils/menu-items.dart';
+import '../utils/initial_data/menu-item-model.dart';
+import '../utils/initial_data/menu-items.dart';
 
 class HomePage extends StatelessWidget {
   static const valueKey = ValueKey<String>("HomePage");
