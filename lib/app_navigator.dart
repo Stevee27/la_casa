@@ -6,8 +6,8 @@ import 'cart/cart_page.dart';
 import 'home/home_page.dart';
 import 'menu_item/menu_item_page.dart';
 import 'menu/menu_page.dart';
-import 'nav/nav_cubit.dart';
-import 'nav/nav_state.dart';
+import 'nav/bloc/nav_cubit.dart';
+import 'nav/bloc/nav_state.dart';
 import 'user/user_page.dart';
 
 class AppNavigator extends StatelessWidget {

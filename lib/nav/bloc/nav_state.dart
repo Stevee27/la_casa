@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-import '../models/MenuItem.dart';
+import '../../models/MenuItem.dart';
 
 class NavState extends Equatable {
   const NavState(this.dest, {this.menuItems = const [], this.itemID = ''});

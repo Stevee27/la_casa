@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/auth/auth_layout.dart';
 
 import '../models/User.dart';
-import '../nav/nav_cubit.dart';
+import '../nav/bloc/nav_cubit.dart';
 import '../user/bloc/user_bloc.dart';
 import '../utils/some_users.dart';
 import 'bloc/auth_bloc.dart';

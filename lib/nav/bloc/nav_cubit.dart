@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/user/user_page.dart';
 
-import '../auth/auth_page.dart';
-import '../cart/cart_page.dart';
-import '../home/home_page.dart';
-import '../menu_item/menu_item_page.dart';
-import '../menu/menu_page.dart';
-import '../models/MenuItem.dart';
+import '../../auth/auth_page.dart';
+import '../../cart/cart_page.dart';
+import '../../home/home_page.dart';
+import '../../menu_item/menu_item_page.dart';
+import '../../menu/menu_page.dart';
+import '../../models/MenuItem.dart';
 import 'nav_state.dart';
 
 class NavCubit extends Cubit<NavState> {

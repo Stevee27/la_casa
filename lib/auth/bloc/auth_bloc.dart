@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/User.dart';
-import '../../nav/nav_cubit.dart';
+import '../../nav/bloc/nav_cubit.dart';
 import '../auth_repository.dart';
 
 enum AuthStatus { initial, authenticating, unauthenticated, authenticationFail, authenticated, error }

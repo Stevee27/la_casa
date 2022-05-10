@@ -8,7 +8,7 @@ import 'package:la_casa/app_navigator.dart';
 import 'package:la_casa/casa_error_widget.dart';
 import 'package:la_casa/home/home_repository.dart';
 import 'package:la_casa/loading_view.dart';
-import 'package:la_casa/nav/nav_cubit.dart';
+import 'package:la_casa/nav/bloc/nav_cubit.dart';
 import 'package:la_casa/user/bloc/user_bloc.dart';
 
 import 'amplifyconfiguration.dart';

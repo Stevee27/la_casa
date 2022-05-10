@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../models/MenuItem.dart';
-import '../nav/nav_cubit.dart';
+import '../nav/bloc/nav_cubit.dart';
 
 class CardMenu extends StatelessWidget {
   final String subtitle;
@@ -24,8 +24,8 @@ class CardMenu extends StatelessWidget {
                 itemCount: menuItems.length,
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
-                      onTap: () => BlocProvider.of<NavCubit>(context)
-                          .showMenuItem(menuItems, menuItems[index].id),
+                      onTap: () =>
+                          BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[index].id),
                       child: Card(
                           elevation: 4,
                           child: Padding(
@@ -33,18 +33,14 @@ class CardMenu extends StatelessWidget {
                               child: Row(children: [
                                 Expanded(
                                     flex: 5,
-                                    child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          if (menuItems[index].name!.isNotEmpty)
-                                            Text(menuItems[index].name!,
-                                                style:
-                                                    const TextStyle(fontWeight: FontWeight.w700)),
-                                          Text(menuItems[index].description!,
-                                              style: !hasName
-                                                  ? const TextStyle(fontWeight: FontWeight.w500)
-                                                  : null)
-                                        ])),
+                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                                      if (menuItems[index].name!.isNotEmpty)
+                                        Text(menuItems[index].name!,
+                                            style: const TextStyle(fontWeight: FontWeight.w700)),
+                                      Text(menuItems[index].description!,
+                                          style:
+                                              !hasName ? const TextStyle(fontWeight: FontWeight.w500) : null)
+                                    ])),
                                 const SizedBox(width: 10),
                                 Expanded(
                                     flex: 1,
@@ -71,8 +67,7 @@ class CardMenu extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
             color: Colors.pink,
             child: Row(children: [
-              Text(subtitle,
-                  textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text(subtitle, textAlign: TextAlign.left, style: const TextStyle(fontWeight: FontWeight.w500)),
               const Spacer(),
               const Text('Small  Large'),
             ])));

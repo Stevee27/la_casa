@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/models/StoreHours.dart';
 import 'package:la_casa/user/bloc/user_bloc.dart';
 
-import '../nav/nav_cubit.dart';
-import '../nav/nav_state.dart';
+import '../nav/nav_bar.dart';
+import '../nav/bloc/nav_cubit.dart';
+import '../nav/bloc/nav_state.dart';
 import 'store_hours_widget.dart';
 
 class HomeLayout extends StatelessWidget {
@@ -59,45 +60,7 @@ class HomeLayout extends StatelessWidget {
           ));
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_restaurant),
-            label: 'Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'SHow Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 0,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.amber[800],
-        onTap: (i) async {
-          switch (i) {
-            case 0:
-              BlocProvider.of<NavCubit>(context).showHome();
-              break;
-            case 1:
-              BlocProvider.of<NavCubit>(context).showMenu();
-              break;
-            case 2:
-              BlocProvider.of<NavCubit>(context).showCart();
-              break;
-            case 3:
-              BlocProvider.of<NavCubit>(context).showUser();
-              break;
-          }
-        },
-      ),
+      bottomNavigationBar: NavBar(0),
     );
   }
 }
