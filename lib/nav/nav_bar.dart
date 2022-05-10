@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cart/bloc/cart_bloc.dart';
 import 'bloc/nav_cubit.dart';
 
 class NavBar extends StatelessWidget {
@@ -44,6 +45,7 @@ class NavBar extends StatelessWidget {
             BlocProvider.of<NavCubit>(context).showMenu();
             break;
           case 2:
+            BlocProvider.of<CartCubit>(context).showCart();
             BlocProvider.of<NavCubit>(context).showCart();
             break;
           case 3:
