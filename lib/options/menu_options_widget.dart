@@ -26,7 +26,7 @@ class MenuOptions extends StatelessWidget {
                       title:
                           //Text(o.name!, style: const TextStyle(color: Colors.pink, fontSize: 16)),
                           Text(o.name!, style: const TextStyle(fontSize: 16)),
-                      value: BlocProvider.of<OptionsCubit>(context).getValue(o.id),
+                      value: BlocProvider.of<OptionsCubit>(context).getValue(o),
                       onChanged: (newValue) => BlocProvider.of<OptionsCubit>(context).selectOption(o)),
                 ),
                 Expanded(

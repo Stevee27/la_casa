@@ -86,8 +86,8 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  bool getValue(String selectedID) {
-    return state.selectedOptions == null ? false : state.selectedOptions!.contains(selectedID);
+  bool getValue(Option selectedOption) {
+    return state.selectedOptions == null ? false : state.selectedOptions!.contains(selectedOption);
   }
 
   double getOptionsPrice() {
