@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/Option.dart';
 import '../menu_item_repository.dart';
 
-enum MenuItemStatus { initial, success, error, loading, selected }
+enum MenuItemStatus { initial, success, error, loading, selected, reloading }
 
 extension MenuItemStatusX on MenuItemStatus {
   bool get isInitial => this == MenuItemStatus.initial;
@@ -24,8 +24,11 @@ class MenuItemState extends Equatable {
 
   MenuItemState({this.status, this.options, this.selectedOptions, this.optionPrice});
 
-  MenuItemState copyWith({MenuItemStatus? status, String? optionPrice}) {
-    return MenuItemState(status: status ?? this.status, optionPrice: optionPrice ?? this.optionPrice);
+  MenuItemState copyWith({MenuItemStatus? status, String? optionPrice, Set<String>? selectedOptions}) {
+    return MenuItemState(
+        status: status ?? this.status,
+        optionPrice: optionPrice ?? this.optionPrice,
+        selectedOptions: selectedOptions ?? this.selectedOptions);
   }
 
   @override

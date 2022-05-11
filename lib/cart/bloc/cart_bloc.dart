@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 
-enum CartStatus { initial, success, error, loading, selected, adding }
+enum CartStatus { initial, success, error, loading, selected, adding, reloadingOptionsForItem }
 
 extension CartStatusX on CartStatus {
   bool get isInitial => this == CartStatus.initial;
@@ -19,18 +19,20 @@ extension CartStatusX on CartStatus {
 class CartState extends Equatable {
   final CartStatus? status;
   List<CartItem> items;
+  CartItem? reloadedCartItem;
 
-  CartState({this.status, this.items = const []});
+  CartState({this.status, this.items = const [], this.reloadedCartItem});
 
-  CartState copyWith({CartStatus? status, List<CartItem>? items}) {
+  CartState copyWith({CartStatus? status, List<CartItem>? items, CartItem? reloadedCartItem}) {
     return CartState(
       status: status ?? this.status,
       items: items ?? this.items,
+      reloadedCartItem: reloadedCartItem ?? this.reloadedCartItem,
     );
   }
 
   @override
-  List<Object?> get props => [status, items];
+  List<Object?> get props => [status, items, reloadedCartItem];
 }
 
 class CartItem {
@@ -53,6 +55,17 @@ class CartCubit extends Cubit<CartState> {
       status: CartStatus.adding,
       items: changedItems,
     ));
+  }
+
+  void reloadMenuItemOptions(CartItem cartItem) {
+    emit(state.copyWith(
+      status: CartStatus.reloadingOptionsForItem,
+      reloadedCartItem: cartItem,
+    ));
+  }
+
+  void menuItemOptionsReloaded() {
+    emit(state.copyWith(status: CartStatus.success));
   }
 
   void itemAdded() {
