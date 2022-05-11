@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
@@ -33,6 +34,7 @@ class CartState extends Equatable {
 }
 
 class CartItem {
+  final id = const Uuid().v1;
   final MenuItem menuItem;
   final List<Option> options;
   final int quantity;

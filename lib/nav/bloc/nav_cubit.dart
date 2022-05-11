@@ -36,6 +36,12 @@ class NavCubit extends Cubit<NavState> {
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
   }
 
+  editMenuItem(String itemID) {
+    destPages.remove(CartPage.valueKey);
+    destPages.add(MenuItemPage.valueKey);
+    emit(state.copyWith(dest: MenuItemPage.valueKey, itemID: itemID));
+  }
+
   showCart() {
     destPages.clear();
     destPages.add(CartPage.valueKey);

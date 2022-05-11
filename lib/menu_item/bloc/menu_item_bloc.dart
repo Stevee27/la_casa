@@ -20,13 +20,12 @@ class MenuItemState extends Equatable {
   final List<Option>? options;
   Set<String>? selectedOptions;
   String? optionPrice;
-  Map<String, double> optionPriceMap = {};
+  // Map<String, double> optionPriceMap = {};
 
   MenuItemState({this.status, this.options, this.selectedOptions, this.optionPrice});
 
   MenuItemState copyWith({MenuItemStatus? status, String? optionPrice}) {
-    return MenuItemState(
-        status: status ?? this.status, optionPrice: optionPrice ?? this.optionPrice);
+    return MenuItemState(status: status ?? this.status, optionPrice: optionPrice ?? this.optionPrice);
   }
 
   @override
