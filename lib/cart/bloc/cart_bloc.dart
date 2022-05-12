@@ -48,7 +48,7 @@ class CartState extends Equatable {
 class CartItem {
   final id = const Uuid().v1;
   final MenuItem menuItem;
-  final List<Option> options;
+  List<Option> options;
   final int quantity;
 
   CartItem({required this.menuItem, this.options = const [], this.quantity = 1});
@@ -67,10 +67,15 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
-  void editItem(CartItem? cartItem) {
-    var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
-    print(edittedItem);
-    emit(state.copyWith(status: CartStatus.editted));
+  void editItem(CartItem? cartItem, List<Option>? options) {
+    if (cartItem != null && options != null) {
+      var index = state.items.indexWhere((element) => element.id == cartItem.id);
+      // var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
+      List<CartItem> edittedCartList = List.from(state.items);
+      edittedCartList[index].options = options;
+      // edittedCartList[index].options = options;
+      emit(state.copyWith(status: CartStatus.editted, items: edittedCartList));
+    }
   }
 
   void editDone() {

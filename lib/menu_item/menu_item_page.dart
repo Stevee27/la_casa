@@ -190,7 +190,8 @@ class MenuItemPage extends StatelessWidget {
                                                     BlocProvider.of<CartCubit>(context).editItem(
                                                         BlocProvider.of<CartCubit>(context)
                                                             .state
-                                                            .reloadedCartItem);
+                                                            .reloadedCartItem,
+                                                        selectedOptions);
                                                   } else {
                                                     BlocProvider.of<CartCubit>(context)
                                                         .addItem(menuItem, selectedOptions);
