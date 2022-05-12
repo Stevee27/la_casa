@@ -5,7 +5,17 @@ import 'package:uuid/uuid.dart';
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 
-enum CartStatus { initial, success, error, loading, selected, adding, reloadingOptionsForItem, editting }
+enum CartStatus {
+  initial,
+  success,
+  error,
+  loading,
+  selected,
+  adding,
+  reloadingOptionsForItem,
+  editting,
+  editted
+}
 
 extension CartStatusX on CartStatus {
   bool get isInitial => this == CartStatus.initial;
@@ -55,6 +65,16 @@ class CartCubit extends Cubit<CartState> {
       status: CartStatus.adding,
       items: changedItems,
     ));
+  }
+
+  void editItem(CartItem? cartItem) {
+    var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
+    print(edittedItem);
+    emit(state.copyWith(status: CartStatus.editted));
+  }
+
+  void editDone() {
+    emit(state.copyWith(status: CartStatus.success));
   }
 
   void reloadMenuItemOptions(CartItem cartItem) {

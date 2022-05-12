@@ -56,9 +56,12 @@ class MenuItemPage extends StatelessWidget {
               backgroundColor: Colors.white70,
             ),
             body: BlocListener<CartCubit, CartState>(
-              // listenWhen: (previous, current) {
-              //   return true;
-              // },
+              listenWhen: (previous, current) {
+                if (previous.status == CartStatus.editted) {
+                  return false;
+                }
+                return true;
+              },
               listener: (context, state) {
                 if (state.status == CartStatus.adding) {
                   Scaffold.of(context).showSnackBar(const SnackBar(
@@ -74,6 +77,9 @@ class MenuItemPage extends StatelessWidget {
                   print("RELOADING OPTIONS FOR ITEM");
                 } else if (state.status == CartStatus.success) {
                   BlocProvider.of<NavCubit>(context).showMenu();
+                } else if (state.status == CartStatus.editted) {
+                  BlocProvider.of<CartCubit>(context).editDone();
+                  BlocProvider.of<NavCubit>(context).showCart();
                 }
               },
               child: Padding(
@@ -178,10 +184,19 @@ class MenuItemPage extends StatelessWidget {
                                                   List<Option> selectedOptions =
                                                       BlocProvider.of<OptionsCubit>(context)
                                                           .getSelectedOptions();
-                                                  BlocProvider.of<CartCubit>(context)
-                                                      .addItem(menuItem, selectedOptions);
+                                                  var cartStatus =
+                                                      BlocProvider.of<CartCubit>(context).state.status;
+                                                  if (cartStatus == CartStatus.editting) {
+                                                    BlocProvider.of<CartCubit>(context).editItem(
+                                                        BlocProvider.of<CartCubit>(context)
+                                                            .state
+                                                            .reloadedCartItem);
+                                                  } else {
+                                                    BlocProvider.of<CartCubit>(context)
+                                                        .addItem(menuItem, selectedOptions);
+                                                  }
                                                 },
-                                                child: const Text('Add to Cart'),
+                                                child: const Text('Save to Cart'),
                                               ),
                                               const Spacer()
                                             ],
