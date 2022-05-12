@@ -33,7 +33,7 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: Colors.white70,
       ),
       body: BlocBuilder<CartCubit, CartState>(builder: (context, state) {
-        if (state.status == CartStatus.success) {
+        if (state.status == CartStatus.success || state.status == CartStatus.editting) {
           if (state.items.isNotEmpty) {
             return ListView.builder(
                 itemCount: state.items.length,
