@@ -74,7 +74,7 @@ class _CartPageState extends State<CartPage> {
     if (options.isEmpty) {
       return '';
     } else {
-      return (options.map((o) => o.name).toList()).join(',');
+      return (options.map((o) => o.name).toList()).join(', ');
     }
   }
 }

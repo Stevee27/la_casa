@@ -86,6 +86,11 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
+  void reloadSelected(List<Option> selectedOptions) {
+    emit(state.copyWith(selectedOptions: Set.from(selectedOptions)));
+    print("RELOAD SELECTED");
+  }
+
   bool getValue(Option selectedOption) {
     return state.selectedOptions == null ? false : state.selectedOptions!.contains(selectedOption);
   }

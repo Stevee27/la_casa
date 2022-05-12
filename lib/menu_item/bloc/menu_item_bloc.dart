@@ -40,6 +40,10 @@ class MenuItemCubit extends Cubit<MenuItemState> {
 
   final _itemsRepository = MenuItemRepository();
 
+  void reloadOptions(List<Option> selectedOptions) {
+    // emit();
+  }
+
   void optionPriceAdded(Option option) {}
   void selectOption(String selectedID, String? optionPrice) async {}
 }
