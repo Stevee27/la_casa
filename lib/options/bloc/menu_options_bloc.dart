@@ -48,14 +48,23 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   final _optionsRepository = OptionsRepository();
 
-  void getOptionsForMenuItem(MenuItem menuItem) async {
+  Future<void> getOptions() async {
     try {
       if (state.status == OptionStatus.initial) {
         state.selectedOptions = <Option>{};
         final allOptions = await _optionsRepository.getOptions();
-        emit(state.copyWith(allOptions: allOptions));
+        emit(state.copyWith(status: OptionStatus.loading, allOptions: allOptions));
       }
-      emit(state.copyWith(status: OptionStatus.loading));
+    } catch (e) {
+      emit(state.copyWith(status: OptionStatus.error));
+    }
+  }
+
+  void getOptionsForMenuItem(MenuItem menuItem) async {
+    try {
+      if (state.status == OptionStatus.initial) {
+        await getOptions();
+      }
       final options = state.allOptions!.where((o) => o.menuType == menuItem.menuType).toList();
 
       emit(state.copyWith(status: OptionStatus.success, options: options));

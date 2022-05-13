@@ -41,7 +41,6 @@ class MenuItemPage extends StatelessWidget {
 
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => OptionsCubit()),
           BlocProvider(create: (context) => MenuItemCubit()),
         ],
         child: Scaffold(
