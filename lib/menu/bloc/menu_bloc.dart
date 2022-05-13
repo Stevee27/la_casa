@@ -37,6 +37,11 @@ class MenuCubit extends Cubit<MenuState> {
     }
   }
 
+  List<MenuItem> getCurrentMenu() {
+    var s = state as MenuSuccess;
+    return s.menuItems;
+  }
+
   Future<void> createMenuItem(MenuItem menuItem) async {
     await _menuRepository.createMenuItem(menuItem);
   }

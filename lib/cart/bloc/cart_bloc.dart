@@ -83,6 +83,8 @@ class CartCubit extends Cubit<CartState> {
   }
 
   void reloadMenuItemOptions(CartItem cartItem) {
+    // var allOptions = cartItem.menuItem.Options;
+
     emit(state.copyWith(
       status: CartStatus.reloadingOptionsForItem,
       reloadedCartItem: cartItem,

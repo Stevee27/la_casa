@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/menu/bloc/menu_bloc.dart';
 import 'package:la_casa/menu_item/bloc/menu_item_bloc.dart';
 import 'package:la_casa/utils/widgets/loading_view.dart';
 
@@ -41,8 +42,9 @@ class _CartPageState extends State<CartPage> {
                   return ListTile(
                       onLongPress: () {
                         print(state.items[index]);
+                        var menu = BlocProvider.of<MenuCubit>(context).getCurrentMenu();
                         BlocProvider.of<CartCubit>(context).reloadMenuItemOptions(state.items[index]);
-                        BlocProvider.of<NavCubit>(context).editMenuItem(state.items[index].menuItem.id);
+                        BlocProvider.of<NavCubit>(context).editMenuItem(menu, state.items[index].menuItem);
                       },
                       isThreeLine: true,
                       title: (state.items[index].menuItem.name!.isNotEmpty)

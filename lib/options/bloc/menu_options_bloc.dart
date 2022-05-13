@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../cart/bloc/cart_bloc.dart';
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 import '../options_repository.dart';
@@ -19,18 +20,21 @@ extension OptionStatusX on OptionStatus {
 class OptionsState extends Equatable {
   final OptionStatus? status;
   final List<Option>? options;
+  final List<Option>? allOptions;
   Set<Option>? selectedOptions;
 
-  OptionsState({this.status, this.options, this.selectedOptions});
+  OptionsState({this.status, this.options, this.selectedOptions, this.allOptions});
 
   OptionsState copyWith({
     OptionStatus? status,
     List<Option>? options,
+    final List<Option>? allOptions,
     Set<Option>? selectedOptions,
   }) {
     return OptionsState(
       status: status ?? this.status,
       options: options ?? this.options,
+      allOptions: allOptions ?? this.allOptions,
       selectedOptions: selectedOptions ?? this.selectedOptions,
     );
   }
@@ -48,9 +52,11 @@ class OptionsCubit extends Cubit<OptionsState> {
     try {
       if (state.status == OptionStatus.initial) {
         state.selectedOptions = <Option>{};
+        final allOptions = await _optionsRepository.getOptions();
+        emit(state.copyWith(allOptions: allOptions));
       }
       emit(state.copyWith(status: OptionStatus.loading));
-      final options = await _optionsRepository.getOptionsForMenuItem(menuItem);
+      final options = state.allOptions!.where((o) => o.menuType == menuItem.menuType).toList();
 
       emit(state.copyWith(status: OptionStatus.success, options: options));
     } catch (e) {
@@ -86,9 +92,12 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  void reloadSelected(List<Option> selectedOptions) {
-    emit(state.copyWith(selectedOptions: Set.from(selectedOptions)));
-    print("RELOAD SELECTED");
+  void reloadSelected(CartItem cartItem) async {
+    var menuItem = cartItem.menuItem;
+    getOptionsForMenuItem(menuItem);
+    // await getOptionsForMenuItem(menuItem);
+    emit(state.copyWith(selectedOptions: Set.from(cartItem.options)));
+    // print("RELOAD SELECTED");
   }
 
   bool getValue(Option selectedOption) {

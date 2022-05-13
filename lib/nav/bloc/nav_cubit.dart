@@ -36,9 +36,10 @@ class NavCubit extends Cubit<NavState> {
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
   }
 
-  editMenuItem(String itemID) {
+  editMenuItem(List<MenuItem> allMenuItems, MenuItem selectedItem) {
+    var selectedMenuItems = allMenuItems.where((e) => e.menuType == selectedItem.menuType).toList();
     destPages.remove(CartPage.valueKey);
-    emit(state.copyWith(dest: MenuItemPage.valueKey, itemID: itemID));
+    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: selectedMenuItems, itemID: selectedItem.id));
   }
 
   showCart() {

@@ -72,7 +72,7 @@ class MenuItemPage extends StatelessWidget {
                       .then((value) => BlocProvider.of<CartCubit>(context).itemAdded());
                   // .then((value) => BlocProvider.of<NavCubit>(context).showMenu());
                 } else if (state.status == CartStatus.reloadingOptionsForItem) {
-                  BlocProvider.of<OptionsCubit>(context).reloadSelected(state.reloadedCartItem!.options);
+                  BlocProvider.of<OptionsCubit>(context).reloadSelected(state.reloadedCartItem!);
                   BlocProvider.of<CartCubit>(context).menuItemOptionsReloaded();
                   print("RELOADING OPTIONS FOR ITEM");
                 } else if (state.status == CartStatus.success) {
