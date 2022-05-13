@@ -56,7 +56,7 @@ class MenuItemPage extends StatelessWidget {
             ),
             body: BlocListener<CartCubit, CartState>(
               listenWhen: (previous, current) {
-                if (previous.status == CartStatus.editted) {
+                if (previous.status == CartStatus.editted || previous.status == CartStatus.removing) {
                   return false;
                 }
                 return true;

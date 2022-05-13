@@ -14,7 +14,8 @@ enum CartStatus {
   adding,
   reloadingOptionsForItem,
   editting,
-  editted
+  editted,
+  removing,
 }
 
 extension CartStatusX on CartStatus {
@@ -76,6 +77,13 @@ class CartCubit extends Cubit<CartState> {
       // edittedCartList[index].options = options;
       emit(state.copyWith(status: CartStatus.editted, items: edittedCartList));
     }
+  }
+
+  void removeItem(CartItem cartItem) {
+    emit(state.copyWith(status: CartStatus.removing));
+    List<CartItem> edittedCartList = List.from(state.items);
+    edittedCartList.remove(cartItem);
+    emit(state.copyWith(status: CartStatus.success, items: edittedCartList));
   }
 
   void editDone() {

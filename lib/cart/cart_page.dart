@@ -58,7 +58,7 @@ class _CartPageState extends State<CartPage> {
                       trailing: TextButton(
                           child: const Icon(Icons.highlight_remove_sharp),
                           onPressed: () {
-                            print('tick');
+                            BlocProvider.of<CartCubit>(context).removeItem(state.items[index]);
                           }));
                 });
           } else {
