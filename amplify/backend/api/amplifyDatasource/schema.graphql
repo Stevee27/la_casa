@@ -15,7 +15,6 @@ type User @model @auth(rules: [{allow: public}]) {
 type Option @model @auth(rules: [{allow: public}]) {
   id: ID!
   name: String
-  menuitems: [MenuItem] @manyToMany(relationName: "MenuItemOption")
   price: String
   menuType: MenuType
   sortOrder: Int
@@ -58,5 +57,4 @@ type MenuItem @model @auth(rules: [{allow: public}]) {
   price: String
   menuType: MenuType
   description: String
-  Options: [Option] @manyToMany(relationName: "MenuItemOption")
 }

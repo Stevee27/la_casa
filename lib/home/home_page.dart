@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
         } else {
           _createInitialMenuItemsFromOldModels(initialMenuModelArray);
           _createInitialOptions();
-          _addOptionsToAllMenuItems();
+          // _addOptionsToAllMenuItems();
           return HomeLayout(storeHours: state.storeHours);
         }
       } else if (state is StoreHoursFailure) {
@@ -83,22 +83,6 @@ class HomePage extends StatelessWidget {
     } catch (e) {
       // ignore: use_rethrow_when_possible
       throw e;
-    }
-  }
-
-  _addOptionsToAllMenuItems() async {
-    final MenuRepository repo = MenuRepository();
-    final checkList = await repo.getItemOptions();
-    if (checkList.isEmpty) {
-      try {
-        List<Option> options = await repo.getOptions();
-        List<MenuItem> menuItems = await repo.getMenuItems();
-        for (MenuItem item in menuItems) {
-          await repo.addOptionsToMenuItem(options, item);
-        }
-      } catch (e) {
-        throw e as Exception;
-      }
     }
   }
 }

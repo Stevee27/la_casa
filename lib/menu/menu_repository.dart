@@ -47,34 +47,34 @@ class MenuRepository {
     }
   }
 
-  Future<List<MenuItemOption>> getItemOptions() async {
-    try {
-      List<MenuItemOption> itemOptions = await Amplify.DataStore.query(MenuItemOption.classType);
-      return itemOptions;
-    } catch (e) {
-      throw e;
-    }
-  }
+  // Future<List<MenuItemOption>> getItemOptions() async {
+  //   try {
+  //     List<MenuItemOption> itemOptions = await Amplify.DataStore.query(MenuItemOption.classType);
+  //     return itemOptions;
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 
-  Future<List<Option>> getOptionsForMenuItem(MenuItem item) async {
-    try {
-      List<MenuItemOption> itemOptions = await Amplify.DataStore.query(MenuItemOption.classType,
-          where: MenuItemOption.MENUITEM.eq(item.id));
-      var options = itemOptions.map((e) => e.option).toList();
-      return options;
-    } catch (e) {
-      throw e as Exception;
-    }
-  }
+  // Future<List<Option>> getOptionsForMenuItem(MenuItem item) async {
+  //   try {
+  //     List<MenuItemOption> itemOptions = await Amplify.DataStore.query(MenuItemOption.classType,
+  //         where: MenuItemOption.MENUITEM.eq(item.id));
+  //     var options = itemOptions.map((e) => e.option).toList();
+  //     return options;
+  //   } catch (e) {
+  //     throw e as Exception;
+  //   }
+  // }
 
-  Future<void> addOptionsToMenuItem(List<Option> options, MenuItem menuItem) async {
-    try {
-      for (Option option in options.where((element) => element.menuType == menuItem.menuType)) {
-        final itemOption = MenuItemOption(option: option, menuItem: menuItem);
-        await Amplify.DataStore.save(itemOption);
-      }
-    } catch (e) {
-      throw e;
-    }
-  }
+  // Future<void> addOptionsToMenuItem(List<Option> options, MenuItem menuItem) async {
+  //   try {
+  //     for (Option option in options.where((element) => element.menuType == menuItem.menuType)) {
+  //       final itemOption = MenuItemOption(option: option, menuItem: menuItem);
+  //       await Amplify.DataStore.save(itemOption);
+  //     }
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
 }
