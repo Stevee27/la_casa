@@ -46,7 +46,7 @@ class CartState extends Equatable {
 }
 
 class CartItem {
-  final id = const Uuid().v1;
+  final id = const Uuid().v1();
   final MenuItem menuItem;
   List<Option> options;
   final int quantity;

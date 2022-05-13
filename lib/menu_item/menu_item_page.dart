@@ -26,7 +26,7 @@ class MenuItemPage extends StatelessWidget {
     onSwipeRight(BuildContext context) {
       if (currentItemIndex < menuItems.length - 1) {
         currentItemIndex++;
-        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem(menuItems[currentItemIndex].id);
+        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem();
         BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
       }
     }
@@ -34,7 +34,7 @@ class MenuItemPage extends StatelessWidget {
     onSwipeLeft(BuildContext context) {
       if (currentItemIndex > 0) {
         currentItemIndex--;
-        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem(menuItems[currentItemIndex].id);
+        BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem();
         BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
       }
     }
@@ -195,6 +195,8 @@ class MenuItemPage extends StatelessWidget {
                                                     BlocProvider.of<CartCubit>(context)
                                                         .addItem(menuItem, selectedOptions);
                                                   }
+                                                  BlocProvider.of<OptionsCubit>(context)
+                                                      .clearOptionsForMenuItem();
                                                 },
                                                 child: const Text('Save to Cart'),
                                               ),
