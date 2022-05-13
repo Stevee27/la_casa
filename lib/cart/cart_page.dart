@@ -52,9 +52,9 @@ class _CartPageState extends State<CartPage> {
                           : Text(state.items[index].menuItem.description!),
                       subtitle: (state.items[index].menuItem.name!.isNotEmpty)
                           ? Text(
-                              '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice: ')
+                              '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
                           : Text(
-                              'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$12.00'),
+                              'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
                       trailing: TextButton(
                           child: const Icon(Icons.highlight_remove_sharp),
                           onPressed: () {
@@ -74,7 +74,7 @@ class _CartPageState extends State<CartPage> {
 
   String _makeOptionListing(List<Option> options) {
     if (options.isEmpty) {
-      return '';
+      return 'NONE';
     } else {
       return (options.map((o) => o.name).toList()).join(', ');
     }

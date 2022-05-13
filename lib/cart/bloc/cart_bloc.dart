@@ -51,15 +51,16 @@ class CartItem {
   final MenuItem menuItem;
   List<Option> options;
   final int quantity;
+  String price;
 
-  CartItem({required this.menuItem, this.options = const [], this.quantity = 1});
+  CartItem({required this.menuItem, this.options = const [], this.quantity = 1, this.price = ''});
 }
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartState(status: CartStatus.initial));
 
-  void addItem(menuItem, selectedOptions) {
-    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions);
+  void addItem(menuItem, selectedOptions, price) {
+    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions, price: price);
     List<CartItem> changedItems = List.from(state.items);
     changedItems.add(item);
     emit(state.copyWith(
@@ -68,12 +69,13 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
-  void editItem(CartItem? cartItem, List<Option>? options) {
+  void editItem(CartItem? cartItem, List<Option>? options, String price) {
     if (cartItem != null && options != null) {
       var index = state.items.indexWhere((element) => element.id == cartItem.id);
       // var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
       List<CartItem> edittedCartList = List.from(state.items);
       edittedCartList[index].options = options;
+      edittedCartList[index].price = price;
       // edittedCartList[index].options = options;
       emit(state.copyWith(status: CartStatus.editted, items: edittedCartList));
     }

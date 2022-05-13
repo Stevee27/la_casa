@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/menu_item/pricer.dart';
 import 'package:la_casa/options/bloc/menu_options_bloc.dart';
 
 import '../cart/bloc/cart_bloc.dart';
@@ -121,17 +122,7 @@ class MenuItemPage extends StatelessWidget {
                                       Row(
                                         children: [
                                           const Spacer(),
-                                          if (menuItem.smallPrice!.isEmpty && menuItem.price!.isNotEmpty)
-                                            Text('Price: \$${_calculateTotalPrice(context, menuItem.price)}',
-                                                style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.price!.isEmpty && menuItem.smallPrice!.isNotEmpty)
-                                            Text(
-                                                'Price: \$${_calculateTotalPrice(context, menuItem.smallPrice)}',
-                                                style: const TextStyle(
-                                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                                          if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty)
-                                            _renderMultiPriceLine(context, menuItem),
+                                          Pricer.priceWidget(context, menuItem),
                                         ],
                                       )
                                       // },
@@ -185,15 +176,18 @@ class MenuItemPage extends StatelessWidget {
                                                           .getSelectedOptions();
                                                   var cartStatus =
                                                       BlocProvider.of<CartCubit>(context).state.status;
+
+                                                  var price = Pricer.priceString(context, menuItem);
                                                   if (cartStatus == CartStatus.editting) {
                                                     BlocProvider.of<CartCubit>(context).editItem(
                                                         BlocProvider.of<CartCubit>(context)
                                                             .state
                                                             .reloadedCartItem,
-                                                        selectedOptions);
+                                                        selectedOptions,
+                                                        price);
                                                   } else {
                                                     BlocProvider.of<CartCubit>(context)
-                                                        .addItem(menuItem, selectedOptions);
+                                                        .addItem(menuItem, selectedOptions, price);
                                                   }
                                                   BlocProvider.of<OptionsCubit>(context)
                                                       .clearOptionsForMenuItem();
