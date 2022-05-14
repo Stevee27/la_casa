@@ -57,7 +57,9 @@ class MenuItemPage extends StatelessWidget {
             ),
             body: BlocListener<CartCubit, CartState>(
               listenWhen: (previous, current) {
-                if (previous.status == CartStatus.editted || previous.status == CartStatus.removing) {
+                if (previous.status == CartStatus.editted ||
+                    previous.status == CartStatus.removing ||
+                    previous.status == CartStatus.clearall) {
                   return false;
                 }
                 return true;
@@ -80,6 +82,8 @@ class MenuItemPage extends StatelessWidget {
                 } else if (state.status == CartStatus.editted) {
                   BlocProvider.of<CartCubit>(context).editDone();
                   BlocProvider.of<NavCubit>(context).showCart();
+                } else if (state.status == CartStatus.clearall) {
+                  BlocProvider.of<CartCubit>(context).allCleared();
                 }
               },
               child: Padding(

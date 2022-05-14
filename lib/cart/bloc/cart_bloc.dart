@@ -16,6 +16,7 @@ enum CartStatus {
   editting,
   editted,
   removing,
+  clearall,
 }
 
 extension CartStatusX on CartStatus {
@@ -113,5 +114,16 @@ class CartCubit extends Cubit<CartState> {
     if (state.status == CartStatus.initial) {
       emit(state.copyWith(status: CartStatus.success));
     }
+  }
+
+  void clearAll() {
+    emit(state.copyWith(
+      status: CartStatus.clearall,
+      items: [],
+    ));
+  }
+
+  void allCleared() {
+    emit(state.copyWith(status: CartStatus.success));
   }
 }
