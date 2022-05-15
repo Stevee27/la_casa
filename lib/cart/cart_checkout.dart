@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/cart/bloc/cart_bloc.dart';
 
 class CartCheckout extends StatelessWidget {
+  const CartCheckout({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CartCubit, CartState>(builder: ((context, state) {

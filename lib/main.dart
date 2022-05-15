@@ -85,8 +85,6 @@ class _MyAppState extends State<MyApp> {
       setState(() {
         _amplifyConfigured = true;
       });
-      // BlocProvider.of<UserCubit>(context).getUser('steve');
-      // print('steve');
       // Amplify.DataStore.clear();
     } catch (e) {
       CasaErrorWidget(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/cart/cart_checkout.dart';
 import 'package:la_casa/menu/bloc/menu_bloc.dart';
-import 'package:la_casa/menu_item/bloc/menu_item_bloc.dart';
 import 'package:la_casa/utils/widgets/loading_view.dart';
 
 import '../models/Option.dart';
@@ -37,41 +36,41 @@ class _CartPageState extends State<CartPage> {
       body: BlocBuilder<CartCubit, CartState>(builder: (context, state) {
         if (state.status == CartStatus.success || state.status == CartStatus.editting) {
           if (state.items.isNotEmpty) {
-            return SizedBox(
+            return SingleChildScrollView(
               child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.items.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                              onLongPress: () {
-                                print(state.items[index]);
-                                var menu = BlocProvider.of<MenuCubit>(context).getCurrentMenu();
-                                BlocProvider.of<CartCubit>(context).reloadMenuItemOptions(state.items[index]);
-                                BlocProvider.of<NavCubit>(context)
-                                    .editMenuItem(menu, state.items[index].menuItem);
-                              },
-                              isThreeLine: true,
-                              title: (state.items[index].menuItem.name!.isNotEmpty)
-                                  ? Text(state.items[index].menuItem.name!)
-                                  : Text(state.items[index].menuItem.description!),
-                              subtitle: (state.items[index].menuItem.name!.isNotEmpty)
-                                  ? Text(
-                                      '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
-                                  : Text(
-                                      'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
-                              trailing: TextButton(
-                                  child: const Icon(Icons.highlight_remove_sharp),
-                                  onPressed: () {
-                                    BlocProvider.of<CartCubit>(context).removeItem(state.items[index]);
-                                  }));
-                        }),
-                  ),
-                  Spacer(),
-                  CartCheckout()
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: state.items.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            onLongPress: () {
+                              print(state.items[index]);
+                              var menu = BlocProvider.of<MenuCubit>(context).getCurrentMenu();
+                              BlocProvider.of<CartCubit>(context).reloadMenuItemOptions(state.items[index]);
+                              BlocProvider.of<NavCubit>(context)
+                                  .editMenuItem(menu, state.items[index].menuItem);
+                            },
+                            isThreeLine: true,
+                            title: (state.items[index].menuItem.name!.isNotEmpty)
+                                ? Text(state.items[index].menuItem.name!)
+                                : Text(state.items[index].menuItem.description!),
+                            subtitle: (state.items[index].menuItem.name!.isNotEmpty)
+                                ? Text(
+                                    '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
+                                : Text(
+                                    'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
+                            trailing: TextButton(
+                                child: const Icon(Icons.highlight_remove_sharp),
+                                onPressed: () {
+                                  BlocProvider.of<CartCubit>(context).removeItem(state.items[index]);
+                                }));
+                      }),
+                  // const Spacer(),
+                  Positioned(bottom: 0.0, child: const CartCheckout())
                 ],
               ),
             );
