@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cart/bloc/cart_bloc.dart';
+import '../../menu_item/pricer.dart';
 import '../../models/MenuItem.dart';
 import '../../models/Option.dart';
 import '../options_repository.dart';
@@ -22,25 +23,28 @@ class OptionsState extends Equatable {
   final List<Option>? options;
   final List<Option>? allOptions;
   Set<Option>? selectedOptions;
+  final ItemSize selectedSize;
 
-  OptionsState({this.status, this.options, this.selectedOptions, this.allOptions});
+  OptionsState(
+      {this.status, this.options, this.selectedOptions, this.allOptions, this.selectedSize = ItemSize.large});
 
-  OptionsState copyWith({
-    OptionStatus? status,
-    List<Option>? options,
-    final List<Option>? allOptions,
-    Set<Option>? selectedOptions,
-  }) {
+  OptionsState copyWith(
+      {OptionStatus? status,
+      List<Option>? options,
+      final List<Option>? allOptions,
+      Set<Option>? selectedOptions,
+      ItemSize? selectedSize}) {
     return OptionsState(
       status: status ?? this.status,
       options: options ?? this.options,
       allOptions: allOptions ?? this.allOptions,
       selectedOptions: selectedOptions ?? this.selectedOptions,
+      selectedSize: selectedSize ?? this.selectedSize,
     );
   }
 
   @override
-  List<Object?> get props => [status, options, selectedOptions];
+  List<Object?> get props => [status, options, selectedOptions, selectedSize];
 }
 
 class OptionsCubit extends Cubit<OptionsState> {
@@ -66,8 +70,9 @@ class OptionsCubit extends Cubit<OptionsState> {
         await getOptions();
       }
       final options = state.allOptions!.where((o) => o.menuType == menuItem.menuType).toList();
+      final itemSize = menuItem.price!.isEmpty ? ItemSize.small : ItemSize.large;
 
-      emit(state.copyWith(status: OptionStatus.success, options: options));
+      emit(state.copyWith(status: OptionStatus.success, options: options, selectedSize: itemSize));
     } catch (e) {
       emit(state.copyWith(status: OptionStatus.error));
     }
@@ -127,5 +132,9 @@ class OptionsCubit extends Cubit<OptionsState> {
 
   List<Option> getSelectedOptions() {
     return state.selectedOptions!.toList();
+  }
+
+  void selectSize(ItemSize itemSize) {
+    emit(state.copyWith(selectedSize: itemSize));
   }
 }
