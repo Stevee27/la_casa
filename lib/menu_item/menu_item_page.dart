@@ -13,6 +13,7 @@ import '../nav/bloc/nav_cubit.dart';
 import '../nav/bloc/nav_state.dart';
 import '../options/menu_options_widget.dart';
 import 'bloc/menu_item_bloc.dart';
+import 'size_selector.dart';
 
 class MenuItemPage extends StatelessWidget {
   static const valueKey = ValueKey<String>("MenuItemPage");
@@ -129,9 +130,11 @@ class MenuItemPage extends StatelessWidget {
                                           Pricer.priceWidget(context, menuItem),
                                         ],
                                       )
-                                      // },
-                                      // ),
                                     ])),
+                              ),
+                              Card(
+                                elevation: 4,
+                                child: SizeSelector(menuItem: menuItem),
                               ),
                               Expanded(
                                 flex: 30,

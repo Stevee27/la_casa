@@ -73,9 +73,7 @@ class _CartPageState extends State<CartPage> {
                         }),
                   ),
                 ),
-                // const Spacer(),
-                // Flexible(child: Container(color: Colors.amber, child: Text(''))),
-                Align(alignment: Alignment.bottomCenter, child: const CartCheckout())
+                const CartCheckout()
               ],
             );
           } else {

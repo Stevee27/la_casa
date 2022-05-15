@@ -45,7 +45,7 @@ class Pricer {
     String smallPrice = _calculateTotalPrice(context, menuItem.smallPrice);
     String smallPriceString = smallPrice.isNotEmpty ? 'Small: \$$smallPrice' : '';
     String largePrice = _calculateTotalPrice(context, menuItem.price);
-    String largePriceString = largePrice.isNotEmpty ? 'Large: \$$largePrice' : '';
+    String largePriceString = largePrice.isNotEmpty ? '  Large: \$$largePrice' : '';
     return Text(smallPriceString + largePriceString,
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500));
   }
