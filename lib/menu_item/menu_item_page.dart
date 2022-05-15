@@ -184,7 +184,10 @@ class MenuItemPage extends StatelessWidget {
                                                   var cartStatus =
                                                       BlocProvider.of<CartCubit>(context).state.status;
 
-                                                  var price = Pricer.priceString(context, menuItem);
+                                                  var price = Pricer.priceString(context, menuItem,
+                                                      itemSize: BlocProvider.of<OptionsCubit>(context)
+                                                          .state
+                                                          .selectedSize);
                                                   if (cartStatus == CartStatus.editting) {
                                                     BlocProvider.of<CartCubit>(context).editItem(
                                                         BlocProvider.of<CartCubit>(context)
