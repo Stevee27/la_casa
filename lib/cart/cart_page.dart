@@ -36,43 +36,47 @@ class _CartPageState extends State<CartPage> {
       body: BlocBuilder<CartCubit, CartState>(builder: (context, state) {
         if (state.status == CartStatus.success || state.status == CartStatus.editting) {
           if (state.items.isNotEmpty) {
-            return SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: state.items.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                            onLongPress: () {
-                              print(state.items[index]);
-                              var menu = BlocProvider.of<MenuCubit>(context).getCurrentMenu();
-                              BlocProvider.of<CartCubit>(context).reloadMenuItemOptions(state.items[index]);
-                              BlocProvider.of<NavCubit>(context)
-                                  .editMenuItem(menu, state.items[index].menuItem);
-                            },
-                            isThreeLine: true,
-                            title: (state.items[index].menuItem.name!.isNotEmpty)
-                                ? Text(state.items[index].menuItem.name!)
-                                : Text(state.items[index].menuItem.description!),
-                            subtitle: (state.items[index].menuItem.name!.isNotEmpty)
-                                ? Text(
-                                    '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
-                                : Text(
-                                    'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
-                            trailing: TextButton(
-                                child: const Icon(Icons.highlight_remove_sharp),
-                                onPressed: () {
-                                  BlocProvider.of<CartCubit>(context).removeItem(state.items[index]);
-                                }));
-                      }),
-                  // const Spacer(),
-                  Positioned(bottom: 0.0, child: const CartCheckout())
-                ],
-              ),
+            return Column(
+              // mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                        primary: false,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: state.items.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                              onLongPress: () {
+                                print(state.items[index]);
+                                var menu = BlocProvider.of<MenuCubit>(context).getCurrentMenu();
+                                BlocProvider.of<CartCubit>(context).reloadMenuItemOptions(state.items[index]);
+                                BlocProvider.of<NavCubit>(context)
+                                    .editMenuItem(menu, state.items[index].menuItem);
+                              },
+                              isThreeLine: true,
+                              title: (state.items[index].menuItem.name!.isNotEmpty)
+                                  ? Text(state.items[index].menuItem.name!)
+                                  : Text(state.items[index].menuItem.description!),
+                              subtitle: (state.items[index].menuItem.name!.isNotEmpty)
+                                  ? Text(
+                                      '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
+                                  : Text(
+                                      'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
+                              trailing: TextButton(
+                                  child: const Icon(Icons.highlight_remove_sharp),
+                                  onPressed: () {
+                                    BlocProvider.of<CartCubit>(context).removeItem(state.items[index]);
+                                  }));
+                        }),
+                  ),
+                ),
+                // const Spacer(),
+                // Flexible(child: Container(color: Colors.amber, child: Text(''))),
+                Align(alignment: Alignment.bottomCenter, child: const CartCheckout())
+              ],
             );
           } else {
             return const Center(child: Text('You have no items in cart.'));
