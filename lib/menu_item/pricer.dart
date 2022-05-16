@@ -21,7 +21,7 @@ class Pricer {
     }
   }
 
-  static String priceString(BuildContext context, MenuItem menuItem, {ItemSize itemSize = ItemSize.large}) {
+  static String priceString(BuildContext context, MenuItem menuItem, {ItemSize? itemSize = ItemSize.large}) {
     String? basePrice = (itemSize == ItemSize.large) ? menuItem.price : menuItem.smallPrice;
     if (basePrice != null && basePrice.isNotEmpty) return _calculateTotalPrice(context, basePrice);
     return '';

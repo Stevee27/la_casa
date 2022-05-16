@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/cart/cart_checkout.dart';
 import 'package:la_casa/menu/bloc/menu_bloc.dart';
+import 'package:la_casa/menu_item/pricer.dart';
 import 'package:la_casa/utils/widgets/loading_view.dart';
 
+import '../models/MenuItem.dart';
 import '../models/Option.dart';
 import '../nav/bloc/nav_cubit.dart';
 import '../nav/nav_bar.dart';
@@ -58,8 +60,10 @@ class _CartPageState extends State<CartPage> {
                               },
                               isThreeLine: true,
                               title: (state.items[index].menuItem.name!.isNotEmpty)
-                                  ? Text(state.items[index].menuItem.name!)
-                                  : Text(state.items[index].menuItem.description!),
+                                  ? Text(
+                                      '${state.items[index].menuItem.name!}  ${_itemComment(state.items[index])}')
+                                  : Text(
+                                      '${state.items[index].menuItem.description!}  ${_itemComment(state.items[index])}'),
                               subtitle: (state.items[index].menuItem.name!.isNotEmpty)
                                   ? Text(
                                       '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
@@ -93,5 +97,17 @@ class _CartPageState extends State<CartPage> {
     } else {
       return (options.map((o) => o.name).toList()).join(', ');
     }
+  }
+
+  String _itemComment(CartItem cartItem) {
+    var menuItem = cartItem.menuItem;
+    if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty) {
+      if (cartItem.itemSize == ItemSize.large) {
+        return 'LARGE';
+      } else if (cartItem.itemSize == ItemSize.small) {
+        return 'SMALL';
+      }
+    }
+    return '';
   }
 }
