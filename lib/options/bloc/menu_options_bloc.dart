@@ -23,10 +23,9 @@ class OptionsState extends Equatable {
   final List<Option>? options;
   final List<Option>? allOptions;
   Set<Option>? selectedOptions;
-  final ItemSize selectedSize;
+  ItemSize? selectedSize;
 
-  OptionsState(
-      {this.status, this.options, this.selectedOptions, this.allOptions, this.selectedSize = ItemSize.large});
+  OptionsState({this.status, this.options, this.selectedOptions, this.allOptions, this.selectedSize});
 
   OptionsState copyWith(
       {OptionStatus? status,
@@ -70,7 +69,8 @@ class OptionsCubit extends Cubit<OptionsState> {
         await getOptions();
       }
       final options = state.allOptions!.where((o) => o.menuType == menuItem.menuType).toList();
-      final itemSize = menuItem.price!.isEmpty ? ItemSize.small : ItemSize.large;
+      final size = menuItem.price!.isEmpty ? ItemSize.small : ItemSize.large;
+      var itemSize = state.selectedSize ?? size;
 
       emit(state.copyWith(status: OptionStatus.success, options: options, selectedSize: itemSize));
     } catch (e) {
@@ -110,7 +110,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     var menuItem = cartItem.menuItem;
     getOptionsForMenuItem(menuItem);
     // await getOptionsForMenuItem(menuItem);
-    emit(state.copyWith(selectedOptions: Set.from(cartItem.options)));
+    emit(state.copyWith(selectedOptions: Set.from(cartItem.options), selectedSize: cartItem.itemSize));
     // print("RELOAD SELECTED");
   }
 

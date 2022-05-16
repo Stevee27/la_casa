@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/menu_item/pricer.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../models/MenuItem.dart';
@@ -53,15 +54,22 @@ class CartItem {
   List<Option> options;
   final int quantity;
   String price;
+  late ItemSize? itemSize;
 
-  CartItem({required this.menuItem, this.options = const [], this.quantity = 1, this.price = ''});
+  CartItem({
+    required this.menuItem,
+    this.options = const [],
+    this.quantity = 1,
+    this.price = '',
+    this.itemSize,
+  });
 }
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartState(status: CartStatus.initial));
 
-  void addItem(menuItem, selectedOptions, price) {
-    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions, price: price);
+  void addItem(menuItem, selectedOptions, price, itemSize) {
+    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions, price: price, itemSize: itemSize);
     List<CartItem> changedItems = List.from(state.items);
     changedItems.add(item);
     emit(state.copyWith(
@@ -70,13 +78,14 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
-  void editItem(CartItem? cartItem, List<Option>? options, String price) {
+  void editItem(CartItem? cartItem, List<Option>? options, String price, itemSize) {
     if (cartItem != null && options != null) {
       var index = state.items.indexWhere((element) => element.id == cartItem.id);
       // var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
       List<CartItem> edittedCartList = List.from(state.items);
       edittedCartList[index].options = options;
       edittedCartList[index].price = price;
+      edittedCartList[index].itemSize = itemSize;
       // edittedCartList[index].options = options;
       emit(state.copyWith(status: CartStatus.editted, items: edittedCartList));
     }

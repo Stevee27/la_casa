@@ -183,21 +183,23 @@ class MenuItemPage extends StatelessWidget {
                                                           .getSelectedOptions();
                                                   var cartStatus =
                                                       BlocProvider.of<CartCubit>(context).state.status;
+                                                  var itemSize = BlocProvider.of<OptionsCubit>(context)
+                                                      .state
+                                                      .selectedSize;
 
                                                   var price = Pricer.priceString(context, menuItem,
-                                                      itemSize: BlocProvider.of<OptionsCubit>(context)
-                                                          .state
-                                                          .selectedSize);
+                                                      itemSize: itemSize);
                                                   if (cartStatus == CartStatus.editting) {
                                                     BlocProvider.of<CartCubit>(context).editItem(
                                                         BlocProvider.of<CartCubit>(context)
                                                             .state
                                                             .reloadedCartItem,
                                                         selectedOptions,
-                                                        price);
+                                                        price,
+                                                        itemSize);
                                                   } else {
                                                     BlocProvider.of<CartCubit>(context)
-                                                        .addItem(menuItem, selectedOptions, price);
+                                                        .addItem(menuItem, selectedOptions, price, itemSize);
                                                   }
                                                   BlocProvider.of<OptionsCubit>(context)
                                                       .clearOptionsForMenuItem();
