@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:la_casa/menu/bloc/menu_bloc.dart';
 import 'package:la_casa/menu/menu_layout.dart';
-
 import '../utils/widgets/casa_error_widget.dart';
 import '../utils/widgets/loading_view.dart';
 
