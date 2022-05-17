@@ -60,15 +60,14 @@ class _CartPageState extends State<CartPage> {
                               },
                               isThreeLine: true,
                               title: (state.items[index].menuItem.name!.isNotEmpty)
-                                  ? Text(
-                                      '${state.items[index].menuItem.name!}  ${_itemComment(state.items[index])}')
+                                  ? Text('${state.items[index].menuItem.name!}')
                                   : Text(
                                       '${state.items[index].menuItem.description!}  ${_itemComment(state.items[index])}'),
                               subtitle: (state.items[index].menuItem.name!.isNotEmpty)
                                   ? Text(
-                                      '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\nPrice:  \$${state.items[index].price}')
+                                      '${state.items[index].menuItem.description!}\nOptions: ${_makeOptionListing(state.items[index].options)}\n\$${state.items[index].price}    ${_itemComment(state.items[index])}')
                                   : Text(
-                                      'Options: ${_makeOptionListing(state.items[index].options)}\nPrice: \$${state.items[index].price}'),
+                                      'Options: ${_makeOptionListing(state.items[index].options)}\n\$${state.items[index].price}    ${_itemComment(state.items[index])}'),
                               trailing: TextButton(
                                   child: const Icon(Icons.highlight_remove_sharp),
                                   onPressed: () {
@@ -93,7 +92,7 @@ class _CartPageState extends State<CartPage> {
 
   String _makeOptionListing(List<Option> options) {
     if (options.isEmpty) {
-      return 'NONE';
+      return 'none';
     } else {
       return (options.map((o) => o.name).toList()).join(', ');
     }

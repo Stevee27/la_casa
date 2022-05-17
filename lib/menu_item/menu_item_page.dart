@@ -29,7 +29,7 @@ class MenuItemPage extends StatelessWidget {
       if (currentItemIndex < menuItems.length - 1) {
         currentItemIndex++;
         BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem();
-        BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
+        BlocProvider.of<NavCubit>(context).showMenuItem(context, menuItems, menuItems[currentItemIndex]);
       }
     }
 
@@ -37,7 +37,7 @@ class MenuItemPage extends StatelessWidget {
       if (currentItemIndex > 0) {
         currentItemIndex--;
         BlocProvider.of<OptionsCubit>(context).clearOptionsForMenuItem();
-        BlocProvider.of<NavCubit>(context).showMenuItem(menuItems, menuItems[currentItemIndex].id);
+        BlocProvider.of<NavCubit>(context).showMenuItem(context, menuItems, menuItems[currentItemIndex]);
       }
     }
 

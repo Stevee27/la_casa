@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:la_casa/options/bloc/menu_options_bloc.dart';
 import 'package:la_casa/user/user_page.dart';
 
 import '../../auth/auth_page.dart';
@@ -31,9 +32,10 @@ class NavCubit extends Cubit<NavState> {
     emit(state.copyWith(dest: MenuPage.valueKey));
   }
 
-  showMenuItem(List<MenuItem> menuItems, String itemID) {
+  showMenuItem(BuildContext context, List<MenuItem> menuItems, MenuItem menuItem) async {
+    // await BlocProvider.of<OptionsCubit>(context).clearSelectedSize(menuItem);
     destPages.add(MenuItemPage.valueKey);
-    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: itemID));
+    emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: menuItem.id));
   }
 
   editMenuItem(List<MenuItem> allMenuItems, MenuItem selectedItem) {

@@ -63,14 +63,14 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  void getOptionsForMenuItem(MenuItem menuItem) async {
+  void getOptionsForMenuItem(MenuItem menuItem, {syncSize = true}) async {
     try {
       if (state.status == OptionStatus.initial) {
         await getOptions();
       }
       final options = state.allOptions!.where((o) => o.menuType == menuItem.menuType).toList();
       final size = menuItem.price!.isEmpty ? ItemSize.small : ItemSize.large;
-      var itemSize = state.selectedSize ?? size;
+      var itemSize = syncSize ? state.selectedSize ?? size : size;
 
       emit(state.copyWith(status: OptionStatus.success, options: options, selectedSize: itemSize));
     } catch (e) {
@@ -78,7 +78,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     }
   }
 
-  void clearOptionsForMenuItem() async {
+  Future<void> clearOptionsForMenuItem() async {
     if (state.status == OptionStatus.success) {
       try {
         emit(state.copyWith(
@@ -87,6 +87,16 @@ class OptionsCubit extends Cubit<OptionsState> {
       } catch (e) {
         rethrow;
       }
+    }
+  }
+
+  Future<void> clearSelectedSize(MenuItem menuItem) async {
+    try {
+      emit(state.copyWith(
+        selectedSize: menuItem.price!.isNotEmpty ? ItemSize.large : ItemSize.small,
+      ));
+    } catch (e) {
+      rethrow;
     }
   }
 
