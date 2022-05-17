@@ -60,6 +60,7 @@ class MenuItemPage extends StatelessWidget {
               listenWhen: (previous, current) {
                 if (previous.status == CartStatus.editted ||
                     previous.status == CartStatus.removing ||
+                    previous.status == CartStatus.sizing ||
                     previous.status == CartStatus.clearall) {
                   return false;
                 }
@@ -78,6 +79,8 @@ class MenuItemPage extends StatelessWidget {
                   BlocProvider.of<OptionsCubit>(context).reloadSelected(state.reloadedCartItem!);
                   BlocProvider.of<CartCubit>(context).menuItemOptionsReloaded();
                   print("RELOADING OPTIONS FOR ITEM");
+                } else if (state.status == CartStatus.sizing) {
+                  BlocProvider.of<CartCubit>(context).sizingDone();
                 } else if (state.status == CartStatus.success) {
                   BlocProvider.of<NavCubit>(context).showMenu();
                 } else if (state.status == CartStatus.editted) {
@@ -87,140 +90,143 @@ class MenuItemPage extends StatelessWidget {
                   BlocProvider.of<CartCubit>(context).allCleared();
                 }
               },
-              child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: BlocBuilder<NavCubit, NavState>(builder: (context, state) {
-                    menuItems = state.menuItems;
-                    currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
-                    if (currentItemIndex < 0) {
-                      throw Exception("Menu index error");
-                    }
-                    MenuItem menuItem = menuItems[currentItemIndex];
-                    BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                    return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
-                      if (state.status == OptionStatus.success) {
-                        return GestureDetector(
-                            behavior: HitTestBehavior.opaque,
-                            onHorizontalDragEnd: (details) {
-                              if (details.primaryVelocity! > 0) {
-                                onSwipeLeft(context);
-                              } else if (details.primaryVelocity! < 0) {
-                                onSwipeRight(context);
-                              }
-                            },
-                            child: Column(children: [
-                              Card(
-                                elevation: 4,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(children: [
-                                      if (menuItem.name!.isNotEmpty)
-                                        Text(menuItem.name!,
-                                            style:
-                                                const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-                                      if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
-                                      Text(menuItem.description!,
-                                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                                      const SizedBox(height: 20),
-                                      // Builder(
-                                      // builder: (BuildContext context) {
-                                      Row(
-                                        children: [
-                                          const Spacer(),
-                                          Pricer.priceWidget(context, menuItem),
-                                        ],
-                                      )
-                                    ])),
-                              ),
-                              Card(
-                                elevation: 4,
-                                child: SizeSelector(menuItem: menuItem),
-                              ),
-                              Expanded(
-                                flex: 30,
-                                child: Card(
+              child: BlocBuilder<CartCubit, CartState>(builder: (context, state) {
+                return Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: BlocBuilder<NavCubit, NavState>(builder: (context, state) {
+                      menuItems = state.menuItems;
+                      currentItemIndex = menuItems.indexWhere((e) => e.id == state.itemID);
+                      if (currentItemIndex < 0) {
+                        throw Exception("Menu index error");
+                      }
+                      MenuItem menuItem = menuItems[currentItemIndex];
+                      BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                      return BlocBuilder<OptionsCubit, OptionsState>(builder: ((context, state) {
+                        if (state.status == OptionStatus.success) {
+                          BlocProvider.of<CartCubit>(context).checkForCartItem(menuItem);
+                          return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onHorizontalDragEnd: (details) {
+                                if (details.primaryVelocity! > 0) {
+                                  onSwipeLeft(context);
+                                } else if (details.primaryVelocity! < 0) {
+                                  onSwipeRight(context);
+                                }
+                              },
+                              child: Column(children: [
+                                Card(
                                   elevation: 4,
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10.0),
-                                    child: MenuOptions(
-                                      menuItem: menuItem,
-                                      options: state.options!,
+                                      padding: const EdgeInsets.all(8),
+                                      child: Column(children: [
+                                        if (menuItem.name!.isNotEmpty)
+                                          Text(menuItem.name!,
+                                              style:
+                                                  const TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+                                        if (menuItem.name!.isNotEmpty) const SizedBox(height: 25),
+                                        Text(menuItem.description!,
+                                            style:
+                                                const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                                        const SizedBox(height: 20),
+                                        // Builder(
+                                        // builder: (BuildContext context) {
+                                        Row(
+                                          children: [
+                                            const Spacer(),
+                                            Pricer.priceWidget(context, menuItem),
+                                          ],
+                                        )
+                                      ])),
+                                ),
+                                Card(elevation: 4, child: SizeSelector(menuItem: menuItem)),
+                                Expanded(
+                                  flex: 30,
+                                  child: Card(
+                                    elevation: 4,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                      child: MenuOptions(
+                                        menuItem: menuItem,
+                                        options: state.options!,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 4,
-                                child: SizedBox(
-                                    width: double.infinity,
-                                    child: Card(
-                                        elevation: 4,
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              const Spacer(),
-                                              ElevatedButton(
-                                                style: TextButton.styleFrom(
-                                                  primary: ColorScheme.fromSwatch().primary,
-                                                  backgroundColor: Colors.white,
-                                                  textStyle: const TextStyle(fontSize: 14),
+                                Expanded(
+                                  flex: 4,
+                                  child: SizedBox(
+                                      width: double.infinity,
+                                      child: Card(
+                                          elevation: 4,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 8),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                const Spacer(),
+                                                ElevatedButton(
+                                                  style: TextButton.styleFrom(
+                                                    primary: ColorScheme.fromSwatch().primary,
+                                                    backgroundColor: Colors.white,
+                                                    textStyle: const TextStyle(fontSize: 14),
+                                                  ),
+                                                  onPressed: () {},
+                                                  child: const Text('Show Photo'),
                                                 ),
-                                                onPressed: () {},
-                                                child: const Text('Show Photo'),
-                                              ),
-                                              const Spacer(flex: 10),
-                                              ElevatedButton(
-                                                style: TextButton.styleFrom(
-                                                  primary: ColorScheme.fromSwatch().primary,
-                                                  backgroundColor: Colors.white,
-                                                  textStyle: const TextStyle(fontSize: 14),
-                                                ),
-                                                onPressed: () {
-                                                  List<Option> selectedOptions =
-                                                      BlocProvider.of<OptionsCubit>(context)
-                                                          .getSelectedOptions();
-                                                  var cartStatus =
-                                                      BlocProvider.of<CartCubit>(context).state.status;
-                                                  var itemSize = BlocProvider.of<OptionsCubit>(context)
-                                                      .state
-                                                      .selectedSize;
+                                                const Spacer(flex: 10),
+                                                ElevatedButton(
+                                                  style: TextButton.styleFrom(
+                                                    primary: ColorScheme.fromSwatch().primary,
+                                                    backgroundColor: Colors.white,
+                                                    textStyle: const TextStyle(fontSize: 14),
+                                                  ),
+                                                  onPressed: () {
+                                                    List<Option> selectedOptions =
+                                                        BlocProvider.of<OptionsCubit>(context)
+                                                            .getSelectedOptions();
+                                                    var cartState = BlocProvider.of<CartCubit>(context).state;
+                                                    var itemSize = BlocProvider.of<CartCubit>(context)
+                                                        .state
+                                                        .reloadedCartItem!
+                                                        .selectedSize;
 
-                                                  var price = Pricer.priceString(context, menuItem,
-                                                      itemSize: itemSize);
-                                                  if (cartStatus == CartStatus.editting) {
-                                                    BlocProvider.of<CartCubit>(context).editItem(
-                                                        BlocProvider.of<CartCubit>(context)
-                                                            .state
-                                                            .reloadedCartItem,
-                                                        selectedOptions,
-                                                        price,
-                                                        itemSize);
-                                                  } else {
-                                                    BlocProvider.of<CartCubit>(context)
-                                                        .addItem(menuItem, selectedOptions, price, itemSize);
-                                                  }
-                                                  BlocProvider.of<OptionsCubit>(context)
-                                                      .clearOptionsForMenuItem();
-                                                },
-                                                child: const Text('Save to Cart'),
-                                              ),
-                                              const Spacer()
-                                            ],
-                                          ),
-                                        ))),
-                              ),
-                            ]));
-                      }
-                      if (state.status == OptionStatus.selected) {
-                        BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
-                        return Container();
-                      } else {
-                        return const CircularProgressIndicator();
-                      }
+                                                    var price = Pricer.priceString(context, menuItem,
+                                                        itemSize: itemSize);
+                                                    if (cartState.items
+                                                        .contains(cartState.reloadedCartItem)) {
+                                                      // if (cartStatus == CartStatus.editting) {
+                                                      BlocProvider.of<CartCubit>(context).editItem(
+                                                          BlocProvider.of<CartCubit>(context)
+                                                              .state
+                                                              .reloadedCartItem,
+                                                          selectedOptions,
+                                                          price,
+                                                          itemSize);
+                                                    } else {
+                                                      BlocProvider.of<CartCubit>(context).addItem(
+                                                          menuItem, selectedOptions, price, itemSize);
+                                                    }
+                                                    BlocProvider.of<OptionsCubit>(context)
+                                                        .clearOptionsForMenuItem();
+                                                  },
+                                                  child: const Text('Save to Cart'),
+                                                ),
+                                                const Spacer()
+                                              ],
+                                            ),
+                                          ))),
+                                ),
+                              ]));
+                        }
+                        if (state.status == OptionStatus.selected) {
+                          BlocProvider.of<OptionsCubit>(context).getOptionsForMenuItem(menuItem);
+                          return Container();
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      }));
                     }));
-                  })),
+              }),
               // bottomNavigationBar:
             ),
             bottomNavigationBar: const NavBar(1)));

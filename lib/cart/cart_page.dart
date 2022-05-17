@@ -101,9 +101,9 @@ class _CartPageState extends State<CartPage> {
   String _itemComment(CartItem cartItem) {
     var menuItem = cartItem.menuItem;
     if (menuItem.smallPrice!.isNotEmpty && menuItem.price!.isNotEmpty) {
-      if (cartItem.itemSize == ItemSize.large) {
+      if (cartItem.selectedSize == ItemSize.large) {
         return 'LARGE';
-      } else if (cartItem.itemSize == ItemSize.small) {
+      } else if (cartItem.selectedSize == ItemSize.small) {
         return 'SMALL';
       }
     }

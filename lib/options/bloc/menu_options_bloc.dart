@@ -120,7 +120,7 @@ class OptionsCubit extends Cubit<OptionsState> {
     var menuItem = cartItem.menuItem;
     getOptionsForMenuItem(menuItem);
     // await getOptionsForMenuItem(menuItem);
-    emit(state.copyWith(selectedOptions: Set.from(cartItem.options), selectedSize: cartItem.itemSize));
+    emit(state.copyWith(selectedOptions: Set.from(cartItem.options), selectedSize: cartItem.selectedSize));
     // print("RELOAD SELECTED");
   }
 

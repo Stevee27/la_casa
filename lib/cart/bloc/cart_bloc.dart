@@ -18,6 +18,8 @@ enum CartStatus {
   editted,
   removing,
   clearall,
+  settingCartItem,
+  sizing,
 }
 
 extension CartStatusX on CartStatus {
@@ -48,28 +50,42 @@ class CartState extends Equatable {
   List<Object?> get props => [status, items, reloadedCartItem];
 }
 
-class CartItem {
+class CartItem extends Equatable {
   final id = const Uuid().v1();
   final MenuItem menuItem;
   List<Option> options;
   final int quantity;
   String price;
-  late ItemSize? itemSize;
+  late ItemSize? selectedSize;
 
   CartItem({
     required this.menuItem,
     this.options = const [],
     this.quantity = 1,
     this.price = '',
-    this.itemSize,
+    this.selectedSize,
   });
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [menuItem, options, selectedSize];
 }
 
 class CartCubit extends Cubit<CartState> {
   CartCubit() : super(CartState(status: CartStatus.initial));
 
-  void addItem(menuItem, selectedOptions, price, itemSize) {
-    CartItem item = CartItem(menuItem: menuItem, options: selectedOptions, price: price, itemSize: itemSize);
+  void checkForCartItem(MenuItem menuItem) async {
+    if (state.reloadedCartItem == null) {
+      CartItem item = await createInitialCartItem(menuItem);
+      emit(state.copyWith(status: CartStatus.settingCartItem, reloadedCartItem: item));
+    }
+  }
+
+  void addItem(menuItem, selectedOptions, price, selectedSize) {
+    CartItem item = state.reloadedCartItem!;
+    item.options = selectedOptions;
+    item.price = price;
+    // CartItem(menuItem: menuItem, options: selectedOptions, price: price, selectedSize: selectedSize);
     List<CartItem> changedItems = List.from(state.items);
     changedItems.add(item);
     emit(state.copyWith(
@@ -78,14 +94,14 @@ class CartCubit extends Cubit<CartState> {
     ));
   }
 
-  void editItem(CartItem? cartItem, List<Option>? options, String price, itemSize) {
+  void editItem(CartItem? cartItem, List<Option>? options, String price, selectedSize) {
     if (cartItem != null && options != null) {
       var index = state.items.indexWhere((element) => element.id == cartItem.id);
       // var edittedItem = state.items.firstWhere((element) => element.id == cartItem!.id);
       List<CartItem> edittedCartList = List.from(state.items);
       edittedCartList[index].options = options;
       edittedCartList[index].price = price;
-      edittedCartList[index].itemSize = itemSize;
+      edittedCartList[index].selectedSize = selectedSize;
       // edittedCartList[index].options = options;
       emit(state.copyWith(status: CartStatus.editted, items: edittedCartList));
     }
@@ -119,10 +135,25 @@ class CartCubit extends Cubit<CartState> {
     emit(state.copyWith(status: CartStatus.success));
   }
 
+  Future<CartItem> createInitialCartItem(MenuItem menuItem) async {
+    ItemSize selectedSize = menuItem.price!.isNotEmpty ? ItemSize.large : ItemSize.small;
+    CartItem item = CartItem(menuItem: menuItem, selectedSize: selectedSize);
+    return item;
+  }
+
   void showCart() {
     if (state.status == CartStatus.initial) {
       emit(state.copyWith(status: CartStatus.success));
     }
+  }
+
+  void selectSize(ItemSize itemSize) {
+    state.reloadedCartItem!.selectedSize = itemSize;
+    emit(state.copyWith(status: CartStatus.sizing, reloadedCartItem: state.reloadedCartItem!));
+  }
+
+  void sizingDone() {
+    emit(state.copyWith(status: CartStatus.success));
   }
 
   void clearAll() {

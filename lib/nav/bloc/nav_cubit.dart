@@ -4,6 +4,7 @@ import 'package:la_casa/options/bloc/menu_options_bloc.dart';
 import 'package:la_casa/user/user_page.dart';
 
 import '../../auth/auth_page.dart';
+import '../../cart/bloc/cart_bloc.dart';
 import '../../cart/cart_page.dart';
 import '../../home/home_page.dart';
 import '../../menu_item/menu_item_page.dart';
@@ -33,7 +34,8 @@ class NavCubit extends Cubit<NavState> {
   }
 
   showMenuItem(BuildContext context, List<MenuItem> menuItems, MenuItem menuItem) async {
-    // await BlocProvider.of<OptionsCubit>(context).clearSelectedSize(menuItem);
+    // CartItem cartItem = await BlocProvider.of<CartCubit>(context).createInitialCartItem(menuItem);
+    BlocProvider.of<CartCubit>(context).state.reloadedCartItem = null;
     destPages.add(MenuItemPage.valueKey);
     emit(state.copyWith(dest: MenuItemPage.valueKey, menuItems: menuItems, itemID: menuItem.id));
   }
