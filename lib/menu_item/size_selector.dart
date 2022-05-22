@@ -4,7 +4,6 @@ import 'package:la_casa/menu_item/pricer.dart';
 
 import '../cart/bloc/cart_bloc.dart';
 import '../models/MenuItem.dart';
-import '../options/bloc/menu_options_bloc.dart';
 
 class SizeSelector extends StatelessWidget {
   final MenuItem menuItem;
