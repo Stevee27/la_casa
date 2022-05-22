@@ -77,7 +77,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _configureAmplify() async {
-    await Amplify.addPlugin(AmplifyDataStore(modelProvider: ModelProvider.instance));
+    if (!_amplifyConfigured) {
+      print('Configuring Amplify');
+      await Amplify.addPlugin(AmplifyDataStore(modelProvider: ModelProvider.instance));
+    }
 
     // Once Plugins are added, configure Amplify
     try {
